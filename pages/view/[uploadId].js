@@ -1295,9 +1295,9 @@ export default function Viewer() {
           style={{
             position: "relative",
             width:
-              mmToPx(documentData.pageInfo?.dimensions?.width || 612) + "px",
+              (documentData.pageInfo?.dimensions?.width || 612) + "px",
             height:
-              mmToPx(documentData.pageInfo?.dimensions?.height || 792) + "px",
+              (documentData.pageInfo?.dimensions?.height || 792) + "px",
             backgroundColor: (() => {
               const bgColor = getDocumentBackgroundColor(documentData);
               console.log('🎨 Final background color being applied to DOCUMENT CANVAS only:', bgColor);
@@ -1320,7 +1320,7 @@ export default function Viewer() {
                 left: documentData.pageInfo.margins.left + "px",
                 right: documentData.pageInfo.margins.right + "px",
                 bottom: documentData.pageInfo.margins.bottom + "px",
-                border: "1px dashed rgba(255, 0, 0, 0.3)",
+                border: "3px dashed rgba(10, 0, 0, 0.3)",
                 pointerEvents: "none",
                 zIndex: 100,
               }}
@@ -1333,11 +1333,13 @@ export default function Viewer() {
             console.log(
               "🧱",
               element.id,
-              element.position.x,
+              element.position.x - 478.031496063,
               element.position.y
             );
             const marginLeft = documentData.pageInfo?.margins?.left || 0;
+            
             const marginTop = documentData.pageInfo?.margins?.top || 0;
+            console.log("Margin : " , marginLeft,marginTop);
 
             return (
               <div
@@ -1345,8 +1347,8 @@ export default function Viewer() {
                 onClick={() => setSelectedElement(element)}
                 style={{
                   position: "absolute",
-                  left: marginLeft + element.position.x + "px",
-                  top: marginTop + element.position.y + "px",
+                  left: marginLeft + element.position.x    + "px",
+                  top: marginTop + element.position.y  + "px",
                   width: element.position.width + "px",
                   height: element.position.height + "px",
                   backgroundColor: element.fill
