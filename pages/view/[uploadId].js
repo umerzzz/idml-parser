@@ -438,14 +438,14 @@ export default function Viewer() {
     };
   };
 
-  // ENHANCED: Calculate precise text metrics with multiple measurement methods
+  // IMPROVED: Calculate text metrics with more generous spacing
   const calculateTextMetrics = (text, fontSize, lineHeight, containerWidth, containerHeight, fontFamily = "Arial", fontWeight = "normal", fontStyle = "normal") => {
     if (!text) return { willOverflow: false, estimatedLines: 0, estimatedTextHeight: 0 };
     
     // Method 1: Canvas-based measurement (most accurate)
     const canvasMetrics = measureTextAccurately(text, fontSize, fontFamily, fontWeight, fontStyle);
     
-    // FIXED: Simplified line height calculation
+    // IMPROVED: More generous line height calculation
     let lineHeightPx;
     if (typeof lineHeight === 'string' && lineHeight.includes('px')) {
       lineHeightPx = parseFloat(lineHeight);
@@ -762,7 +762,7 @@ export default function Viewer() {
         }
       }
       
-      // FIXED: Simplified line height calculation for individual spans
+      // IMPROVED: More generous line height calculation for individual spans
       let lineHeight = "inherit"; // Inherit from parent container
       
       if (formatting.effectiveLineHeight) {
@@ -771,9 +771,9 @@ export default function Viewer() {
         if (formatting.leading === "auto") {
           lineHeight = "inherit";
         } else if (typeof formatting.leading === "number") {
-          // Ensure reasonable line height range
+          // IMPROVED: More generous line height range to prevent text chopping
           const ratio = formatting.leading / fontSize;
-          lineHeight = Math.max(0.9, Math.min(2.0, ratio));
+          lineHeight = Math.max(1.1, Math.min(2.5, ratio)); // More generous range
         }
       }
 
@@ -838,22 +838,22 @@ export default function Viewer() {
     }).filter(Boolean); // Remove null entries from skipped line breaks
   };
 
-  const getStoryStyles = (story, containerHeight = null) => {
+  const getStoryStyles = (story, containerHeight = null, containerWidth = null) => {
     const styling = story.styling || {};
     const fontSize = styling.fontSize || 12;
     
-    // FIXED: Simplified line height calculation - use CSS-friendly values
-    let lineHeight = "1.2"; // Default CSS line-height
+    // IMPROVED: More generous line height calculation to prevent text chopping
+    let lineHeight = "1.3"; // More generous default CSS line-height
     
     if (styling.effectiveLineHeight) {
       lineHeight = styling.effectiveLineHeight;
     } else if (styling.leading !== undefined) {
       if (styling.leading === "auto") {
-        lineHeight = "1.2";
+        lineHeight = "1.3"; // More generous auto line height
       } else if (typeof styling.leading === "number") {
-        // Convert InDesign points to CSS line-height ratio, ensure reasonable range
+        // Convert InDesign points to CSS line-height ratio, more generous range
         const ratio = styling.leading / fontSize;
-        lineHeight = Math.max(0.9, Math.min(2.0, ratio)).toString();
+        lineHeight = Math.max(1.1, Math.min(2.5, ratio)).toString(); // More generous range
       }
     }
 
@@ -867,21 +867,28 @@ export default function Viewer() {
       lineHeight: lineHeight,
       letterSpacing: styling.tracking ? `${styling.tracking / 1000}em` : "normal",
       
-      // FIXED: Minimal padding to prevent double accounting and text chopping
-      padding: "1px 2px", // Reduced from "2px 4px" to minimize space conflicts
-      margin: 0, // Ensure no unexpected margins
+      // IMPROVED: Minimal padding to prevent container size conflicts
+      padding: "1px 2px", 
+      margin: 0,
       
-      height: "100%",
-      width: "100%",
+      // FIXED: Use full container size, let CSS handle overflow properly
+      height: "100%", // Use full container height
+      width: "100%", // Use full container width
+      minHeight: `${fontSize * 1.4}px`, // More generous minimum height
+      
       wordWrap: "break-word",
-      overflow: "hidden",
+      overflow: "visible", // CHANGED: Allow text to be visible instead of hidden
       boxSizing: "border-box",
       
-      // FIXED: Better text layout handling for InDesign-like behavior
-      display: "block", // Changed from flex to block for more predictable text flow
-      whiteSpace: "normal", // Changed from "pre-wrap" to "normal" for better word wrapping
-      wordBreak: "normal", // Ensure proper word breaking
-      overflowWrap: "break-word", // Allow long words to break if needed
+      // IMPROVED: Better text layout handling 
+      display: "block",
+      whiteSpace: "pre-wrap", 
+      wordBreak: "break-word", 
+      overflowWrap: "break-word",
+      
+      // IMPROVED: Allow text to flow naturally
+      textOverflow: "visible", // Don't clip text
+      lineClamp: "none", // Allow long words to break if needed
       
       // Remove flexbox alignment that might cause issues
       // justifyContent: styling.alignment === "CenterAlign" ? "center" : "flex-start",
@@ -1274,16 +1281,16 @@ export default function Viewer() {
       {/* Enhanced Canvas */}
       <div
         style={{
-          border: "1px dashed red",
           display: "flex",
           flex: 1,
           justifyContent: "center", // keep this to center it
           alignItems: "flex-start", // align to top, not center vertically
           padding: "20px",
           overflow: "auto", // Changed to auto to allow scrolling if needed
-          backgroundColor: "#e9ecef",
+          backgroundColor: "#e9ecef", // FIXED: Keep outer container neutral gray background
         }}
       >
+        {/* FIXED: Document Canvas Container - only this gets the document background */}
         <div
           style={{
             position: "relative",
@@ -1293,13 +1300,15 @@ export default function Viewer() {
               mmToPx(documentData.pageInfo?.dimensions?.height || 792) + "px",
             backgroundColor: (() => {
               const bgColor = getDocumentBackgroundColor(documentData);
-              console.log('🎨 Final background color being applied:', bgColor);
+              console.log('🎨 Final background color being applied to DOCUMENT CANVAS only:', bgColor);
               return bgColor;
             })(),
             margin: "0 auto",
             border: "1px solid #ccc",
             boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
             overflow: "hidden", // Clip content to page boundaries
+            // FIXED: Ensure this container is clearly distinct from the outer background
+            borderRadius: "2px",
           }}
         >
           {/* Margins Visualization */}
@@ -1352,7 +1361,7 @@ export default function Viewer() {
                       ? "1px solid #ff6b6b"
                       : "1px dashed rgba(0,0,0,0.3)",
                   cursor: "pointer",
-                  overflow: "visible",
+                  overflow: "visible", // CRITICAL: Allow text containers to overflow frame if needed
                   transform: element.position.rotation
                     ? `rotate(${element.position.rotation}deg)`
                     : undefined,
@@ -1541,13 +1550,17 @@ export default function Viewer() {
                       frameMetrics
                     );
                     
-                    // Generate precise CSS styles
-                    let finalStyles = InDesignTextMetrics.generateInDesignCSS(storyFormatting, frameMetrics);
+                    // IMPROVED: Generate CSS styles with full container dimensions
+                    let finalStyles = getStoryStyles(story, element.position.height, element.position.width);
                     let wasAdjusted = false;
                     let adjustmentDetails = null;
                     
-                    // Apply overflow prevention if needed
-                    if (textMeasurement.willOverflow) {
+                    // IMPROVED: Use full container dimensions for overflow detection
+                    const containerWidth = element.position.width; // Use full width
+                    const containerHeight = element.position.height; // Use full height
+                    
+                    // TEMPORARILY DISABLED: Apply overflow prevention if needed (may be causing text chopping)
+                    if (false && textMeasurement.willOverflow) {
                       console.log(`📏 Text overflow detected in story ${element.parentStory}:`, {
                         textHeight: textMeasurement.textHeight,
                         availableHeight: textMeasurement.availableHeight,
@@ -1587,7 +1600,37 @@ export default function Viewer() {
                     
                     return (
                       <div 
-                        style={finalStyles} 
+                        style={{
+                          // HYBRID APPROACH: Use full frame size but apply insets as padding
+                          position: "absolute",
+                          top: "0px", // Use full frame positioning
+                          left: "0px", // Use full frame positioning
+                          width: `${element.position.width}px`, // Use full frame width
+                          height: `${element.position.height}px`, // Use full frame height
+                          
+                          // HYBRID: Apply insets as padding to create visual spacing without reducing text area too much
+                          padding: `${frameMetrics.insets.top}px ${frameMetrics.insets.right}px ${frameMetrics.insets.bottom}px ${frameMetrics.insets.left}px`,
+                          
+                          // Text styling from story
+                          fontSize: `${finalStyles.fontSize}`,
+                          fontFamily: finalStyles.fontFamily,
+                          fontWeight: finalStyles.fontWeight,
+                          fontStyle: finalStyles.fontStyle,
+                          color: finalStyles.color,
+                          textAlign: finalStyles.textAlign,
+                          lineHeight: finalStyles.lineHeight,
+                          letterSpacing: finalStyles.letterSpacing,
+                          
+                          margin: 0,
+                          
+                          // Text layout - allow overflow to prevent chopping
+                          display: "block",
+                          whiteSpace: "pre-wrap",
+                          wordBreak: "break-word",
+                          overflowWrap: "break-word",
+                          overflow: "visible", // CRITICAL: Allow text to overflow to prevent chopping
+                          boxSizing: "border-box",
+                        }} 
                         title={createTooltip()}
                       >
                         {renderFormattedText(story, element.position.height, adjustedFontSize)}
