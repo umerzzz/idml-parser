@@ -1311,6 +1311,23 @@ export default function Viewer() {
             borderRadius: "2px",
           }}
         >
+          {(() => {
+            // DEBUG: Log page dimensions and margins
+            const pageWidth = documentData.pageInfo?.dimensions?.width || 612;
+            const pageHeight = documentData.pageInfo?.dimensions?.height || 792;
+            const marginLeft = documentData.pageInfo?.margins?.left || 0;
+            const marginTop = documentData.pageInfo?.margins?.top || 0;
+            const marginRight = documentData.pageInfo?.margins?.right || 0;
+            const marginBottom = documentData.pageInfo?.margins?.bottom || 0;
+            
+            console.log('📐 PAGE DIMENSIONS DEBUG:');
+            console.log(`   📏 Page size: ${pageWidth} × ${pageHeight}px`);
+            console.log(`   📏 Margins: top=${marginTop}, right=${marginRight}, bottom=${marginBottom}, left=${marginLeft}`);
+            console.log(`   📏 Content area: ${pageWidth - marginLeft - marginRight} × ${pageHeight - marginTop - marginBottom}px`);
+            console.log(`   📏 Dotted border position: top=${marginTop}, left=${marginLeft}, right=${marginRight}, bottom=${marginBottom}`);
+            
+            return null; // This is just for debugging, return nothing
+          })()}
           {/* Margins Visualization */}
           {documentData.pageInfo?.margins && (
             <div
@@ -1347,7 +1364,8 @@ export default function Viewer() {
                 onClick={() => setSelectedElement(element)}
                 style={{
                   position: "absolute",
-                  left: marginLeft + element.position.x    + "px",
+                  left:  element.position.x    + "px",
+                  // left: marginLeft + element.position.x    + "px",
                   top: marginTop + element.position.y  + "px",
                   width: element.position.width + "px",
                   height: element.position.height + "px",
