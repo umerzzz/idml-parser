@@ -1,0 +1,549 @@
+{
+  "document": {
+    "version": 15,
+    "pageCount": 1,
+    "name": "placeholders"
+  },
+  "pageInfo": {
+    "dimensions": {
+      "width": 800,
+      "height": 600,
+      "facingPages": false,
+      "units": "Points"
+    },
+    "margins": {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0,
+      "columnCount": 1,
+      "columnGutter": 12
+    }
+  },
+  "elements": [
+    {
+      "id": "ueb",
+      "type": "Rectangle",
+      "name": "Background <BG>",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "width": 800,
+        "height": 600,
+        "rotation": 0
+      },
+      "fill": "Color/ucd",
+      "stroke": "Swatch/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u1f2",
+      "type": "Rectangle",
+      "name": "Image <THMB_img:C03>",
+      "position": {
+        "x": 43.88,
+        "y": 358.05,
+        "width": 182.9,
+        "height": 186.95,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "linkedImage": {
+        "fileName": "embedded_u1f2.jpg",
+        "url": null,
+        "isEmbedded": true,
+        "embeddedType": "$ID/Portable Network Graphics (PNG)",
+        "embeddedData": "72 72",
+        "framePosition": {
+          "x": 43.88,
+          "y": 358.05,
+          "width": 182.9,
+          "height": 186.95,
+          "rotation": 0
+        },
+        "imagePosition": {
+          "x": -712.2423995351429,
+          "y": 116.09653529216958,
+          "width": 33.45768488474384,
+          "height": 34.95532040255337,
+          "scaleX": 0.18292585476990778,
+          "scaleY": 0.18697510829362113
+        }
+      },
+      "visible": true,
+      "locked": false,
+      "isContentFrame": true,
+      "hasPlacedContent": true,
+      "contentType": "Image",
+      "imagePosition": {
+        "x": -712.2423995351429,
+        "y": 116.09653529216958,
+        "width": 33.45768488474384,
+        "height": 34.95532040255337,
+        "scaleX": 0.18292585476990778,
+        "scaleY": 0.18697510829362113
+      },
+      "placedContent": {
+        "type": "Image",
+        "href": "72 72",
+        "isEmbedded": true,
+        "bounds": null,
+        "transform": {
+          "a": 0.18292585476990778,
+          "b": 0,
+          "c": 0,
+          "d": 0.18697510829362113,
+          "tx": -356.12119976757145,
+          "ty": 58.04826764608479
+        },
+        "actualPpi": "72 72",
+        "effectivePpi": "394 385",
+        "imageTypeName": "$ID/Portable Network Graphics (PNG)",
+        "space": "$ID/#Links_RGB"
+      }
+    },
+    {
+      "id": "u18b",
+      "type": "Rectangle",
+      "name": "Shape #2 <THMB_fill:C02>",
+      "position": {
+        "x": 573.22,
+        "y": 59.05,
+        "width": 182.9,
+        "height": 182.9,
+        "rotation": 0
+      },
+      "fill": "Color/u18a",
+      "stroke": "Swatch/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u189",
+      "type": "Rectangle",
+      "name": "Shape #1 <THMB_fill:C01>",
+      "position": {
+        "x": 43.88,
+        "y": 59.05,
+        "width": 182.9,
+        "height": 182.9,
+        "rotation": 0
+      },
+      "fill": "Color/u18a",
+      "stroke": "Swatch/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u1d8",
+      "type": "TextFrame",
+      "name": "Text #4 <THMB_styles:FancyText>",
+      "position": {
+        "x": 242.84,
+        "y": 358.05,
+        "width": 513.29,
+        "height": 182.9,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": "u1db",
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u1c1",
+      "type": "TextFrame",
+      "name": "Text #3 <STYLE_FancyText><TOS_fitToBox>",
+      "position": {
+        "x": 43.88,
+        "y": 258.38,
+        "width": 712.24,
+        "height": 83.24,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": "u1c4",
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u1a3",
+      "type": "TextFrame",
+      "name": "Text #2 <THMB_text:C02><TOS_fitToBox>",
+      "position": {
+        "x": 242.84,
+        "y": 158.72,
+        "width": 314.33,
+        "height": 83.24,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": "u1a6",
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u18c",
+      "type": "TextFrame",
+      "name": "Text #1 <THMB_text:C01><TOS_fitToBox>",
+      "position": {
+        "x": 242.84,
+        "y": 59.05,
+        "width": 314.33,
+        "height": 83.24,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": "u18f",
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    }
+  ],
+  "stories": {
+    "u1db": {
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "wordCount": 36,
+      "characterCount": 231,
+      "textColor": null,
+      "hasLineBreaks": false,
+      "lineBreakCount": 0,
+      "styling": {
+        "fontSize": 24,
+        "fontFamily": "Minion Pro",
+        "alignment": "LeftAlign",
+        "fillColor": "Color/Black",
+        "fontStyle": "Bold",
+        "leading": "auto",
+        "leadingType": "auto",
+        "effectiveLineHeight": 1.2,
+        "tracking": 0,
+        "kerning": 0
+      },
+      "formattedContent": [
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 24,
+            "fontReference": "",
+            "fillColor": "Color/Black",
+            "fontStyle": "Bold",
+            "alignment": "LeftAlign",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0,
+            "fontFamily": "Minion Pro"
+          }
+        }
+      ]
+    },
+    "u1c4": {
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "wordCount": 19,
+      "characterCount": 123,
+      "textColor": null,
+      "hasLineBreaks": false,
+      "lineBreakCount": 0,
+      "styling": {
+        "fontSize": 24,
+        "fontFamily": "Minion Pro",
+        "alignment": "CenterAlign",
+        "fillColor": "Color/Black",
+        "fontStyle": "Bold",
+        "leading": "auto",
+        "leadingType": "auto",
+        "effectiveLineHeight": 1.2,
+        "tracking": 0,
+        "kerning": 0
+      },
+      "formattedContent": [
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 24,
+            "fontReference": "",
+            "fillColor": "Color/Black",
+            "fontStyle": "Bold",
+            "alignment": "CenterAlign",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0,
+            "fontFamily": "Minion Pro"
+          }
+        }
+      ]
+    },
+    "u1a6": {
+      "text": "text with\ncolor theme # 2",
+      "wordCount": 6,
+      "characterCount": 25,
+      "textColor": null,
+      "hasLineBreaks": true,
+      "lineBreakCount": 1,
+      "styling": {
+        "fontSize": 24,
+        "fontFamily": "Minion Pro",
+        "alignment": "CenterAlign",
+        "fillColor": "Color/Black",
+        "fontStyle": "Bold",
+        "leading": "auto",
+        "leadingType": "auto",
+        "effectiveLineHeight": 1.2,
+        "tracking": 0,
+        "kerning": 0
+      },
+      "formattedContent": [
+        {
+          "text": "text with",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 24,
+            "fontReference": "",
+            "fillColor": "Color/Black",
+            "fontStyle": "Bold",
+            "alignment": "CenterAlign",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0,
+            "fontFamily": "Minion Pro"
+          }
+        },
+        {
+          "text": "\n",
+          "formatting": {
+            "isBreak": true,
+            "breakType": "line",
+            "position": "between_content",
+            "source": "Br element within range"
+          }
+        },
+        {
+          "text": "color theme #",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 24,
+            "fontReference": "",
+            "fillColor": "Color/Black",
+            "fontStyle": "Bold",
+            "alignment": "CenterAlign",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0,
+            "fontFamily": "Minion Pro"
+          }
+        },
+        {
+          "text": " ",
+          "formatting": {
+            "isSpace": true,
+            "source": "between character style ranges (aggressive)",
+            "currentStyle": "CharacterStyle/$ID/[No character style]",
+            "nextStyle": "CharacterStyle/$ID/[No character style]"
+          }
+        },
+        {
+          "text": "2",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 24,
+            "fontReference": "",
+            "fillColor": "Color/Black",
+            "fontStyle": "Bold",
+            "alignment": "CenterAlign",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0,
+            "fontFamily": "Minion Pro"
+          }
+        }
+      ]
+    },
+    "u18f": {
+      "text": "text with\ncolor theme #1",
+      "wordCount": 5,
+      "characterCount": 24,
+      "textColor": null,
+      "hasLineBreaks": true,
+      "lineBreakCount": 1,
+      "styling": {
+        "fontSize": 24,
+        "fontFamily": "Minion Pro",
+        "alignment": "CenterAlign",
+        "fillColor": "Color/Black",
+        "fontStyle": "Bold",
+        "leading": "auto",
+        "leadingType": "auto",
+        "effectiveLineHeight": 1.2,
+        "tracking": 0,
+        "kerning": 0
+      },
+      "formattedContent": [
+        {
+          "text": "text with",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 24,
+            "fontReference": "",
+            "fillColor": "Color/Black",
+            "fontStyle": "Bold",
+            "alignment": "CenterAlign",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0,
+            "fontFamily": "Minion Pro"
+          }
+        },
+        {
+          "text": "\n",
+          "formatting": {
+            "isBreak": true,
+            "breakType": "line",
+            "position": "between_content",
+            "source": "Br element within range"
+          }
+        },
+        {
+          "text": "color theme #1",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 24,
+            "fontReference": "",
+            "fillColor": "Color/Black",
+            "fontStyle": "Bold",
+            "alignment": "CenterAlign",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0,
+            "fontFamily": "Minion Pro"
+          }
+        }
+      ]
+    }
+  },
+  "debug22": {
+    "coordinateOffset": {
+      "x": 400,
+      "y": 300
+    },
+    "contentFramesCount": 1,
+    "imagesLinkedCount": 0,
+    "embeddedImagesCount": 0
+  },
+  "packageInfo": {
+    "hasLinks": true,
+    "hasFonts": false,
+    "linksCount": 0,
+    "fontsCount": 0,
+    "extractedImagesCount": 1
+  }
+}

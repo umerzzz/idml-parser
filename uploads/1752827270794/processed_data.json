@@ -1,0 +1,2310 @@
+{
+  "document": {
+    "version": 15,
+    "pageCount": 1,
+    "name": "placeholders",
+    "dimensions": {
+      "width": 800,
+      "height": 600,
+      "facingPages": false,
+      "units": "Points"
+    }
+  },
+  "pageInfo": {
+    "dimensions": {
+      "width": 800,
+      "height": 600,
+      "facingPages": false,
+      "units": "Points"
+    },
+    "margins": {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0,
+      "columnCount": 1,
+      "columnGutter": 12
+    }
+  },
+  "elements": [
+    {
+      "id": "ueb",
+      "type": "Rectangle",
+      "name": "Background <BG>",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "width": 800,
+        "height": 600,
+        "rotation": 0
+      },
+      "fill": "Color/ucd",
+      "stroke": "Swatch/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u1f2",
+      "type": "Rectangle",
+      "name": "Image <THMB_img:C03>",
+      "position": {
+        "x": 43.88,
+        "y": 358.05,
+        "width": 182.9,
+        "height": 186.95,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "linkedImage": {
+        "fileName": "embedded_u1f2.jpg",
+        "url": null,
+        "isEmbedded": true,
+        "embeddedType": "$ID/Portable Network Graphics (PNG)",
+        "embeddedData": "72 72",
+        "framePosition": {
+          "x": 43.88,
+          "y": 358.05,
+          "width": 182.9,
+          "height": 186.95,
+          "rotation": 0
+        },
+        "imagePosition": {
+          "x": -712.2423995351429,
+          "y": 116.09653529216958,
+          "width": 33.45768488474384,
+          "height": 34.95532040255337,
+          "scaleX": 0.18292585476990778,
+          "scaleY": 0.18697510829362113
+        }
+      },
+      "visible": true,
+      "locked": false,
+      "isContentFrame": true,
+      "hasPlacedContent": true,
+      "contentType": "Image",
+      "imagePosition": {
+        "x": -712.2423995351429,
+        "y": 116.09653529216958,
+        "width": 33.45768488474384,
+        "height": 34.95532040255337,
+        "scaleX": 0.18292585476990778,
+        "scaleY": 0.18697510829362113
+      },
+      "placedContent": {
+        "type": "Image",
+        "href": "72 72",
+        "isEmbedded": true,
+        "bounds": null,
+        "transform": {
+          "a": 0.18292585476990778,
+          "b": 0,
+          "c": 0,
+          "d": 0.18697510829362113,
+          "tx": -356.12119976757145,
+          "ty": 58.04826764608479
+        },
+        "actualPpi": "72 72",
+        "effectivePpi": "394 385",
+        "imageTypeName": "$ID/Portable Network Graphics (PNG)",
+        "space": "$ID/#Links_RGB"
+      }
+    },
+    {
+      "id": "u18b",
+      "type": "Rectangle",
+      "name": "Shape #2 <THMB_fill:C02>",
+      "position": {
+        "x": 573.22,
+        "y": 59.05,
+        "width": 182.9,
+        "height": 182.9,
+        "rotation": 0
+      },
+      "fill": "Color/u18a",
+      "stroke": "Swatch/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u189",
+      "type": "Rectangle",
+      "name": "Shape #1 <THMB_fill:C01>",
+      "position": {
+        "x": 43.88,
+        "y": 59.05,
+        "width": 182.9,
+        "height": 182.9,
+        "rotation": 0
+      },
+      "fill": "Color/u18a",
+      "stroke": "Swatch/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u1d8",
+      "type": "TextFrame",
+      "name": "Text #4 <THMB_styles:FancyText>",
+      "position": {
+        "x": 242.84,
+        "y": 358.05,
+        "width": 513.29,
+        "height": 182.9,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": "u1db",
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u1c1",
+      "type": "TextFrame",
+      "name": "Text #3 <STYLE_FancyText><TOS_fitToBox>",
+      "position": {
+        "x": 43.88,
+        "y": 258.38,
+        "width": 712.24,
+        "height": 83.24,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": "u1c4",
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u1a3",
+      "type": "TextFrame",
+      "name": "Text #2 <THMB_text:C02><TOS_fitToBox>",
+      "position": {
+        "x": 242.84,
+        "y": 158.72,
+        "width": 314.33,
+        "height": 83.24,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": "u1a6",
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u18c",
+      "type": "TextFrame",
+      "name": "Text #1 <THMB_text:C01><TOS_fitToBox>",
+      "position": {
+        "x": 242.84,
+        "y": 59.05,
+        "width": 314.33,
+        "height": 83.24,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": "u18f",
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    }
+  ],
+  "stories": {
+    "u1db": {
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "wordCount": 36,
+      "characterCount": 231,
+      "textColor": null,
+      "hasLineBreaks": false,
+      "lineBreakCount": 0,
+      "styling": {
+        "fontSize": 24,
+        "fontFamily": "Minion Pro",
+        "alignment": "LeftAlign",
+        "fillColor": "Color/Black",
+        "fontStyle": "Bold",
+        "leading": "auto",
+        "leadingType": "auto",
+        "effectiveLineHeight": 1.2,
+        "tracking": 0,
+        "kerning": 0
+      },
+      "formattedContent": [
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 24,
+            "fontReference": "",
+            "fillColor": "Color/Black",
+            "fontStyle": "Bold",
+            "alignment": "LeftAlign",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0,
+            "fontFamily": "Minion Pro"
+          }
+        }
+      ]
+    },
+    "u1c4": {
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "wordCount": 19,
+      "characterCount": 123,
+      "textColor": null,
+      "hasLineBreaks": false,
+      "lineBreakCount": 0,
+      "styling": {
+        "fontSize": 24,
+        "fontFamily": "Minion Pro",
+        "alignment": "CenterAlign",
+        "fillColor": "Color/Black",
+        "fontStyle": "Bold",
+        "leading": "auto",
+        "leadingType": "auto",
+        "effectiveLineHeight": 1.2,
+        "tracking": 0,
+        "kerning": 0
+      },
+      "formattedContent": [
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 24,
+            "fontReference": "",
+            "fillColor": "Color/Black",
+            "fontStyle": "Bold",
+            "alignment": "CenterAlign",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0,
+            "fontFamily": "Minion Pro"
+          }
+        }
+      ]
+    },
+    "u1a6": {
+      "text": "text with\ncolor theme # 2",
+      "wordCount": 6,
+      "characterCount": 25,
+      "textColor": null,
+      "hasLineBreaks": true,
+      "lineBreakCount": 1,
+      "styling": {
+        "fontSize": 24,
+        "fontFamily": "Minion Pro",
+        "alignment": "CenterAlign",
+        "fillColor": "Color/Black",
+        "fontStyle": "Bold",
+        "leading": "auto",
+        "leadingType": "auto",
+        "effectiveLineHeight": 1.2,
+        "tracking": 0,
+        "kerning": 0
+      },
+      "formattedContent": [
+        {
+          "text": "text with",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 24,
+            "fontReference": "",
+            "fillColor": "Color/Black",
+            "fontStyle": "Bold",
+            "alignment": "CenterAlign",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0,
+            "fontFamily": "Minion Pro"
+          }
+        },
+        {
+          "text": "\n",
+          "formatting": {
+            "isBreak": true,
+            "breakType": "line",
+            "position": "between_content",
+            "source": "Br element within range"
+          }
+        },
+        {
+          "text": "color theme #",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 24,
+            "fontReference": "",
+            "fillColor": "Color/Black",
+            "fontStyle": "Bold",
+            "alignment": "CenterAlign",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0,
+            "fontFamily": "Minion Pro"
+          }
+        },
+        {
+          "text": " ",
+          "formatting": {
+            "isSpace": true,
+            "source": "between character style ranges (aggressive)",
+            "currentStyle": "CharacterStyle/$ID/[No character style]",
+            "nextStyle": "CharacterStyle/$ID/[No character style]"
+          }
+        },
+        {
+          "text": "2",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 24,
+            "fontReference": "",
+            "fillColor": "Color/Black",
+            "fontStyle": "Bold",
+            "alignment": "CenterAlign",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0,
+            "fontFamily": "Minion Pro"
+          }
+        }
+      ]
+    },
+    "u18f": {
+      "text": "text with\ncolor theme #1",
+      "wordCount": 5,
+      "characterCount": 24,
+      "textColor": null,
+      "hasLineBreaks": true,
+      "lineBreakCount": 1,
+      "styling": {
+        "fontSize": 24,
+        "fontFamily": "Minion Pro",
+        "alignment": "CenterAlign",
+        "fillColor": "Color/Black",
+        "fontStyle": "Bold",
+        "leading": "auto",
+        "leadingType": "auto",
+        "effectiveLineHeight": 1.2,
+        "tracking": 0,
+        "kerning": 0
+      },
+      "formattedContent": [
+        {
+          "text": "text with",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 24,
+            "fontReference": "",
+            "fillColor": "Color/Black",
+            "fontStyle": "Bold",
+            "alignment": "CenterAlign",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0,
+            "fontFamily": "Minion Pro"
+          }
+        },
+        {
+          "text": "\n",
+          "formatting": {
+            "isBreak": true,
+            "breakType": "line",
+            "position": "between_content",
+            "source": "Br element within range"
+          }
+        },
+        {
+          "text": "color theme #1",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 24,
+            "fontReference": "",
+            "fillColor": "Color/Black",
+            "fontStyle": "Bold",
+            "alignment": "CenterAlign",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0,
+            "fontFamily": "Minion Pro"
+          }
+        }
+      ]
+    }
+  },
+  "styles": {
+    "paragraph": {
+      "ParagraphStyle/$ID/[No paragraph style]": {
+        "self": "ParagraphStyle/$ID/[No paragraph style]",
+        "name": "$ID/[No paragraph style]",
+        "fontStyle": "Regular",
+        "pointSize": 12,
+        "leading": "auto",
+        "leadingType": "auto",
+        "effectiveLineHeight": 1.2,
+        "alignment": "LeftAlign",
+        "leftIndent": 0,
+        "rightIndent": 0,
+        "firstLineIndent": 0,
+        "spaceBefore": 0,
+        "spaceAfter": 0,
+        "tracking": 0,
+        "kerning": 0,
+        "horizontalScale": 100,
+        "verticalScale": 100,
+        "appliedFont": "Minion Pro",
+        "originalFontRef": "Minion Pro",
+        "fillColor": "Color/Black",
+        "rawStyle": {
+          "Properties": {
+            "Leading": {
+              "#text": "Auto",
+              "@_type": "enumeration"
+            },
+            "TabList": {
+              "@_type": "list"
+            },
+            "AppliedFont": {
+              "#text": "Minion Pro",
+              "@_type": "string"
+            },
+            "RuleAboveColor": {
+              "#text": "Text Color",
+              "@_type": "string"
+            },
+            "RuleBelowColor": {
+              "#text": "Text Color",
+              "@_type": "string"
+            },
+            "RuleAboveType": {
+              "#text": "StrokeStyle/$ID/Solid",
+              "@_type": "object"
+            },
+            "RuleBelowType": {
+              "#text": "StrokeStyle/$ID/Solid",
+              "@_type": "object"
+            },
+            "BalanceRaggedLines": {
+              "#text": "NoBalancing",
+              "@_type": "enumeration"
+            },
+            "RuleAboveGapColor": {
+              "#text": "Swatch/None",
+              "@_type": "object"
+            },
+            "RuleBelowGapColor": {
+              "#text": "Swatch/None",
+              "@_type": "object"
+            },
+            "UnderlineColor": {
+              "#text": "Text Color",
+              "@_type": "string"
+            },
+            "UnderlineGapColor": {
+              "#text": "Swatch/None",
+              "@_type": "object"
+            },
+            "UnderlineType": {
+              "#text": "StrokeStyle/$ID/Solid",
+              "@_type": "object"
+            },
+            "StrikeThroughColor": {
+              "#text": "Text Color",
+              "@_type": "string"
+            },
+            "StrikeThroughGapColor": {
+              "#text": "Swatch/None",
+              "@_type": "object"
+            },
+            "StrikeThroughType": {
+              "#text": "StrokeStyle/$ID/Solid",
+              "@_type": "object"
+            },
+            "SpanSplitColumnCount": {
+              "#text": "All",
+              "@_type": "enumeration"
+            },
+            "ParagraphShadingColor": {
+              "#text": "Color/Black",
+              "@_type": "object"
+            },
+            "ParagraphBorderColor": {
+              "#text": "Color/Black",
+              "@_type": "object"
+            },
+            "ParagraphBorderGapColor": {
+              "#text": "Swatch/None",
+              "@_type": "object"
+            },
+            "ParagraphBorderType": {
+              "#text": "StrokeStyle/$ID/Solid",
+              "@_type": "object"
+            },
+            "Mojikumi": {
+              "#text": "Nothing",
+              "@_type": "enumeration"
+            },
+            "KinsokuSet": {
+              "#text": "Nothing",
+              "@_type": "enumeration"
+            },
+            "RubyFont": {
+              "#text": "$ID/",
+              "@_type": "string"
+            },
+            "RubyFontStyle": {
+              "#text": "Nothing",
+              "@_type": "enumeration"
+            },
+            "RubyFill": {
+              "#text": "Text Color",
+              "@_type": "string"
+            },
+            "RubyStroke": {
+              "#text": "Text Color",
+              "@_type": "string"
+            },
+            "KentenFont": {
+              "#text": "$ID/",
+              "@_type": "string"
+            },
+            "KentenFontStyle": {
+              "#text": "Nothing",
+              "@_type": "enumeration"
+            },
+            "KentenFillColor": {
+              "#text": "Text Color",
+              "@_type": "string"
+            },
+            "KentenStrokeColor": {
+              "#text": "Text Color",
+              "@_type": "string"
+            },
+            "BulletChar": {
+              "@_BulletCharacterType": "UnicodeOnly",
+              "@_BulletCharacterValue": 8226
+            },
+            "NumberingFormat": {
+              "#text": "1, 2, 3, 4...",
+              "@_type": "string"
+            },
+            "BulletsFont": {
+              "#text": "$ID/",
+              "@_type": "string"
+            },
+            "BulletsFontStyle": {
+              "#text": "Nothing",
+              "@_type": "enumeration"
+            },
+            "AppliedNumberingList": {
+              "#text": "NumberingList/$ID/[Default]",
+              "@_type": "object"
+            },
+            "NumberingRestartPolicies": {
+              "@_RestartPolicy": "AnyPreviousLevel",
+              "@_LowerLevel": 0,
+              "@_UpperLevel": 0
+            },
+            "BulletsCharacterStyle": {
+              "#text": "CharacterStyle/$ID/[No character style]",
+              "@_type": "object"
+            },
+            "NumberingCharacterStyle": {
+              "#text": "CharacterStyle/$ID/[No character style]",
+              "@_type": "object"
+            },
+            "SameParaStyleSpacing": {
+              "#text": "SetIgnore",
+              "@_type": "enumeration"
+            }
+          },
+          "@_Self": "ParagraphStyle/$ID/[No paragraph style]",
+          "@_Name": "$ID/[No paragraph style]",
+          "@_Imported": false,
+          "@_SplitDocument": false,
+          "@_EmitCss": true,
+          "@_StyleUniqueId": "90cfe286-9407-46de-8384-6e45f946d0cb",
+          "@_IncludeClass": true,
+          "@_ExtendedKeyboardShortcut": "0 0 0",
+          "@_EmptyNestedStyles": true,
+          "@_EmptyLineStyles": true,
+          "@_EmptyGrepStyles": true,
+          "@_FillColor": "Color/Black",
+          "@_FontStyle": "Regular",
+          "@_PointSize": 12,
+          "@_HorizontalScale": 100,
+          "@_KerningMethod": "$ID/Metrics",
+          "@_Ligatures": true,
+          "@_PageNumberType": "AutoPageNumber",
+          "@_StrokeWeight": 1,
+          "@_Tracking": 0,
+          "@_Composer": "HL Composer",
+          "@_DropCapCharacters": 0,
+          "@_DropCapLines": 0,
+          "@_BaselineShift": 0,
+          "@_Capitalization": "Normal",
+          "@_StrokeColor": "Swatch/None",
+          "@_HyphenateLadderLimit": 3,
+          "@_VerticalScale": 100,
+          "@_LeftIndent": 0,
+          "@_RightIndent": 0,
+          "@_FirstLineIndent": 0,
+          "@_AutoLeading": 120,
+          "@_AppliedLanguage": "$ID/English: USA",
+          "@_Hyphenation": true,
+          "@_HyphenateAfterFirst": 2,
+          "@_HyphenateBeforeLast": 2,
+          "@_HyphenateCapitalizedWords": true,
+          "@_HyphenateWordsLongerThan": 5,
+          "@_NoBreak": false,
+          "@_HyphenationZone": 36,
+          "@_SpaceBefore": 0,
+          "@_SpaceAfter": 0,
+          "@_Underline": false,
+          "@_OTFFigureStyle": "Default",
+          "@_DesiredWordSpacing": 100,
+          "@_MaximumWordSpacing": 133,
+          "@_MinimumWordSpacing": 80,
+          "@_DesiredLetterSpacing": 0,
+          "@_MaximumLetterSpacing": 0,
+          "@_MinimumLetterSpacing": 0,
+          "@_DesiredGlyphScaling": 100,
+          "@_MaximumGlyphScaling": 100,
+          "@_MinimumGlyphScaling": 100,
+          "@_StartParagraph": "Anywhere",
+          "@_KeepAllLinesTogether": false,
+          "@_KeepWithNext": 0,
+          "@_KeepFirstLines": 2,
+          "@_KeepLastLines": 2,
+          "@_Position": "Normal",
+          "@_StrikeThru": false,
+          "@_CharacterAlignment": "AlignEmCenter",
+          "@_KeepLinesTogether": false,
+          "@_StrokeTint": -1,
+          "@_FillTint": -1,
+          "@_OverprintStroke": false,
+          "@_OverprintFill": false,
+          "@_GradientStrokeAngle": 0,
+          "@_GradientFillAngle": 0,
+          "@_GradientStrokeLength": -1,
+          "@_GradientFillLength": -1,
+          "@_GradientStrokeStart": "0 0",
+          "@_GradientFillStart": "0 0",
+          "@_Skew": 0,
+          "@_RuleAboveLineWeight": 1,
+          "@_RuleAboveTint": -1,
+          "@_RuleAboveOffset": 0,
+          "@_RuleAboveLeftIndent": 0,
+          "@_RuleAboveRightIndent": 0,
+          "@_RuleAboveWidth": "ColumnWidth",
+          "@_RuleBelowLineWeight": 1,
+          "@_RuleBelowTint": -1,
+          "@_RuleBelowOffset": 0,
+          "@_RuleBelowLeftIndent": 0,
+          "@_RuleBelowRightIndent": 0,
+          "@_RuleBelowWidth": "ColumnWidth",
+          "@_RuleAboveOverprint": false,
+          "@_RuleBelowOverprint": false,
+          "@_RuleAbove": false,
+          "@_RuleBelow": false,
+          "@_LastLineIndent": 0,
+          "@_HyphenateLastWord": true,
+          "@_ParagraphBreakType": "Anywhere",
+          "@_SingleWordJustification": "FullyJustified",
+          "@_OTFOrdinal": false,
+          "@_OTFFraction": false,
+          "@_OTFDiscretionaryLigature": false,
+          "@_OTFTitling": false,
+          "@_RuleAboveGapTint": -1,
+          "@_RuleAboveGapOverprint": false,
+          "@_RuleBelowGapTint": -1,
+          "@_RuleBelowGapOverprint": false,
+          "@_Justification": "LeftAlign",
+          "@_DropcapDetail": 1,
+          "@_PositionalForm": "None",
+          "@_OTFMark": true,
+          "@_HyphenWeight": 5,
+          "@_OTFLocale": true,
+          "@_HyphenateAcrossColumns": true,
+          "@_KeepRuleAboveInFrame": false,
+          "@_IgnoreEdgeAlignment": false,
+          "@_OTFSlashedZero": false,
+          "@_OTFStylisticSets": 0,
+          "@_OTFHistorical": false,
+          "@_OTFContextualAlternate": true,
+          "@_UnderlineGapOverprint": false,
+          "@_UnderlineGapTint": -1,
+          "@_UnderlineOffset": -9999,
+          "@_UnderlineOverprint": false,
+          "@_UnderlineTint": -1,
+          "@_UnderlineWeight": -9999,
+          "@_StrikeThroughGapOverprint": false,
+          "@_StrikeThroughGapTint": -1,
+          "@_StrikeThroughOffset": -9999,
+          "@_StrikeThroughOverprint": false,
+          "@_StrikeThroughTint": -1,
+          "@_StrikeThroughWeight": -9999,
+          "@_MiterLimit": 4,
+          "@_StrokeAlignment": "OutsideAlignment",
+          "@_EndJoin": "MiterEndJoin",
+          "@_SpanColumnType": "SingleColumn",
+          "@_SplitColumnInsideGutter": 6,
+          "@_SplitColumnOutsideGutter": 0,
+          "@_KeepWithPrevious": false,
+          "@_SpanColumnMinSpaceBefore": 0,
+          "@_SpanColumnMinSpaceAfter": 0,
+          "@_OTFSwash": false,
+          "@_ParagraphShadingTint": 20,
+          "@_ParagraphShadingOverprint": false,
+          "@_ParagraphShadingWidth": "ColumnWidth",
+          "@_ParagraphShadingOn": false,
+          "@_ParagraphShadingClipToFrame": false,
+          "@_ParagraphShadingSuppressPrinting": false,
+          "@_ParagraphShadingLeftOffset": 0,
+          "@_ParagraphShadingRightOffset": 0,
+          "@_ParagraphShadingTopOffset": 0,
+          "@_ParagraphShadingBottomOffset": 0,
+          "@_ParagraphShadingTopOrigin": "AscentTopOrigin",
+          "@_ParagraphShadingBottomOrigin": "DescentBottomOrigin",
+          "@_ParagraphBorderTint": -1,
+          "@_ParagraphBorderOverprint": false,
+          "@_ParagraphBorderOn": false,
+          "@_ParagraphBorderGapTint": -1,
+          "@_ParagraphBorderGapOverprint": false,
+          "@_Tsume": 0,
+          "@_LeadingAki": -1,
+          "@_TrailingAki": -1,
+          "@_KinsokuType": "KinsokuPushInFirst",
+          "@_KinsokuHangType": "None",
+          "@_BunriKinshi": true,
+          "@_RubyOpenTypePro": true,
+          "@_RubyFontSize": -1,
+          "@_RubyAlignment": "RubyJIS",
+          "@_RubyType": "PerCharacterRuby",
+          "@_RubyParentSpacing": "RubyParent121Aki",
+          "@_RubyXScale": 100,
+          "@_RubyYScale": 100,
+          "@_RubyXOffset": 0,
+          "@_RubyYOffset": 0,
+          "@_RubyPosition": "AboveRight",
+          "@_RubyAutoAlign": true,
+          "@_RubyParentOverhangAmount": "RubyOverhangOneRuby",
+          "@_RubyOverhang": false,
+          "@_RubyAutoScaling": false,
+          "@_RubyParentScalingPercent": 66,
+          "@_RubyTint": -1,
+          "@_RubyOverprintFill": "Auto",
+          "@_RubyStrokeTint": -1,
+          "@_RubyOverprintStroke": "Auto",
+          "@_RubyWeight": -1,
+          "@_KentenKind": "None",
+          "@_KentenFontSize": -1,
+          "@_KentenXScale": 100,
+          "@_KentenYScale": 100,
+          "@_KentenPlacement": 0,
+          "@_KentenAlignment": "AlignKentenCenter",
+          "@_KentenPosition": "AboveRight",
+          "@_KentenCustomCharacter": "",
+          "@_KentenCharacterSet": "CharacterInput",
+          "@_KentenTint": -1,
+          "@_KentenOverprintFill": "Auto",
+          "@_KentenStrokeTint": -1,
+          "@_KentenOverprintStroke": "Auto",
+          "@_KentenWeight": -1,
+          "@_Tatechuyoko": false,
+          "@_TatechuyokoXOffset": 0,
+          "@_TatechuyokoYOffset": 0,
+          "@_AutoTcy": 0,
+          "@_AutoTcyIncludeRoman": false,
+          "@_Jidori": 0,
+          "@_GridGyoudori": 0,
+          "@_GridAlignFirstLineOnly": false,
+          "@_GridAlignment": "None",
+          "@_CharacterRotation": 0,
+          "@_RotateSingleByteCharacters": false,
+          "@_Rensuuji": true,
+          "@_ShataiMagnification": 0,
+          "@_ShataiDegreeAngle": 4500,
+          "@_ShataiAdjustTsume": true,
+          "@_ShataiAdjustRotation": false,
+          "@_Warichu": false,
+          "@_WarichuLines": 2,
+          "@_WarichuSize": 50,
+          "@_WarichuLineSpacing": 0,
+          "@_WarichuAlignment": "Auto",
+          "@_WarichuCharsBeforeBreak": 2,
+          "@_WarichuCharsAfterBreak": 2,
+          "@_OTFHVKana": false,
+          "@_OTFProportionalMetrics": false,
+          "@_OTFRomanItalics": false,
+          "@_LeadingModel": "LeadingModelAkiBelow",
+          "@_ScaleAffectsLineHeight": false,
+          "@_ParagraphGyoudori": false,
+          "@_CjkGridTracking": false,
+          "@_GlyphForm": "None",
+          "@_RubyAutoTcyDigits": 0,
+          "@_RubyAutoTcyIncludeRoman": false,
+          "@_RubyAutoTcyAutoScale": true,
+          "@_TreatIdeographicSpaceAsSpace": true,
+          "@_AllowArbitraryHyphenation": false,
+          "@_BulletsAndNumberingListType": "NoList",
+          "@_NumberingStartAt": 1,
+          "@_NumberingLevel": 1,
+          "@_NumberingContinue": true,
+          "@_NumberingApplyRestartPolicy": true,
+          "@_BulletsAlignment": "LeftAlign",
+          "@_NumberingAlignment": "LeftAlign",
+          "@_NumberingExpression": "^#.^t",
+          "@_BulletsTextAfter": "^t",
+          "@_ParagraphBorderLeftOffset": 0,
+          "@_ParagraphBorderRightOffset": 0,
+          "@_ParagraphBorderTopOffset": 0,
+          "@_ParagraphBorderBottomOffset": 0,
+          "@_ParagraphBorderStrokeEndJoin": "MiterEndJoin",
+          "@_ParagraphBorderTopLeftCornerOption": "None",
+          "@_ParagraphBorderTopRightCornerOption": "None",
+          "@_ParagraphBorderBottomLeftCornerOption": "None",
+          "@_ParagraphBorderBottomRightCornerOption": "None",
+          "@_ParagraphBorderTopLeftCornerRadius": 12,
+          "@_ParagraphBorderTopRightCornerRadius": 12,
+          "@_ParagraphBorderBottomLeftCornerRadius": 12,
+          "@_ParagraphBorderBottomRightCornerRadius": 12,
+          "@_ParagraphShadingTopLeftCornerOption": "None",
+          "@_ParagraphShadingTopRightCornerOption": "None",
+          "@_ParagraphShadingBottomLeftCornerOption": "None",
+          "@_ParagraphShadingBottomRightCornerOption": "None",
+          "@_ParagraphShadingTopLeftCornerRadius": 12,
+          "@_ParagraphShadingTopRightCornerRadius": 12,
+          "@_ParagraphShadingBottomLeftCornerRadius": 12,
+          "@_ParagraphShadingBottomRightCornerRadius": 12,
+          "@_ParagraphBorderStrokeEndCap": "ButtEndCap",
+          "@_ParagraphBorderWidth": "ColumnWidth",
+          "@_ParagraphBorderTopOrigin": "AscentTopOrigin",
+          "@_ParagraphBorderBottomOrigin": "DescentBottomOrigin",
+          "@_ParagraphBorderTopLineWeight": 1,
+          "@_ParagraphBorderBottomLineWeight": 1,
+          "@_ParagraphBorderLeftLineWeight": 1,
+          "@_ParagraphBorderRightLineWeight": 1,
+          "@_ParagraphBorderDisplayIfSplits": false,
+          "@_MergeConsecutiveParaBorders": true,
+          "@_ProviderHyphenationStyle": "HyphAll",
+          "@_DigitsType": "DefaultDigits",
+          "@_Kashidas": "DefaultKashidas",
+          "@_DiacriticPosition": "OpentypePositionFromBaseline",
+          "@_CharacterDirection": "DefaultDirection",
+          "@_ParagraphDirection": "LeftToRightDirection",
+          "@_ParagraphJustification": "DefaultJustification",
+          "@_ParagraphKashidaWidth": 2,
+          "@_XOffsetDiacritic": 0,
+          "@_YOffsetDiacritic": 0,
+          "@_OTFOverlapSwash": false,
+          "@_OTFStylisticAlternate": false,
+          "@_OTFJustificationAlternate": false,
+          "@_OTFStretchedAlternate": false,
+          "@_KeyboardDirection": "DefaultDirection"
+        }
+      },
+      "ParagraphStyle/$ID/NormalParagraphStyle": {
+        "self": "ParagraphStyle/$ID/NormalParagraphStyle",
+        "name": "$ID/NormalParagraphStyle",
+        "fontStyle": "Regular",
+        "pointSize": 12,
+        "leading": "auto",
+        "leadingType": "auto",
+        "effectiveLineHeight": 1.2,
+        "alignment": "LeftAlign",
+        "leftIndent": 0,
+        "rightIndent": 0,
+        "firstLineIndent": 0,
+        "spaceBefore": 0,
+        "spaceAfter": 0,
+        "tracking": 0,
+        "kerning": 0,
+        "horizontalScale": 100,
+        "verticalScale": 100,
+        "appliedFont": "",
+        "originalFontRef": "",
+        "fillColor": "Color/Black",
+        "rawStyle": {
+          "Properties": {
+            "BasedOn": {
+              "#text": "$ID/[No paragraph style]",
+              "@_type": "string"
+            },
+            "PreviewColor": {
+              "#text": "Nothing",
+              "@_type": "enumeration"
+            }
+          },
+          "@_Self": "ParagraphStyle/$ID/NormalParagraphStyle",
+          "@_Name": "$ID/NormalParagraphStyle",
+          "@_Imported": false,
+          "@_NextStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
+          "@_SplitDocument": false,
+          "@_EmitCss": true,
+          "@_StyleUniqueId": "ee5ab1a6-0a97-4d93-92b9-18e389f4b459",
+          "@_IncludeClass": true,
+          "@_ExtendedKeyboardShortcut": "0 0 0",
+          "@_EmptyNestedStyles": true,
+          "@_EmptyLineStyles": true,
+          "@_EmptyGrepStyles": true,
+          "@_KeyboardShortcut": "0 0"
+        }
+      }
+    },
+    "character": {
+      "CharacterStyle/$ID/[No character style]": {
+        "self": "CharacterStyle/$ID/[No character style]",
+        "name": "$ID/[No character style]",
+        "fontStyle": "Regular",
+        "pointSize": null,
+        "appliedFont": "",
+        "originalFontRef": "",
+        "fillColor": null,
+        "strokeColor": null,
+        "rawStyle": {
+          "@_Self": "CharacterStyle/$ID/[No character style]",
+          "@_Imported": false,
+          "@_SplitDocument": false,
+          "@_EmitCss": true,
+          "@_StyleUniqueId": "26681855-6cd3-4bc6-a8a9-849cf8860f4e",
+          "@_IncludeClass": true,
+          "@_ExtendedKeyboardShortcut": "0 0 0",
+          "@_Name": "$ID/[No character style]"
+        }
+      }
+    },
+    "object": {},
+    "table": {},
+    "cell": {}
+  },
+  "spreads": {
+    "Spread_ue5": {
+      "self": "ue5",
+      "flattenerOverride": "Default",
+      "bindingLocation": 0,
+      "allowPageShuffle": true,
+      "pages": [
+        {
+          "self": "uea",
+          "name": 1,
+          "appliedMaster": "ub8",
+          "geometricBounds": {
+            "top": 0,
+            "left": 0,
+            "bottom": 600,
+            "right": 800,
+            "width": 800,
+            "height": 600
+          },
+          "itemTransform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -400,
+            "ty": -300
+          }
+        }
+      ],
+      "pageItems": [
+        {
+          "type": "Rectangle",
+          "self": "ueb",
+          "name": "Background <BG>",
+          "visible": true,
+          "locked": false,
+          "geometricBounds": {
+            "top": -114,
+            "left": -104,
+            "bottom": 486,
+            "right": 696,
+            "width": 800,
+            "height": 600
+          },
+          "itemTransform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -296,
+            "ty": -186
+          },
+          "itemLayer": "ub7",
+          "fillColor": "Color/ucd",
+          "strokeColor": "Swatch/None",
+          "strokeWeight": 0,
+          "parentStory": null,
+          "isContentFrame": false,
+          "hasPlacedContent": false,
+          "contentType": null,
+          "cornerEffects": {
+            "topLeftCornerRadius": 0,
+            "topRightCornerRadius": 0,
+            "bottomLeftCornerRadius": 0,
+            "bottomRightCornerRadius": 0
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 600,
+            "rotation": 0
+          }
+        },
+        {
+          "type": "Rectangle",
+          "self": "u1f2",
+          "name": "Image <THMB_img:C03>",
+          "visible": true,
+          "locked": false,
+          "geometricBounds": {
+            "top": 58.04826764608479,
+            "left": -356.12119976757145,
+            "bottom": 245,
+            "right": -173.2182146929444,
+            "width": 182.90298507462705,
+            "height": 186.95173235391522
+          },
+          "itemTransform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0,
+            "ty": 0
+          },
+          "itemLayer": "ub7",
+          "fillColor": "Color/None",
+          "strokeColor": "Color/None",
+          "strokeWeight": 0,
+          "parentStory": null,
+          "isContentFrame": true,
+          "hasPlacedContent": true,
+          "contentType": "Image",
+          "placedContent": {
+            "type": "Image",
+            "href": "72 72",
+            "isEmbedded": true,
+            "bounds": null,
+            "transform": {
+              "a": 0.18292585476990778,
+              "b": 0,
+              "c": 0,
+              "d": 0.18697510829362113,
+              "tx": -356.12119976757145,
+              "ty": 58.04826764608479
+            },
+            "actualPpi": "72 72",
+            "effectivePpi": "394 385",
+            "imageTypeName": "$ID/Portable Network Graphics (PNG)",
+            "space": "$ID/#Links_RGB"
+          },
+          "cornerEffects": {
+            "topLeftCornerRadius": 0,
+            "topRightCornerRadius": 0,
+            "bottomLeftCornerRadius": 0,
+            "bottomRightCornerRadius": 0
+          },
+          "imagePosition": {
+            "x": -712.2423995351429,
+            "y": 116.09653529216958,
+            "width": 33.45768488474384,
+            "height": 34.95532040255337,
+            "scaleX": 0.18292585476990778,
+            "scaleY": 0.18697510829362113
+          },
+          "position": {
+            "x": 43.88,
+            "y": 358.05,
+            "width": 182.9,
+            "height": 186.95,
+            "rotation": 0
+          }
+        },
+        {
+          "type": "Rectangle",
+          "self": "u18b",
+          "name": "Shape #2 <THMB_fill:C02>",
+          "visible": true,
+          "locked": false,
+          "geometricBounds": {
+            "top": -48.70068296725474,
+            "left": 322.92831638449815,
+            "bottom": 134.2023021073723,
+            "right": 505.83130145912526,
+            "width": 182.9029850746271,
+            "height": 182.90298507462705
+          },
+          "itemTransform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -149.71010169155375,
+            "ty": -192.25056975345706
+          },
+          "itemLayer": "ub7",
+          "fillColor": "Color/u18a",
+          "strokeColor": "Swatch/None",
+          "strokeWeight": 0,
+          "parentStory": null,
+          "isContentFrame": false,
+          "hasPlacedContent": false,
+          "contentType": null,
+          "cornerEffects": {
+            "topLeftCornerRadius": 0,
+            "topRightCornerRadius": 0,
+            "bottomLeftCornerRadius": 0,
+            "bottomRightCornerRadius": 0
+          },
+          "position": {
+            "x": 573.22,
+            "y": 59.05,
+            "width": 182.9,
+            "height": 182.9,
+            "rotation": 0
+          }
+        },
+        {
+          "type": "Rectangle",
+          "self": "u189",
+          "name": "Shape #1 <THMB_fill:C01>",
+          "visible": true,
+          "locked": false,
+          "geometricBounds": {
+            "top": -48.70068296725474,
+            "left": 198.76281417169815,
+            "bottom": 134.2023021073723,
+            "right": 381.6657992463252,
+            "width": 182.90298507462705,
+            "height": 182.90298507462705
+          },
+          "itemTransform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -554.8840139392696,
+            "ty": -192.25056975345706
+          },
+          "itemLayer": "ub7",
+          "fillColor": "Color/u18a",
+          "strokeColor": "Swatch/None",
+          "strokeWeight": 0,
+          "parentStory": null,
+          "isContentFrame": false,
+          "hasPlacedContent": false,
+          "contentType": null,
+          "cornerEffects": {
+            "topLeftCornerRadius": 0,
+            "topRightCornerRadius": 0,
+            "bottomLeftCornerRadius": 0,
+            "bottomRightCornerRadius": 0
+          },
+          "position": {
+            "x": 43.88,
+            "y": 59.05,
+            "width": 182.9,
+            "height": 182.9,
+            "rotation": 0
+          }
+        },
+        {
+          "type": "TextFrame",
+          "self": "u1d8",
+          "name": "Text #4 <THMB_styles:FancyText>",
+          "visible": true,
+          "locked": false,
+          "geometricBounds": {
+            "top": -58.257405458783666,
+            "left": -47.08134518955515,
+            "bottom": 124.64557961584336,
+            "right": 466.2043556590008,
+            "width": 513.285700848556,
+            "height": 182.90298507462703
+          },
+          "itemTransform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -110.08315589142939,
+            "ty": 116.30567310486845
+          },
+          "itemLayer": "ub7",
+          "fillColor": "Color/None",
+          "strokeColor": "Color/None",
+          "strokeWeight": 0,
+          "parentStory": "u1db",
+          "isContentFrame": false,
+          "hasPlacedContent": false,
+          "contentType": null,
+          "textFramePreferences": {
+            "textColumnCount": 1,
+            "textColumnGutter": 0,
+            "firstBaselineOffset": "AscentOffset",
+            "autoSizingReferencePoint": "CenterPoint",
+            "autoSizingType": "Off",
+            "verticalJustification": "TopAlign",
+            "insetSpacing": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useMinimumHeight": false,
+            "minimumFirstBaselineOffset": 0,
+            "ignoreWrap": false
+          },
+          "position": {
+            "x": 242.84,
+            "y": 358.05,
+            "width": 513.29,
+            "height": 182.9,
+            "rotation": 0
+          }
+        },
+        {
+          "type": "TextFrame",
+          "self": "u1c1",
+          "name": "Text #3 <STYLE_FancyText><TOS_fitToBox>",
+          "visible": true,
+          "locked": false,
+          "geometricBounds": {
+            "top": -58.257405458783666,
+            "left": -246.03804387614196,
+            "bottom": 24.979072826911242,
+            "right": 466.2043556590008,
+            "width": 712.2423995351428,
+            "height": 83.23647828569491
+          },
+          "itemTransform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -110.08315589142939,
+            "ty": 16.639166315936222
+          },
+          "itemLayer": "ub7",
+          "fillColor": "Color/None",
+          "strokeColor": "Color/None",
+          "strokeWeight": 0,
+          "parentStory": "u1c4",
+          "isContentFrame": false,
+          "hasPlacedContent": false,
+          "contentType": null,
+          "textFramePreferences": {
+            "textColumnCount": 1,
+            "textColumnGutter": 0,
+            "firstBaselineOffset": "AscentOffset",
+            "autoSizingReferencePoint": "CenterPoint",
+            "autoSizingType": "Off",
+            "verticalJustification": "TopAlign",
+            "insetSpacing": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useMinimumHeight": false,
+            "minimumFirstBaselineOffset": 0,
+            "ignoreWrap": false
+          },
+          "position": {
+            "x": 43.88,
+            "y": 258.38,
+            "width": 712.24,
+            "height": 83.24,
+            "rotation": 0
+          }
+        },
+        {
+          "type": "TextFrame",
+          "self": "u1a3",
+          "name": "Text #2 <THMB_text:C02><TOS_fitToBox>",
+          "visible": true,
+          "locked": false,
+          "geometricBounds": {
+            "top": -58.257405458783666,
+            "left": -47.08134518955515,
+            "bottom": 24.979072826911242,
+            "right": 267.24765697241395,
+            "width": 314.32900216196913,
+            "height": 83.23647828569491
+          },
+          "itemTransform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -110.08315589142944,
+            "ty": -83.02734047299599
+          },
+          "itemLayer": "ub7",
+          "fillColor": "Color/None",
+          "strokeColor": "Color/None",
+          "strokeWeight": 0,
+          "parentStory": "u1a6",
+          "isContentFrame": false,
+          "hasPlacedContent": false,
+          "contentType": null,
+          "textFramePreferences": {
+            "textColumnCount": 1,
+            "textColumnGutter": 0,
+            "firstBaselineOffset": "AscentOffset",
+            "autoSizingReferencePoint": "CenterPoint",
+            "autoSizingType": "Off",
+            "verticalJustification": "TopAlign",
+            "insetSpacing": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useMinimumHeight": false,
+            "minimumFirstBaselineOffset": 0,
+            "ignoreWrap": false
+          },
+          "position": {
+            "x": 242.84,
+            "y": 158.72,
+            "width": 314.33,
+            "height": 83.24,
+            "rotation": 0
+          }
+        },
+        {
+          "type": "TextFrame",
+          "self": "u18c",
+          "name": "Text #1 <THMB_text:C01><TOS_fitToBox>",
+          "visible": true,
+          "locked": false,
+          "geometricBounds": {
+            "top": -62.5,
+            "left": -47.08134518955514,
+            "bottom": 20.736478285694886,
+            "right": 267.2476569724139,
+            "width": 314.329002161969,
+            "height": 83.23647828569489
+          },
+          "itemTransform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -110.08315589142944,
+            "ty": -178.45125272071184
+          },
+          "itemLayer": "ub7",
+          "fillColor": "Color/None",
+          "strokeColor": "Color/None",
+          "strokeWeight": 0,
+          "parentStory": "u18f",
+          "isContentFrame": false,
+          "hasPlacedContent": false,
+          "contentType": null,
+          "textFramePreferences": {
+            "textColumnCount": 1,
+            "textColumnGutter": 0,
+            "firstBaselineOffset": "AscentOffset",
+            "autoSizingReferencePoint": "CenterPoint",
+            "autoSizingType": "Off",
+            "verticalJustification": "TopAlign",
+            "insetSpacing": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useMinimumHeight": false,
+            "minimumFirstBaselineOffset": 0,
+            "ignoreWrap": false
+          },
+          "position": {
+            "x": 242.84,
+            "y": 59.05,
+            "width": 314.33,
+            "height": 83.24,
+            "rotation": 0
+          }
+        }
+      ]
+    }
+  },
+  "masterSpreads": {
+    "MasterSpread_ub8": {
+      "self": "ub8",
+      "name": "A-Master",
+      "namePrefix": "A",
+      "basedOn": "",
+      "itemTransform": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "tx": 0,
+        "ty": 0
+      },
+      "pages": [
+        {
+          "self": "ubd",
+          "name": "A",
+          "geometricBounds": {
+            "top": 0,
+            "left": 0,
+            "bottom": 600,
+            "right": 800,
+            "width": 800,
+            "height": 600
+          },
+          "itemTransform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -400,
+            "ty": -300
+          },
+          "appliedMaster": "n",
+          "masterPageTransform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": 0,
+            "ty": 0
+          },
+          "marginPreference": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "columnCount": 1,
+            "columnGutter": 12,
+            "columnDirection": "Horizontal",
+            "columnsPositions": "0 800"
+          }
+        }
+      ],
+      "pageItems": []
+    }
+  },
+  "layers": [
+    {
+      "self": "ub7",
+      "name": "Layer 1",
+      "visible": true,
+      "locked": false,
+      "ignoreWrap": false,
+      "showGuides": true,
+      "lockGuides": false,
+      "ui": true,
+      "layerColor": "LightBlue"
+    }
+  ],
+  "resources": {
+    "fonts": {
+      "di39": {
+        "self": "di39",
+        "name": "Minion Pro",
+        "fonts": [
+          {
+            "self": "di39FontnMinion Pro Regular",
+            "fontFamily": "Minion Pro",
+            "name": "Minion Pro Regular",
+            "postScriptName": "MinionPro-Regular",
+            "status": "Installed",
+            "fontStyleName": "Regular"
+          },
+          {
+            "self": "di39FontnMinion Pro Cond",
+            "fontFamily": "Minion Pro",
+            "name": "Minion Pro Cond",
+            "postScriptName": "MinionPro-Cn",
+            "status": "Substituted",
+            "fontStyleName": "Cond"
+          },
+          {
+            "self": "di39FontnMinion Pro Cond Italic",
+            "fontFamily": "Minion Pro",
+            "name": "Minion Pro Cond Italic",
+            "postScriptName": "MinionPro-CnIt",
+            "status": "Substituted",
+            "fontStyleName": "Cond Italic"
+          },
+          {
+            "self": "di39FontnMinion Pro Semibold Cond",
+            "fontFamily": "Minion Pro",
+            "name": "Minion Pro Semibold Cond",
+            "postScriptName": "MinionPro-SemiboldCn",
+            "status": "Substituted",
+            "fontStyleName": "Semibold Cond"
+          },
+          {
+            "self": "di39FontnMinion Pro Semibold Cond Italic",
+            "fontFamily": "Minion Pro",
+            "name": "Minion Pro Semibold Cond Italic",
+            "postScriptName": "MinionPro-SemiboldCnIt",
+            "status": "Substituted",
+            "fontStyleName": "Semibold Cond Italic"
+          },
+          {
+            "self": "di39FontnMinion Pro Bold Cond",
+            "fontFamily": "Minion Pro",
+            "name": "Minion Pro Bold Cond",
+            "postScriptName": "MinionPro-BoldCn",
+            "status": "Substituted",
+            "fontStyleName": "Bold Cond"
+          },
+          {
+            "self": "di39FontnMinion Pro Bold Cond Italic",
+            "fontFamily": "Minion Pro",
+            "name": "Minion Pro Bold Cond Italic",
+            "postScriptName": "MinionPro-BoldCnIt",
+            "status": "Substituted",
+            "fontStyleName": "Bold Cond Italic"
+          },
+          {
+            "self": "di39FontnMinion Pro Italic",
+            "fontFamily": "Minion Pro",
+            "name": "Minion Pro Italic",
+            "postScriptName": "MinionPro-It",
+            "status": "Substituted",
+            "fontStyleName": "Italic"
+          },
+          {
+            "self": "di39FontnMinion Pro Medium",
+            "fontFamily": "Minion Pro",
+            "name": "Minion Pro Medium",
+            "postScriptName": "MinionPro-Medium",
+            "status": "Substituted",
+            "fontStyleName": "Medium"
+          },
+          {
+            "self": "di39FontnMinion Pro Medium Italic",
+            "fontFamily": "Minion Pro",
+            "name": "Minion Pro Medium Italic",
+            "postScriptName": "MinionPro-MediumIt",
+            "status": "Substituted",
+            "fontStyleName": "Medium Italic"
+          },
+          {
+            "self": "di39FontnMinion Pro Semibold",
+            "fontFamily": "Minion Pro",
+            "name": "Minion Pro Semibold",
+            "postScriptName": "MinionPro-Semibold",
+            "status": "Substituted",
+            "fontStyleName": "Semibold"
+          },
+          {
+            "self": "di39FontnMinion Pro Semibold Italic",
+            "fontFamily": "Minion Pro",
+            "name": "Minion Pro Semibold Italic",
+            "postScriptName": "MinionPro-SemiboldIt",
+            "status": "Substituted",
+            "fontStyleName": "Semibold Italic"
+          },
+          {
+            "self": "di39FontnMinion Pro Bold",
+            "fontFamily": "Minion Pro",
+            "name": "Minion Pro Bold",
+            "postScriptName": "MinionPro-Bold",
+            "status": "Substituted",
+            "fontStyleName": "Bold"
+          },
+          {
+            "self": "di39FontnMinion Pro Bold Italic",
+            "fontFamily": "Minion Pro",
+            "name": "Minion Pro Bold Italic",
+            "postScriptName": "MinionPro-BoldIt",
+            "status": "Substituted",
+            "fontStyleName": "Bold Italic"
+          }
+        ]
+      },
+      "di8d": {
+        "self": "di8d",
+        "name": "Myriad Pro (OTF)",
+        "fonts": [
+          {
+            "self": "di8dFontnMyriad Pro (OTF) Regular",
+            "fontFamily": "Myriad Pro (OTF)",
+            "name": "Myriad Pro (OTF) Regular",
+            "postScriptName": "MyriadPro-Regular",
+            "status": "Installed",
+            "fontStyleName": "Regular"
+          },
+          {
+            "self": "di8dFontnMyriad Pro (OTF) Italic",
+            "fontFamily": "Myriad Pro (OTF)",
+            "name": "Myriad Pro (OTF) Italic",
+            "postScriptName": "MyriadPro-It",
+            "status": "Installed",
+            "fontStyleName": "Italic"
+          },
+          {
+            "self": "di8dFontnMyriad Pro (OTF) Bold",
+            "fontFamily": "Myriad Pro (OTF)",
+            "name": "Myriad Pro (OTF) Bold",
+            "postScriptName": "MyriadPro-Bold",
+            "status": "Installed",
+            "fontStyleName": "Bold"
+          },
+          {
+            "self": "di8dFontnMyriad Pro (OTF) Bold Italic",
+            "fontFamily": "Myriad Pro (OTF)",
+            "name": "Myriad Pro (OTF) Bold Italic",
+            "postScriptName": "MyriadPro-BoldIt",
+            "status": "Installed",
+            "fontStyleName": "Bold Italic"
+          },
+          {
+            "self": "di8dFontnMyriad Pro (OTF) Light Condensed",
+            "fontFamily": "Myriad Pro (OTF)",
+            "name": "Myriad Pro (OTF) Light Condensed",
+            "postScriptName": "MyriadPro-LightCond",
+            "status": "Substituted",
+            "fontStyleName": "Light Condensed"
+          },
+          {
+            "self": "di8dFontnMyriad Pro (OTF) Light Condensed Italic",
+            "fontFamily": "Myriad Pro (OTF)",
+            "name": "Myriad Pro (OTF) Light Condensed Italic",
+            "postScriptName": "MyriadPro-LightCondIt",
+            "status": "Substituted",
+            "fontStyleName": "Light Condensed Italic"
+          },
+          {
+            "self": "di8dFontnMyriad Pro (OTF) Condensed",
+            "fontFamily": "Myriad Pro (OTF)",
+            "name": "Myriad Pro (OTF) Condensed",
+            "postScriptName": "MyriadPro-Cond",
+            "status": "Substituted",
+            "fontStyleName": "Condensed"
+          },
+          {
+            "self": "di8dFontnMyriad Pro (OTF) Condensed Italic",
+            "fontFamily": "Myriad Pro (OTF)",
+            "name": "Myriad Pro (OTF) Condensed Italic",
+            "postScriptName": "MyriadPro-CondIt",
+            "status": "Substituted",
+            "fontStyleName": "Condensed Italic"
+          },
+          {
+            "self": "di8dFontnMyriad Pro (OTF) Semibold Condensed",
+            "fontFamily": "Myriad Pro (OTF)",
+            "name": "Myriad Pro (OTF) Semibold Condensed",
+            "postScriptName": "MyriadPro-SemiboldCond",
+            "status": "Substituted",
+            "fontStyleName": "Semibold Condensed"
+          },
+          {
+            "self": "di8dFontnMyriad Pro (OTF) Semibold Condensed Italic",
+            "fontFamily": "Myriad Pro (OTF)",
+            "name": "Myriad Pro (OTF) Semibold Condensed Italic",
+            "postScriptName": "MyriadPro-SemiboldCondIt",
+            "status": "Substituted",
+            "fontStyleName": "Semibold Condensed Italic"
+          },
+          {
+            "self": "di8dFontnMyriad Pro (OTF) Bold Condensed",
+            "fontFamily": "Myriad Pro (OTF)",
+            "name": "Myriad Pro (OTF) Bold Condensed",
+            "postScriptName": "MyriadPro-BoldCond",
+            "status": "NotAvailable",
+            "fontStyleName": "Bold Condensed"
+          },
+          {
+            "self": "di8dFontnMyriad Pro (OTF) Bold Condensed Italic",
+            "fontFamily": "Myriad Pro (OTF)",
+            "name": "Myriad Pro (OTF) Bold Condensed Italic",
+            "postScriptName": "MyriadPro-BoldCondIt",
+            "status": "Substituted",
+            "fontStyleName": "Bold Condensed Italic"
+          },
+          {
+            "self": "di8dFontnMyriad Pro (OTF) Black Condensed",
+            "fontFamily": "Myriad Pro (OTF)",
+            "name": "Myriad Pro (OTF) Black Condensed",
+            "postScriptName": "MyriadPro-BlackCond",
+            "status": "Substituted",
+            "fontStyleName": "Black Condensed"
+          },
+          {
+            "self": "di8dFontnMyriad Pro (OTF) Black Condensed Italic",
+            "fontFamily": "Myriad Pro (OTF)",
+            "name": "Myriad Pro (OTF) Black Condensed Italic",
+            "postScriptName": "MyriadPro-BlackCondIt",
+            "status": "Substituted",
+            "fontStyleName": "Black Condensed Italic"
+          }
+        ]
+      },
+      "di91": {
+        "self": "di91",
+        "name": "Kozuka Mincho Pr6N",
+        "fonts": [
+          {
+            "self": "di91FontnKozuka Mincho Pr6N R",
+            "fontFamily": "Kozuka Mincho Pr6N",
+            "name": "Kozuka Mincho Pr6N R",
+            "postScriptName": "KozMinPr6N-Regular",
+            "status": "Installed",
+            "fontStyleName": "R"
+          },
+          {
+            "self": "di91FontnKozuka Mincho Pr6N EL",
+            "fontFamily": "Kozuka Mincho Pr6N",
+            "name": "Kozuka Mincho Pr6N EL",
+            "postScriptName": "KozMinPr6N-ExtraLight",
+            "status": "Substituted",
+            "fontStyleName": "EL"
+          },
+          {
+            "self": "di91FontnKozuka Mincho Pr6N L",
+            "fontFamily": "Kozuka Mincho Pr6N",
+            "name": "Kozuka Mincho Pr6N L",
+            "postScriptName": "KozMinPr6N-Light",
+            "status": "Substituted",
+            "fontStyleName": "L"
+          },
+          {
+            "self": "di91FontnKozuka Mincho Pr6N M",
+            "fontFamily": "Kozuka Mincho Pr6N",
+            "name": "Kozuka Mincho Pr6N M",
+            "postScriptName": "KozMinPr6N-Medium",
+            "status": "Substituted",
+            "fontStyleName": "M"
+          },
+          {
+            "self": "di91FontnKozuka Mincho Pr6N B",
+            "fontFamily": "Kozuka Mincho Pr6N",
+            "name": "Kozuka Mincho Pr6N B",
+            "postScriptName": "KozMinPr6N-Bold",
+            "status": "Substituted",
+            "fontStyleName": "B"
+          },
+          {
+            "self": "di91FontnKozuka Mincho Pr6N H",
+            "fontFamily": "Kozuka Mincho Pr6N",
+            "name": "Kozuka Mincho Pr6N H",
+            "postScriptName": "KozMinPr6N-Heavy",
+            "status": "Substituted",
+            "fontStyleName": "H"
+          }
+        ]
+      },
+      "di1ba": {
+        "self": "di1ba",
+        "name": "Raleway",
+        "fonts": [
+          {
+            "self": "di1baFontnRaleway Thin",
+            "fontFamily": "Raleway",
+            "name": "Raleway Thin",
+            "postScriptName": "Raleway-Thin",
+            "status": "Installed",
+            "fontStyleName": "Thin"
+          },
+          {
+            "self": "di1baFontnRaleway Thin Italic",
+            "fontFamily": "Raleway",
+            "name": "Raleway Thin Italic",
+            "postScriptName": "Raleway-ThinItalic",
+            "status": "Installed",
+            "fontStyleName": "Thin Italic"
+          },
+          {
+            "self": "di1baFontnRaleway ExtraLight",
+            "fontFamily": "Raleway",
+            "name": "Raleway ExtraLight",
+            "postScriptName": "Raleway-ExtraLight",
+            "status": "Installed",
+            "fontStyleName": "ExtraLight"
+          },
+          {
+            "self": "di1baFontnRaleway ExtraLight Italic",
+            "fontFamily": "Raleway",
+            "name": "Raleway ExtraLight Italic",
+            "postScriptName": "Raleway-ExtraLightItalic",
+            "status": "Installed",
+            "fontStyleName": "ExtraLight Italic"
+          },
+          {
+            "self": "di1baFontnRaleway Light",
+            "fontFamily": "Raleway",
+            "name": "Raleway Light",
+            "postScriptName": "Raleway-Light",
+            "status": "Installed",
+            "fontStyleName": "Light"
+          },
+          {
+            "self": "di1baFontnRaleway Light Italic",
+            "fontFamily": "Raleway",
+            "name": "Raleway Light Italic",
+            "postScriptName": "Raleway-LightItalic",
+            "status": "Installed",
+            "fontStyleName": "Light Italic"
+          },
+          {
+            "self": "di1baFontnRaleway Regular",
+            "fontFamily": "Raleway",
+            "name": "Raleway Regular",
+            "postScriptName": "Raleway-Regular",
+            "status": "Installed",
+            "fontStyleName": "Regular"
+          },
+          {
+            "self": "di1baFontnRaleway Italic",
+            "fontFamily": "Raleway",
+            "name": "Raleway Italic",
+            "postScriptName": "Raleway-Italic",
+            "status": "Installed",
+            "fontStyleName": "Italic"
+          },
+          {
+            "self": "di1baFontnRaleway Medium",
+            "fontFamily": "Raleway",
+            "name": "Raleway Medium",
+            "postScriptName": "Raleway-Medium",
+            "status": "Installed",
+            "fontStyleName": "Medium"
+          },
+          {
+            "self": "di1baFontnRaleway Medium Italic",
+            "fontFamily": "Raleway",
+            "name": "Raleway Medium Italic",
+            "postScriptName": "Raleway-MediumItalic",
+            "status": "Installed",
+            "fontStyleName": "Medium Italic"
+          },
+          {
+            "self": "di1baFontnRaleway SemiBold",
+            "fontFamily": "Raleway",
+            "name": "Raleway SemiBold",
+            "postScriptName": "Raleway-SemiBold",
+            "status": "Installed",
+            "fontStyleName": "SemiBold"
+          },
+          {
+            "self": "di1baFontnRaleway SemiBold Italic",
+            "fontFamily": "Raleway",
+            "name": "Raleway SemiBold Italic",
+            "postScriptName": "Raleway-SemiBoldItalic",
+            "status": "Installed",
+            "fontStyleName": "SemiBold Italic"
+          },
+          {
+            "self": "di1baFontnRaleway Bold",
+            "fontFamily": "Raleway",
+            "name": "Raleway Bold",
+            "postScriptName": "Raleway-Bold",
+            "status": "Installed",
+            "fontStyleName": "Bold"
+          },
+          {
+            "self": "di1baFontnRaleway Bold Italic",
+            "fontFamily": "Raleway",
+            "name": "Raleway Bold Italic",
+            "postScriptName": "Raleway-BoldItalic",
+            "status": "Installed",
+            "fontStyleName": "Bold Italic"
+          },
+          {
+            "self": "di1baFontnRaleway ExtraBold",
+            "fontFamily": "Raleway",
+            "name": "Raleway ExtraBold",
+            "postScriptName": "Raleway-ExtraBold",
+            "status": "Installed",
+            "fontStyleName": "ExtraBold"
+          },
+          {
+            "self": "di1baFontnRaleway ExtraBold Italic",
+            "fontFamily": "Raleway",
+            "name": "Raleway ExtraBold Italic",
+            "postScriptName": "Raleway-ExtraBoldItalic",
+            "status": "Installed",
+            "fontStyleName": "ExtraBold Italic"
+          },
+          {
+            "self": "di1baFontnRaleway Black",
+            "fontFamily": "Raleway",
+            "name": "Raleway Black",
+            "postScriptName": "Raleway-Black",
+            "status": "Installed",
+            "fontStyleName": "Black"
+          },
+          {
+            "self": "di1baFontnRaleway Black Italic",
+            "fontFamily": "Raleway",
+            "name": "Raleway Black Italic",
+            "postScriptName": "Raleway-BlackItalic",
+            "status": "Installed",
+            "fontStyleName": "Black Italic"
+          }
+        ]
+      }
+    },
+    "colors": {
+      "Color/Black": {
+        "self": "Color/Black",
+        "name": "Black",
+        "model": "Process",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      },
+      "Color/C=0 M=0 Y=100 K=0": {
+        "self": "Color/C=0 M=0 Y=100 K=0",
+        "name": "C=0 M=0 Y=100 K=0",
+        "model": "Process",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      },
+      "Color/C=0 M=100 Y=0 K=0": {
+        "self": "Color/C=0 M=100 Y=0 K=0",
+        "name": "C=0 M=100 Y=0 K=0",
+        "model": "Process",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      },
+      "Color/C=100 M=0 Y=0 K=0": {
+        "self": "Color/C=100 M=0 Y=0 K=0",
+        "name": "C=100 M=0 Y=0 K=0",
+        "model": "Process",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      },
+      "Color/C=100 M=90 Y=10 K=0": {
+        "self": "Color/C=100 M=90 Y=10 K=0",
+        "name": "C=100 M=90 Y=10 K=0",
+        "model": "Process",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      },
+      "Color/C=15 M=100 Y=100 K=0": {
+        "self": "Color/C=15 M=100 Y=100 K=0",
+        "name": "C=15 M=100 Y=100 K=0",
+        "model": "Process",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      },
+      "Color/C=75 M=5 Y=100 K=0": {
+        "self": "Color/C=75 M=5 Y=100 K=0",
+        "name": "C=75 M=5 Y=100 K=0",
+        "model": "Process",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      },
+      "Color/Cyan": {
+        "self": "Color/Cyan",
+        "name": "Cyan",
+        "model": "Process",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      },
+      "Color/Magenta": {
+        "self": "Color/Magenta",
+        "name": "Magenta",
+        "model": "Process",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      },
+      "Color/Paper": {
+        "self": "Color/Paper",
+        "name": "Paper",
+        "model": "Process",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      },
+      "Color/Registration": {
+        "self": "Color/Registration",
+        "name": "Registration",
+        "model": "Registration",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      },
+      "Color/Yellow": {
+        "self": "Color/Yellow",
+        "name": "Yellow",
+        "model": "Process",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      },
+      "Color/u84": {
+        "self": "Color/u84",
+        "name": "$ID/",
+        "model": "Process",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      },
+      "Color/u86": {
+        "self": "Color/u86",
+        "name": "$ID/",
+        "model": "Process",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      },
+      "Color/ucd": {
+        "self": "Color/ucd",
+        "name": "",
+        "model": "Process",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      },
+      "Color/u18a": {
+        "self": "Color/u18a",
+        "name": "$ID/",
+        "model": "Process",
+        "space": "CMYK",
+        "cyan": 0,
+        "magenta": 0,
+        "yellow": 0,
+        "black": 0,
+        "red": 0,
+        "green": 0,
+        "blue": 0
+      }
+    },
+    "gradients": {
+      "Gradient/u85": {
+        "self": "Gradient/u85",
+        "name": "$ID/",
+        "type": "Linear",
+        "gradientStops": [
+          {
+            "self": "u85GradientStop0",
+            "stopColor": "Color/u84",
+            "location": 0,
+            "midpoint": 50
+          },
+          {
+            "self": "u85GradientStop1",
+            "stopColor": "Color/Black",
+            "location": 100,
+            "midpoint": 50
+          }
+        ]
+      }
+    }
+  },
+  "debug22": {
+    "coordinateOffset": {
+      "x": 400,
+      "y": 300
+    },
+    "contentFramesCount": 1,
+    "imagesLinkedCount": 0,
+    "embeddedImagesCount": 0
+  },
+  "packageInfo": {
+    "hasLinks": true,
+    "hasFonts": false,
+    "linksCount": 0,
+    "fontsCount": 0,
+    "extractedImagesCount": 1
+  },
+  "processingInfo": {
+    "timestamp": "2025-07-18T08:27:51.031Z",
+    "moduleDataIncluded": true,
+    "elementsCount": 8,
+    "storiesCount": 4,
+    "noDataFiltered": true,
+    "processingVersion": "2.0-comprehensive"
+  }
+}

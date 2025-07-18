@@ -1,0 +1,529 @@
+{
+  "document": {
+    "version": 20.3,
+    "pageCount": 1,
+    "name": "parser.indd"
+  },
+  "pageInfo": {
+    "dimensions": {
+      "width": 419.5275590551,
+      "height": 595.2755905509,
+      "facingPages": false,
+      "units": "Points"
+    },
+    "margins": {
+      "top": 22.67716535433071,
+      "bottom": 22.67716535433071,
+      "left": 22.67716535433071,
+      "right": 22.67716535433071,
+      "columnCount": 5,
+      "columnGutter": 8.503937007900001
+    }
+  },
+  "elements": [
+    {
+      "id": "u6b0",
+      "type": "Rectangle",
+      "name": "$ID/",
+      "position": {
+        "x": 693.35,
+        "y": 534.33,
+        "width": 44.19,
+        "height": 5.43,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u4ef",
+      "type": "Rectangle",
+      "name": "$ID/",
+      "position": {
+        "x": 450.71,
+        "y": 306,
+        "width": 206.93,
+        "height": 283.46,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u506",
+      "type": "Rectangle",
+      "name": "[YOUR IMAGE HERE]",
+      "position": {
+        "x": 464.88,
+        "y": 291.83,
+        "width": 206.93,
+        "height": 283.46,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "linkedImage": {
+        "fileName": "Tesla-Model-3.jpg",
+        "url": "/api/image/1752827333373/ExtractedImages/Tesla-Model-3.jpg",
+        "originalPath": "C:\\Users\\Muhammad Umer Farooq\\Desktop\\IDML\\idml-parser\\uploads\\1752827333373\\ExtractedImages\\Tesla-Model-3.jpg",
+        "isEmbedded": true,
+        "isExtracted": true,
+        "embeddedType": "$ID/JPEG",
+        "embeddedData": "96 96",
+        "framePosition": {
+          "x": 464.88,
+          "y": 291.83,
+          "width": 206.93,
+          "height": 283.46,
+          "rotation": 0
+        },
+        "imagePosition": {
+          "x": -325.8614269437644,
+          "y": -320.8700907662985,
+          "width": 98.30432861666799,
+          "height": 134.08787768764523,
+          "scaleX": 0.4750627752784183,
+          "scaleY": 0.4730322351758596
+        }
+      },
+      "visible": true,
+      "locked": false,
+      "isContentFrame": true,
+      "hasPlacedContent": true,
+      "contentType": "Image",
+      "imagePosition": {
+        "x": -325.8614269437644,
+        "y": -320.8700907662985,
+        "width": 98.30432861666799,
+        "height": 134.08787768764523,
+        "scaleX": 0.4750627752784183,
+        "scaleY": 0.4730322351758596
+      },
+      "placedContent": {
+        "type": "Image",
+        "href": "96 96",
+        "isEmbedded": true,
+        "bounds": null,
+        "transform": {
+          "a": 0.4750627752784183,
+          "b": 0,
+          "c": 0,
+          "d": 0.4730322351758596,
+          "tx": -232.94646150337604,
+          "ty": -160.43504538314926
+        },
+        "actualPpi": "96 96",
+        "effectivePpi": "202 203",
+        "imageTypeName": "$ID/JPEG",
+        "space": "$ID/#Links_RGB"
+      }
+    },
+    {
+      "id": "uf70",
+      "type": "TextFrame",
+      "name": "$ID/",
+      "position": {
+        "x": 419.53,
+        "y": 8.36,
+        "width": 436.54,
+        "height": 612.28,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": "uf89",
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u4a8",
+      "type": "TextFrame",
+      "name": "$ID/",
+      "position": {
+        "x": 693.35,
+        "y": 549.62,
+        "width": 131.53,
+        "height": 39.85,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": "u4ab",
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u4bf",
+      "type": "TextFrame",
+      "name": "$ID/",
+      "position": {
+        "x": 603.78,
+        "y": 320.5,
+        "width": 221.1,
+        "height": 61.18,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": "u4c2",
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u4d8",
+      "type": "TextFrame",
+      "name": "$ID/",
+      "position": {
+        "x": 450.71,
+        "y": 107.14,
+        "width": 374.17,
+        "height": 139.7,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Swatch/None",
+      "strokeWeight": 0,
+      "parentStory": "u4db",
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "u6c5",
+      "type": "Rectangle",
+      "name": "$ID/",
+      "position": {
+        "x": 0,
+        "y": 8.36,
+        "width": 856.06,
+        "height": 612.28,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    },
+    {
+      "id": "uf08",
+      "type": "Rectangle",
+      "name": "$ID/",
+      "position": {
+        "x": 23.53,
+        "y": 0,
+        "width": 809.01,
+        "height": 629.01,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "visible": true,
+      "locked": false,
+      "isContentFrame": false,
+      "hasPlacedContent": false,
+      "contentType": null,
+      "imagePosition": null,
+      "placedContent": null
+    }
+  ],
+  "stories": {
+    "u4db": {
+      "text": "brochure\ntitle",
+      "wordCount": 2,
+      "characterCount": 14,
+      "textColor": null,
+      "hasLineBreaks": true,
+      "lineBreakCount": 1,
+      "styling": {
+        "fontSize": 60,
+        "fontFamily": "Azo Sans",
+        "alignment": "CenterAlign",
+        "fillColor": "Color/C=56 M=20 Y=0 K=0",
+        "fontStyle": "Regular",
+        "leading": "auto",
+        "leadingType": "auto",
+        "effectiveLineHeight": 1.2,
+        "tracking": 0,
+        "kerning": 0
+      },
+      "formattedContent": [
+        {
+          "text": "brochure",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/Title",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 60,
+            "fontReference": "",
+            "fillColor": "Color/C=56 M=20 Y=0 K=0",
+            "fontStyle": "Regular",
+            "alignment": "CenterAlign",
+            "fontFamily": "Azo Sans",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0
+          }
+        },
+        {
+          "text": "\n",
+          "formatting": {
+            "isBreak": true,
+            "breakType": "line",
+            "position": "between_content",
+            "source": "Br element within range"
+          }
+        },
+        {
+          "text": "title",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/Title",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 60,
+            "fontReference": "",
+            "fillColor": "Color/C=56 M=20 Y=0 K=0",
+            "fontStyle": "Regular",
+            "alignment": "CenterAlign",
+            "fontFamily": "Azo Sans",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 0,
+            "tracking": 0,
+            "kerning": 0
+          }
+        }
+      ]
+    },
+    "u4c2": {
+      "text": "Et eatia cus. Endandelita con reprate custioId que pa voluptusda corrovi dipissecta nobisqui ber repedion cusdaecum faccae eventio.",
+      "wordCount": 18,
+      "characterCount": 131,
+      "textColor": null,
+      "hasLineBreaks": false,
+      "lineBreakCount": 0,
+      "styling": {
+        "fontSize": 14,
+        "fontFamily": "Kiro",
+        "alignment": "LeftAlign",
+        "fillColor": "Color/C=56 M=20 Y=0 K=0",
+        "fontStyle": "Regular",
+        "leading": "auto",
+        "leadingType": "auto",
+        "effectiveLineHeight": 1.2,
+        "tracking": 0,
+        "kerning": 0
+      },
+      "formattedContent": [
+        {
+          "text": "Et eatia cus. Endandelita con reprate custioId que pa",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/Pull Text",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 14,
+            "fontReference": "",
+            "fillColor": "Color/C=56 M=20 Y=0 K=0",
+            "fontStyle": "Regular",
+            "alignment": "LeftAlign",
+            "fontFamily": "Kiro",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 8.503937007874017,
+            "tracking": 0,
+            "kerning": 0
+          }
+        },
+        {
+          "text": " ",
+          "formatting": {
+            "isSpace": true,
+            "source": "between character style ranges (aggressive)",
+            "currentStyle": "CharacterStyle/$ID/[No character style]",
+            "nextStyle": "CharacterStyle/Blue, Underline 1pt, 3pt Offset"
+          }
+        },
+        {
+          "text": "voluptusda corrovi",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/Pull Text",
+            "characterStyle": "CharacterStyle/Blue, Underline 1pt, 3pt Offset",
+            "fontSize": 14,
+            "fontReference": "",
+            "fillColor": "Color/C=56 M=20 Y=0 K=0",
+            "fontStyle": "Bold Italic",
+            "alignment": "LeftAlign",
+            "fontFamily": "Kiro",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 8.503937007874017,
+            "tracking": 0,
+            "kerning": 0
+          }
+        },
+        {
+          "text": " ",
+          "formatting": {
+            "isSpace": true,
+            "source": "between character style ranges (aggressive)",
+            "currentStyle": "CharacterStyle/Blue, Underline 1pt, 3pt Offset",
+            "nextStyle": "CharacterStyle/$ID/[No character style]"
+          }
+        },
+        {
+          "text": "dipissecta nobisqui ber repedion cusdaecum faccae eventio.",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/Pull Text",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 14,
+            "fontReference": "",
+            "fillColor": "Color/C=56 M=20 Y=0 K=0",
+            "fontStyle": "Regular",
+            "alignment": "LeftAlign",
+            "fontFamily": "Kiro",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 8.503937007874017,
+            "tracking": 0,
+            "kerning": 0
+          }
+        }
+      ]
+    },
+    "u4ab": {
+      "text": "Harumqui aut andam aliqui que nost, quatibusciur as et que sequia pereperumqui. Alignis nonempo repeliq uidebiti?",
+      "wordCount": 16,
+      "characterCount": 113,
+      "textColor": null,
+      "hasLineBreaks": false,
+      "lineBreakCount": 0,
+      "styling": {
+        "fontSize": 9,
+        "fontFamily": "Ingra",
+        "alignment": "LeftJustified",
+        "fillColor": "Color/Black",
+        "fontStyle": "Regular",
+        "leading": "auto",
+        "leadingType": "auto",
+        "effectiveLineHeight": 1.2,
+        "tracking": 0,
+        "kerning": 0
+      },
+      "formattedContent": [
+        {
+          "text": "Harumqui aut andam aliqui que nost, quatibusciur as et que sequia pereperumqui. Alignis nonempo repeliq uidebiti?",
+          "formatting": {
+            "paragraphStyle": "ParagraphStyle/Body Text",
+            "characterStyle": "CharacterStyle/$ID/[No character style]",
+            "fontSize": 9,
+            "fontReference": "",
+            "fillColor": "Color/Black",
+            "fontStyle": "Regular",
+            "alignment": "LeftJustified",
+            "fontFamily": "Ingra",
+            "leading": "auto",
+            "leadingType": "auto",
+            "effectiveLineHeight": 1.2,
+            "leftIndent": 0,
+            "rightIndent": 0,
+            "firstLineIndent": 0,
+            "spaceBefore": 0,
+            "spaceAfter": 7.086614173228347,
+            "tracking": 0,
+            "kerning": 0
+          }
+        }
+      ]
+    }
+  },
+  "debug22": {
+    "coordinateOffset": {
+      "x": 428.031496063,
+      "y": 314.50393700789994
+    },
+    "contentFramesCount": 1,
+    "imagesLinkedCount": 0,
+    "embeddedImagesCount": 0
+  },
+  "packageInfo": {
+    "hasLinks": true,
+    "hasFonts": false,
+    "linksCount": 0,
+    "fontsCount": 0,
+    "extractedImagesCount": 1
+  }
+}

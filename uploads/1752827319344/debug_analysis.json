@@ -1,0 +1,1036 @@
+{
+  "timestamp": "2025-07-18T08:28:39.604Z",
+  "uploadId": "1752827319344",
+  "idmlFile": {
+    "name": "shapes.idml",
+    "size": 37066,
+    "path": "C:\\Users\\Muhammad Umer Farooq\\Desktop\\IDML\\idml-parser\\uploads\\1752827319344\\shapes.idml"
+  },
+  "idmlContents": {
+    "basic": {
+      "totalFiles": 17,
+      "allFiles": [
+        "mimetype",
+        "designmap.xml",
+        "META-INF/container.xml",
+        "META-INF/metadata.xml",
+        "Resources/Graphic.xml",
+        "Resources/Fonts.xml",
+        "Resources/Styles.xml",
+        "Resources/Preferences.xml",
+        "XML/Tags.xml",
+        "MasterSpreads/MasterSpread_ub8.xml",
+        "Spreads/Spread_ue4.xml",
+        "XML/BackingStory.xml",
+        "Stories/Story_u272.xml",
+        "Stories/Story_u242.xml",
+        "Stories/Story_u1f7.xml",
+        "Stories/Story_u1c8.xml",
+        "Stories/Story_u1ad.xml"
+      ],
+      "folders": [
+        "mimetype",
+        "designmap.xml",
+        "META-INF",
+        "Resources",
+        "XML",
+        "MasterSpreads",
+        "Spreads",
+        "Stories"
+      ],
+      "imageFiles": [],
+      "hasLinksFolder": false,
+      "linksFolderContents": []
+    },
+    "detailed": {
+      "totalFiles": 17,
+      "filesByType": {
+        "": [
+          "mimetype"
+        ],
+        ".xml": [
+          "designmap.xml",
+          "META-INF/container.xml",
+          "META-INF/metadata.xml",
+          "Resources/Graphic.xml",
+          "Resources/Fonts.xml",
+          "Resources/Styles.xml",
+          "Resources/Preferences.xml",
+          "XML/Tags.xml",
+          "MasterSpreads/MasterSpread_ub8.xml",
+          "Spreads/Spread_ue4.xml",
+          "XML/BackingStory.xml",
+          "Stories/Story_u272.xml",
+          "Stories/Story_u242.xml",
+          "Stories/Story_u1f7.xml",
+          "Stories/Story_u1c8.xml",
+          "Stories/Story_u1ad.xml"
+        ]
+      },
+      "allFiles": [
+        "mimetype",
+        "designmap.xml",
+        "META-INF/container.xml",
+        "META-INF/metadata.xml",
+        "Resources/Graphic.xml",
+        "Resources/Fonts.xml",
+        "Resources/Styles.xml",
+        "Resources/Preferences.xml",
+        "XML/Tags.xml",
+        "MasterSpreads/MasterSpread_ub8.xml",
+        "Spreads/Spread_ue4.xml",
+        "XML/BackingStory.xml",
+        "Stories/Story_u272.xml",
+        "Stories/Story_u242.xml",
+        "Stories/Story_u1f7.xml",
+        "Stories/Story_u1c8.xml",
+        "Stories/Story_u1ad.xml"
+      ],
+      "binaryFiles": [],
+      "xmlFiles": [
+        "designmap.xml",
+        "META-INF/container.xml",
+        "META-INF/metadata.xml",
+        "Resources/Graphic.xml",
+        "Resources/Fonts.xml",
+        "Resources/Styles.xml",
+        "Resources/Preferences.xml",
+        "XML/Tags.xml",
+        "MasterSpreads/MasterSpread_ub8.xml",
+        "Spreads/Spread_ue4.xml",
+        "XML/BackingStory.xml",
+        "Stories/Story_u272.xml",
+        "Stories/Story_u242.xml",
+        "Stories/Story_u1f7.xml",
+        "Stories/Story_u1c8.xml",
+        "Stories/Story_u1ad.xml"
+      ],
+      "imageFiles": [],
+      "unknownFiles": [],
+      "fileDetails": {
+        "mimetype": {
+          "compressedSize": 43,
+          "uncompressedSize": 43,
+          "compressionMethod": 0,
+          "isDirectory": false,
+          "extension": ""
+        },
+        "designmap.xml": {
+          "compressedSize": 3578,
+          "uncompressedSize": 18216,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "META-INF/container.xml": {
+          "compressedSize": 167,
+          "uncompressedSize": 253,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "META-INF/metadata.xml": {
+          "compressedSize": 724,
+          "uncompressedSize": 1812,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Graphic.xml": {
+          "compressedSize": 1326,
+          "uncompressedSize": 10442,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Fonts.xml": {
+          "compressedSize": 3986,
+          "uncompressedSize": 27792,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Styles.xml": {
+          "compressedSize": 5992,
+          "uncompressedSize": 41845,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Preferences.xml": {
+          "compressedSize": 11023,
+          "uncompressedSize": 70393,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "XML/Tags.xml": {
+          "compressedSize": 218,
+          "uncompressedSize": 303,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "MasterSpreads/MasterSpread_ub8.xml": {
+          "compressedSize": 707,
+          "uncompressedSize": 1478,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Spreads/Spread_ue4.xml": {
+          "compressedSize": 4078,
+          "uncompressedSize": 51612,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "XML/BackingStory.xml": {
+          "compressedSize": 365,
+          "uncompressedSize": 677,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Stories/Story_u272.xml": {
+          "compressedSize": 650,
+          "uncompressedSize": 1854,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Stories/Story_u242.xml": {
+          "compressedSize": 550,
+          "uncompressedSize": 1058,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Stories/Story_u1f7.xml": {
+          "compressedSize": 549,
+          "uncompressedSize": 1054,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Stories/Story_u1c8.xml": {
+          "compressedSize": 552,
+          "uncompressedSize": 1058,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Stories/Story_u1ad.xml": {
+          "compressedSize": 550,
+          "uncompressedSize": 1055,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        }
+      },
+      "suspiciousFiles": [],
+      "largeBinaryFiles": []
+    },
+    "spreadAnalysis": {
+      "spreadsAnalyzed": 1,
+      "imageReferences": [],
+      "linkReferences": [],
+      "placedContentDetails": [
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Rectangle.2.Group.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Rectangle.2.Group.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Rectangle.2.Group.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Rectangle.2.Group.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Rectangle.2.Group.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Rectangle.2.Group.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Rectangle.2.Group.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Rectangle.2.Group.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Rectangle.2.Group.Oval.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Rectangle.2.Group.Oval.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Rectangle.2.Group.Oval.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Rectangle.2.Group.Oval.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Rectangle.2.Group.Oval.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Rectangle.2.Group.Oval.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Rectangle.2.Group.Oval.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Rectangle.2.Group.Oval.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Rectangle.2.Group.Polygon.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Rectangle.2.Group.Polygon.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Rectangle.2.Group.Polygon.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Rectangle.2.Group.Polygon.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Rectangle.2.Group.Polygon.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Rectangle.2.Group.Polygon.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Rectangle.2.Group.Polygon.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Rectangle.2.Group.Polygon.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Polygon.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Polygon.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Polygon.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Polygon.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Polygon.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Polygon.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Polygon.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Polygon.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Oval.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Oval.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Oval.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Oval.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Oval.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Oval.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Oval.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Oval.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Group.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Group.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Group.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Group.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Group.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Group.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Group.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Group.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Group.Oval.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Group.Oval.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Group.Oval.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Group.Oval.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Group.Oval.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Group.Oval.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Group.Oval.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Group.Oval.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Group.Polygon.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Group.Polygon.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Group.Polygon.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Group.Polygon.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Group.Polygon.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Group.Polygon.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Group.Polygon.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Group.Polygon.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.TextFrame.2.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.TextFrame.2.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.TextFrame.2.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.TextFrame.2.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.TextFrame.2.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.TextFrame.2.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.TextFrame.2.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.TextFrame.2.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.TextFrame.3.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.TextFrame.3.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.TextFrame.3.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.TextFrame.3.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.TextFrame.3.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.TextFrame.3.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.TextFrame.3.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.TextFrame.3.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.TextFrame.4.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.TextFrame.4.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.TextFrame.4.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.TextFrame.4.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.TextFrame.4.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.TextFrame.4.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.TextFrame.4.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_ue4.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.TextFrame.4.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        }
+      ]
+    },
+    "suspiciousFileSamples": []
+  },
+  "packageUpload": {
+    "totalUploadedFiles": 1,
+    "uploadedFiles": [
+      {
+        "name": "shapes.idml",
+        "size": 37066,
+        "mimetype": "application/octet-stream"
+      }
+    ],
+    "isPackageUpload": false
+  },
+  "processingResults": {
+    "elementsFound": 11,
+    "storiesFound": 5,
+    "contentFrames": [],
+    "embeddedImages": [],
+    "placeholders": []
+  },
+  "imageExtraction": {
+    "totalFound": 0,
+    "totalExtracted": 0,
+    "extractedImages": [],
+    "extractionSuccess": false,
+    "method": "none"
+  }
+}
