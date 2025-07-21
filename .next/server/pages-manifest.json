@@ -2,9 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/view/[uploadId]": "pages/view/[uploadId].js",
-  "/api/document/[uploadId]": "pages/api/document/[uploadId].js",
+  "/": "pages/index.js",
   "/api/upload": "pages/api/upload.js",
-  "/api/image/[uploadId]/ExtractedImages/[filename]": "pages/api/image/[uploadId]/ExtractedImages/[filename].js",
-  "/": "pages/index.js"
+  "/view/[uploadId]": "pages/view/[uploadId].js",
+  "/api/document/[uploadId]": "pages/api/document/[uploadId].js"
 }

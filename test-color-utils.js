@@ -1,8 +1,9 @@
 // test-color-utils.js
-import ColorUtilsModule from './lib/utils/ColorUtils.js';
-const ColorUtils = ColorUtilsModule;
+const ColorUtils = require('./lib/utils/ColorUtils');
+const path = require('path');
+const IDMLProcessor = require('./lib/IDMLProcessor');
 
-console.log('🧪 Testing ColorUtils CMYK to RGB conversion...');
+console.log(' Testing ColorUtils CMYK to RGB conversion...');
 
 // Test Case: Light Pink Color
 console.log('📋 Test Case: Light Pink Color');
@@ -42,4 +43,17 @@ testColors.forEach(colorRef => {
   }
 });
 
-console.log('✅ ColorUtils test completed!'); 
+console.log('✅ ColorUtils test completed!');
+
+// === STYLE-ONLY DEBUG RUNNER ===
+if (require.main === module) {
+  (async () => {
+    // Use the most recent test.idml in uploads (adjust as needed)
+    const idmlPath = path.join(__dirname, 'uploads', '1752843245056', 'test.idml');
+    const processor = new IDMLProcessor();
+    await processor.processIDML(idmlPath);
+    // Run the extracted text debug
+    const textDebug = await processor.debugAnalyzer.addExtractedTextDebug(processor);
+    console.log('Extracted text debug result:', textDebug);
+  })();
+} 

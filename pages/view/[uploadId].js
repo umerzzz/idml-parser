@@ -721,6 +721,10 @@ export default function Viewer() {
 
   const renderFormattedText = (story, containerHeight = null, adjustedFontSize = null) => {
     if (!story.formattedContent || !Array.isArray(story.formattedContent)) {
+      // Use CSS to preserve all whitespace and newlines
+      if (typeof story.text === 'string') {
+        return <span style={{ whiteSpace: 'pre-line' }}>{story.text}</span>;
+      }
       return <span>{story.text}</span>;
     }
 
