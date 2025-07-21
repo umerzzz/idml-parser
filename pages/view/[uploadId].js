@@ -9,26 +9,26 @@ export default function Viewer() {
   const [documentData, setDocumentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedElement, setSelectedElement] = useState(null);
-  
+
   // CONFIGURATION OPTIONS - Make background detection flexible
   const [backgroundConfig, setBackgroundConfig] = useState({
-    mode: 'auto', // 'auto', 'white', 'custom', 'transparent'
-    customColor: '#ffffff',
+    mode: "auto", // 'auto', 'white', 'custom', 'transparent'
+    customColor: "#ffffff",
     allowColorAnalysis: true,
     preferPaperColor: true,
-    fallbackToWhite: true
+    fallbackToWhite: true,
   });
 
   // Background color override controls
   const backgroundModes = [
-    { value: 'auto', label: 'Auto Detect' },
-    { value: 'white', label: 'Force White' },
-    { value: 'transparent', label: 'Transparent' },
-    { value: 'custom', label: 'Custom Color' }
+    { value: "auto", label: "Auto Detect" },
+    { value: "white", label: "Force White" },
+    { value: "transparent", label: "Transparent" },
+    { value: "custom", label: "Custom Color" },
   ];
 
   const mmToPx = (mm) => {
-    if (typeof mm !== 'number') return 0;
+    if (typeof mm !== "number") return 0;
     return (mm * 96) / 25.4;
   };
 
@@ -57,35 +57,52 @@ export default function Viewer() {
   };
 
   const getDocumentBackgroundColor = (documentData) => {
-    console.log('🔍 Starting improved background color detection...', { config: backgroundConfig });
-    
+    console.log("🔍 Starting improved background color detection...", {
+      config: backgroundConfig,
+    });
+
     // Handle configured background modes
-    if (backgroundConfig.mode === 'white') {
-      console.log('📄 ✅ Force white mode - returning white');
-      return 'white';
+    if (backgroundConfig.mode === "white") {
+      console.log("📄 ✅ Force white mode - returning white");
+      return "white";
     }
-    
-    if (backgroundConfig.mode === 'transparent') {
-      console.log('📄 ✅ Transparent mode - returning transparent');
-      return 'transparent';
+
+    if (backgroundConfig.mode === "transparent") {
+      console.log("📄 ✅ Transparent mode - returning transparent");
+      return "transparent";
     }
-    
-    if (backgroundConfig.mode === 'custom') {
-      console.log('📄 ✅ Custom color mode - returning:', backgroundConfig.customColor);
+
+    if (backgroundConfig.mode === "custom") {
+      console.log(
+        "📄 ✅ Custom color mode - returning:",
+        backgroundConfig.customColor
+      );
       return backgroundConfig.customColor;
     }
-    
+
     // Auto mode - continue with detection logic
-    
+
     // Strategy 1: Look for page background color in pageInfo
-    if (documentData.pageInfo?.backgroundColor && documentData.pageInfo.backgroundColor !== "Color/None") {
-      console.log('📄 Found page background in pageInfo:', documentData.pageInfo.backgroundColor);
+    if (
+      documentData.pageInfo?.backgroundColor &&
+      documentData.pageInfo.backgroundColor !== "Color/None"
+    ) {
+      console.log(
+        "📄 Found page background in pageInfo:",
+        documentData.pageInfo.backgroundColor
+      );
       return convertColor(documentData.pageInfo.backgroundColor);
     }
 
     // Strategy 2: Look for document background in document properties
-    if (documentData.document?.backgroundColor && documentData.document.backgroundColor !== "Color/None") {
-      console.log('📄 Found document background in document:', documentData.document.backgroundColor);
+    if (
+      documentData.document?.backgroundColor &&
+      documentData.document.backgroundColor !== "Color/None"
+    ) {
+      console.log(
+        "📄 Found document background in document:",
+        documentData.document.backgroundColor
+      );
       return convertColor(documentData.document.backgroundColor);
     }
 
@@ -93,7 +110,10 @@ export default function Viewer() {
     if (documentData.spreads) {
       for (const [spreadId, spread] of Object.entries(documentData.spreads)) {
         if (spread.backgroundColor && spread.backgroundColor !== "Color/None") {
-          console.log('📄 Found spread background color:', spread.backgroundColor);
+          console.log(
+            "📄 Found spread background color:",
+            spread.backgroundColor
+          );
           return convertColor(spread.backgroundColor);
         }
       }
@@ -101,29 +121,37 @@ export default function Viewer() {
 
     // STRATEGY 3.5: Analyze document colors for suitable background colors using ColorUtils
     if (documentData.resources?.colors) {
-      console.log('📄 Analyzing document colors for background candidates...');
-      
+      console.log("📄 Analyzing document colors for background candidates...");
+
       // Use ColorUtils to analyze and filter background colors
       const colorKeys = Object.keys(documentData.resources.colors);
       const backgroundCandidates = [];
-      
+
       for (const colorKey of colorKeys) {
         const analysis = ColorUtils.analyzeIdmlColorForBackground(colorKey);
         if (analysis && analysis.isLightBackground) {
-          console.log(`   ✅ Background candidate: ${colorKey} - ${analysis.reasoning} (${analysis.category})`);
+          console.log(
+            `   ✅ Background candidate: ${colorKey} - ${analysis.reasoning} (${analysis.category})`
+          );
           backgroundCandidates.push(colorKey);
         } else if (analysis) {
-          console.log(`   ❌ Not suitable: ${colorKey} - ${analysis.reasoning}`);
+          console.log(
+            `   ❌ Not suitable: ${colorKey} - ${analysis.reasoning}`
+          );
         }
       }
-      
+
       if (backgroundCandidates.length > 0) {
         // Sort candidates using ColorUtils sorting function
-        const sortedCandidates = ColorUtils.sortColorsByLightness(backgroundCandidates);
+        const sortedCandidates =
+          ColorUtils.sortColorsByLightness(backgroundCandidates);
         const bestCandidate = sortedCandidates[0];
-        
-        console.log(`📄 Found ${backgroundCandidates.length} background color candidates:`, sortedCandidates);
-        console.log('📄 Using best background color candidate:', bestCandidate);
+
+        console.log(
+          `📄 Found ${backgroundCandidates.length} background color candidates:`,
+          sortedCandidates
+        );
+        console.log("📄 Using best background color candidate:", bestCandidate);
         return convertColor(bestCandidate);
       }
     }
@@ -132,57 +160,82 @@ export default function Viewer() {
     if (documentData.elements) {
       const pageWidth = documentData.pageInfo?.dimensions?.width || 612;
       const pageHeight = documentData.pageInfo?.dimensions?.height || 792;
-      
-      console.log('📄 Searching for background in', documentData.elements.length, 'elements');
-      console.log('📄 Page dimensions:', pageWidth, 'x', pageHeight);
-      
+
+      console.log(
+        "📄 Searching for background in",
+        documentData.elements.length,
+        "elements"
+      );
+      console.log("📄 Page dimensions:", pageWidth, "x", pageHeight);
+
       // Log all rectangles with their positions and fills for debugging
-      const rectangles = documentData.elements.filter(element => element.type === "Rectangle");
-      console.log('📄 Found', rectangles.length, 'rectangles:');
-      
+      const rectangles = documentData.elements.filter(
+        (element) => element.type === "Rectangle"
+      );
+      console.log("📄 Found", rectangles.length, "rectangles:");
+
       let hasAnyActualFill = false;
-      rectangles.forEach(rect => {
-        console.log(`   - ${rect.id}: pos(${rect.position.x}, ${rect.position.y}) size(${rect.position.width} x ${rect.position.height}) fill: ${rect.fill}`);
+      rectangles.forEach((rect) => {
+        console.log(
+          `   - ${rect.id}: pos(${rect.position.x}, ${rect.position.y}) size(${rect.position.width} x ${rect.position.height}) fill: ${rect.fill}`
+        );
         if (rect.fill && rect.fill !== "Color/None") {
           hasAnyActualFill = true;
         }
       });
-      
+
       // CRITICAL FIX: If ALL rectangles have Color/None, check if we already found a background color above
       if (!hasAnyActualFill) {
-        console.log('📄 ✅ ALL rectangles have Color/None - but checking for document-level background first');
+        console.log(
+          "📄 ✅ ALL rectangles have Color/None - but checking for document-level background first"
+        );
         // Don't immediately default to white - continue checking other strategies
       }
-      
+
       // Strategy 4a: Look for rectangles that cover the entire page area with actual color
-      const fullPageElements = documentData.elements.filter(element => {
-        return element.type === "Rectangle" &&
-               element.position.x <= 50 && // More tolerance for left edge  
-               element.position.y <= 50 && // More tolerance for top edge
-               element.position.width >= (pageWidth * 0.8) && // Covers most width
-               element.position.height >= (pageHeight * 0.8) && // Covers most height
-               element.fill && element.fill !== "Color/None";
+      const fullPageElements = documentData.elements.filter((element) => {
+        return (
+          element.type === "Rectangle" &&
+          element.position.x <= 50 && // More tolerance for left edge
+          element.position.y <= 50 && // More tolerance for top edge
+          element.position.width >= pageWidth * 0.8 && // Covers most width
+          element.position.height >= pageHeight * 0.8 && // Covers most height
+          element.fill &&
+          element.fill !== "Color/None"
+        );
       });
 
       if (fullPageElements.length > 0) {
         // Get the largest background element (likely the page background)
-        const backgroundElement = fullPageElements.reduce((largest, current) => {
-          const largestArea = largest.position.width * largest.position.height;
-          const currentArea = current.position.width * current.position.height;
-          return currentArea > largestArea ? current : largest;
-        });
+        const backgroundElement = fullPageElements.reduce(
+          (largest, current) => {
+            const largestArea =
+              largest.position.width * largest.position.height;
+            const currentArea =
+              current.position.width * current.position.height;
+            return currentArea > largestArea ? current : largest;
+          }
+        );
 
-        console.log('📄 Found full-page background element:', backgroundElement.id, 'with color:', backgroundElement.fill);
+        console.log(
+          "📄 Found full-page background element:",
+          backgroundElement.id,
+          "with color:",
+          backgroundElement.fill
+        );
         return convertColor(backgroundElement.fill);
       }
-      
+
       // Strategy 4b: Look for any large rectangle with actual color (even if not full page)
-      const largeColoredElements = documentData.elements.filter(element => {
+      const largeColoredElements = documentData.elements.filter((element) => {
         const area = element.position.width * element.position.height;
         const pageArea = pageWidth * pageHeight;
-        return element.type === "Rectangle" &&
-               area >= (pageArea * 0.3) && // At least 30% of page area
-               element.fill && element.fill !== "Color/None";
+        return (
+          element.type === "Rectangle" &&
+          area >= pageArea * 0.3 && // At least 30% of page area
+          element.fill &&
+          element.fill !== "Color/None"
+        );
       });
 
       if (largeColoredElements.length > 0) {
@@ -194,19 +247,24 @@ export default function Viewer() {
         });
 
         const backgroundElement = largeColoredElements[0];
-        console.log('📄 Found large colored background element:', backgroundElement.id, 'with color:', backgroundElement.fill);
+        console.log(
+          "📄 Found large colored background element:",
+          backgroundElement.id,
+          "with color:",
+          backgroundElement.fill
+        );
         return convertColor(backgroundElement.fill);
       }
     }
 
     // Strategy 5: Look for Paper color specifically (InDesign's default) - if enabled
     if (backgroundConfig.preferPaperColor && documentData.resources?.colors) {
-      const paperColor = Object.entries(documentData.resources.colors).find(([key, color]) => 
-        color.name === "Paper" || key === "Color/Paper"
+      const paperColor = Object.entries(documentData.resources.colors).find(
+        ([key, color]) => color.name === "Paper" || key === "Color/Paper"
       );
-      
+
       if (paperColor) {
-        console.log('📄 Found Paper color in resources - using as background');
+        console.log("📄 Found Paper color in resources - using as background");
         return convertColor(paperColor[0]);
       }
     }
@@ -214,17 +272,25 @@ export default function Viewer() {
     // Strategy 6: Check for explicitly named background colors
     if (documentData.resources?.colors) {
       // Look for specific background color names
-      const backgroundColorNames = ['Page', 'Background', 'Document', 'Page Color', 'Background Color'];
-      
+      const backgroundColorNames = [
+        "Page",
+        "Background",
+        "Document",
+        "Page Color",
+        "Background Color",
+      ];
+
       for (const colorName of backgroundColorNames) {
-        const foundColor = Object.entries(documentData.resources.colors).find(([key, color]) => 
-          color.name && backgroundColorNames.some(name => 
-            color.name.toLowerCase().includes(name.toLowerCase())
-          )
+        const foundColor = Object.entries(documentData.resources.colors).find(
+          ([key, color]) =>
+            color.name &&
+            backgroundColorNames.some((name) =>
+              color.name.toLowerCase().includes(name.toLowerCase())
+            )
         );
-        
+
         if (foundColor) {
-          console.log('📄 Found named background color:', foundColor[1].name);
+          console.log("📄 Found named background color:", foundColor[1].name);
           return convertColor(foundColor[0]);
         }
       }
@@ -232,16 +298,19 @@ export default function Viewer() {
 
     // Strategy 7: Check spreads data for background colors
     if (documentData.spreads) {
-      console.log('📄 Checking spreads for background colors...');
+      console.log("📄 Checking spreads for background colors...");
       for (const [spreadId, spread] of Object.entries(documentData.spreads)) {
         console.log(`   - Spread ${spreadId} keys:`, Object.keys(spread));
-        
+
         // Check for page background in spread
         if (spread.pages) {
           for (const [index, page] of spread.pages.entries()) {
             console.log(`     - Page ${index} keys:`, Object.keys(page));
             if (page.backgroundColor && page.backgroundColor !== "Color/None") {
-              console.log('📄 Found page background in spread page:', page.backgroundColor);
+              console.log(
+                "📄 Found page background in spread page:",
+                page.backgroundColor
+              );
               return convertColor(page.backgroundColor);
             }
           }
@@ -251,111 +320,144 @@ export default function Viewer() {
 
     // Strategy 8: Check master spreads for background
     if (documentData.masterSpreads) {
-      console.log('📄 Checking master spreads for background colors...');
-      for (const [masterId, master] of Object.entries(documentData.masterSpreads)) {
+      console.log("📄 Checking master spreads for background colors...");
+      for (const [masterId, master] of Object.entries(
+        documentData.masterSpreads
+      )) {
         console.log(`   - Master ${masterId} keys:`, Object.keys(master));
         if (master.backgroundColor && master.backgroundColor !== "Color/None") {
-          console.log('📄 Found master spread background:', master.backgroundColor);
+          console.log(
+            "📄 Found master spread background:",
+            master.backgroundColor
+          );
           return convertColor(master.backgroundColor);
         }
       }
     }
 
     // Strategy 9: IMPROVED color analysis - only as last resort and only for colors actually used as fills - if enabled
-    if (backgroundConfig.allowColorAnalysis && documentData.resources?.colors && documentData.elements) {
-      console.log('📄 Performing last-resort color analysis...');
-      
+    if (
+      backgroundConfig.allowColorAnalysis &&
+      documentData.resources?.colors &&
+      documentData.elements
+    ) {
+      console.log("📄 Performing last-resort color analysis...");
+
       // First, get all colors actually used as fills in the document
       const usedFillColors = new Set();
-      documentData.elements.forEach(element => {
+      documentData.elements.forEach((element) => {
         if (element.fill && element.fill !== "Color/None") {
           usedFillColors.add(element.fill);
         }
       });
-      
-      console.log('📄 Colors actually used as fills:', Array.from(usedFillColors));
-      
+
+      console.log(
+        "📄 Colors actually used as fills:",
+        Array.from(usedFillColors)
+      );
+
       if (usedFillColors.size === 0) {
-        console.log('📄 ✅ No colors used as fills - confirming white background');
+        console.log(
+          "📄 ✅ No colors used as fills - confirming white background"
+        );
         return "white";
       }
-      
+
       // Analyze only colors that are actually used as fills
-      const fillColorAnalysis = Array.from(usedFillColors).map(colorKey => {
-        const color = documentData.resources.colors[colorKey];
-        if (!color) return null;
-        
-        // Extract CMYK values from the key if available
-        const cmykMatch = colorKey.match(/Color\/C=([\d.]+)\s*M=([\d.]+)\s*Y=([\d.]+)\s*K=([\d.]+)/);
-        if (!cmykMatch) return null;
-        
-        const [, c, m, y, k] = cmykMatch.map(val => parseFloat(val));
-        console.log(`   → Analyzing used fill color ${colorKey}: C=${c} M=${m} Y=${y} K=${k}`);
-        
-        // Calculate how "background-like" this color is
-        const colorfulness = c + m + y;
-        const darkness = k;
-        const lightness = 100 - darkness; // Higher is lighter
-        
-        // Background colors should typically be:
-        // - Low colorfulness (neutral)
-        // - High lightness (bright)
-        // - Large coverage area
-        
-        let backgroundScore = 0;
-        
-        // Prefer lighter colors (white/paper-like)
-        backgroundScore += lightness * 2;
-        
-        // Slightly penalize very colorful colors (unless they cover large areas)
-        if (colorfulness > 50) {
-          backgroundScore -= colorfulness * 0.5;
-        }
-        
-        // Calculate total area covered by this color
-        let totalArea = 0;
-        documentData.elements.forEach(element => {
-          if (element.fill === colorKey) {
-            totalArea += (element.position.width || 0) * (element.position.height || 0);
+      const fillColorAnalysis = Array.from(usedFillColors)
+        .map((colorKey) => {
+          const color = documentData.resources.colors[colorKey];
+          if (!color) return null;
+
+          // Extract CMYK values from the key if available
+          const cmykMatch = colorKey.match(
+            /Color\/C=([\d.]+)\s*M=([\d.]+)\s*Y=([\d.]+)\s*K=([\d.]+)/
+          );
+          if (!cmykMatch) return null;
+
+          const [, c, m, y, k] = cmykMatch.map((val) => parseFloat(val));
+          console.log(
+            `   → Analyzing used fill color ${colorKey}: C=${c} M=${m} Y=${y} K=${k}`
+          );
+
+          // Calculate how "background-like" this color is
+          const colorfulness = c + m + y;
+          const darkness = k;
+          const lightness = 100 - darkness; // Higher is lighter
+
+          // Background colors should typically be:
+          // - Low colorfulness (neutral)
+          // - High lightness (bright)
+          // - Large coverage area
+
+          let backgroundScore = 0;
+
+          // Prefer lighter colors (white/paper-like)
+          backgroundScore += lightness * 2;
+
+          // Slightly penalize very colorful colors (unless they cover large areas)
+          if (colorfulness > 50) {
+            backgroundScore -= colorfulness * 0.5;
           }
-        });
-        
-        const pageArea = (documentData.pageInfo?.dimensions?.width || 612) * (documentData.pageInfo?.dimensions?.height || 792);
-        const coverageRatio = totalArea / pageArea;
-        
-        // Heavily boost colors that cover large areas
-        backgroundScore += coverageRatio * 1000;
-        
-        console.log(`   📊 Background score for ${colorKey}: ${backgroundScore} (lightness: ${lightness}, colorfulness: ${colorfulness}, coverage: ${coverageRatio.toFixed(3)})`);
-        
-        return {
-          key: colorKey,
-          color,
-          cmyk: { c, m, y, k },
-          backgroundScore,
-          lightness,
-          colorfulness,
-          coverageRatio
-        };
-      }).filter(Boolean);
-      
+
+          // Calculate total area covered by this color
+          let totalArea = 0;
+          documentData.elements.forEach((element) => {
+            if (element.fill === colorKey) {
+              totalArea +=
+                (element.position.width || 0) * (element.position.height || 0);
+            }
+          });
+
+          const pageArea =
+            (documentData.pageInfo?.dimensions?.width || 612) *
+            (documentData.pageInfo?.dimensions?.height || 792);
+          const coverageRatio = totalArea / pageArea;
+
+          // Heavily boost colors that cover large areas
+          backgroundScore += coverageRatio * 1000;
+
+          console.log(
+            `   📊 Background score for ${colorKey}: ${backgroundScore} (lightness: ${lightness}, colorfulness: ${colorfulness}, coverage: ${coverageRatio.toFixed(
+              3
+            )})`
+          );
+
+          return {
+            key: colorKey,
+            color,
+            cmyk: { c, m, y, k },
+            backgroundScore,
+            lightness,
+            colorfulness,
+            coverageRatio,
+          };
+        })
+        .filter(Boolean);
+
       if (fillColorAnalysis.length > 0) {
         // Sort by background score (highest first)
         fillColorAnalysis.sort((a, b) => b.backgroundScore - a.backgroundScore);
         const bestBackgroundColor = fillColorAnalysis[0];
-        
-        console.log(`🎨 Selected background color from fills: ${bestBackgroundColor.key} (score: ${bestBackgroundColor.backgroundScore})`);
-        console.log(`   Color details: C=${bestBackgroundColor.cmyk.c} M=${bestBackgroundColor.cmyk.m} Y=${bestBackgroundColor.cmyk.y} K=${bestBackgroundColor.cmyk.k}`);
+
+        console.log(
+          `🎨 Selected background color from fills: ${bestBackgroundColor.key} (score: ${bestBackgroundColor.backgroundScore})`
+        );
+        console.log(
+          `   Color details: C=${bestBackgroundColor.cmyk.c} M=${bestBackgroundColor.cmyk.m} Y=${bestBackgroundColor.cmyk.y} K=${bestBackgroundColor.cmyk.k}`
+        );
         return convertColor(bestBackgroundColor.key);
       }
     }
 
     // Final Fallback: Use configured fallback
     if (backgroundConfig.fallbackToWhite) {
-      console.log('📄 ✅ No background color detected - using white fallback');
+      console.log("📄 ✅ No background color detected - using white fallback");
       return "white";
     } else {
-      console.log('📄 ✅ No background color detected - using transparent fallback');
+      console.log(
+        "📄 ✅ No background color detected - using transparent fallback"
+      );
       return "transparent";
     }
   };
@@ -371,36 +473,42 @@ export default function Viewer() {
   };
 
   const getFontStyle = (fontStyle) => {
-    if (!fontStyle || fontStyle === '' || fontStyle === 'Regular' || fontStyle === 'normal') {
+    if (
+      !fontStyle ||
+      fontStyle === "" ||
+      fontStyle === "Regular" ||
+      fontStyle === "normal"
+    ) {
       return "normal";
     }
-    
+
     const style = fontStyle.toLowerCase().trim();
-    
+
     // FIXED: More precise italic detection - only exact matches or explicit italic styles
-    const willBeItalic = style === "italic" || 
-        style === "oblique" || 
-        style.endsWith(" italic") || 
-        style.startsWith("italic ") ||
-        style === "it" ||
-        style.includes(" italic ") ||
-        style.endsWith("-italic") ||
-        style.startsWith("italic-");
-    
+    const willBeItalic =
+      style === "italic" ||
+      style === "oblique" ||
+      style.endsWith(" italic") ||
+      style.startsWith("italic ") ||
+      style === "it" ||
+      style.includes(" italic ") ||
+      style.endsWith("-italic") ||
+      style.startsWith("italic-");
+
     // DEBUG: Log when italic is being applied
     if (willBeItalic) {
-      console.log('🎨 Font style applying ITALIC:', {
+      console.log("🎨 Font style applying ITALIC:", {
         input: fontStyle,
         inputType: typeof fontStyle,
         normalizedInput: style,
-        reason: 'Matched italic pattern'
+        reason: "Matched italic pattern",
       });
     }
-    
+
     if (willBeItalic) {
       return "italic";
     }
-    
+
     // Default to normal for everything else (including Regular, Medium, Bold, etc.)
     return "normal";
   };
@@ -419,67 +527,95 @@ export default function Viewer() {
   };
 
   // ENHANCED: Pixel-perfect text measurement using canvas for accuracy
-  const measureTextAccurately = (text, fontSize, fontFamily, fontWeight, fontStyle) => {
+  const measureTextAccurately = (
+    text,
+    fontSize,
+    fontFamily,
+    fontWeight,
+    fontStyle
+  ) => {
     // Create a canvas for precise text measurement
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
     // Set font properties to match the text
     ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
-    
+
     const metrics = ctx.measureText(text);
     const width = metrics.width;
     const height = fontSize * 1.2; // Approximate height based on font size
-    
+
     return {
       width,
       height,
-      actualBounds: metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent
+      actualBounds:
+        metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent,
     };
   };
 
   // IMPROVED: Calculate text metrics with more generous spacing
-  const calculateTextMetrics = (text, fontSize, lineHeight, containerWidth, containerHeight, fontFamily = "Arial", fontWeight = "normal", fontStyle = "normal") => {
-    if (!text) return { willOverflow: false, estimatedLines: 0, estimatedTextHeight: 0 };
-    
+  const calculateTextMetrics = (
+    text,
+    fontSize,
+    lineHeight,
+    containerWidth,
+    containerHeight,
+    fontFamily = "Arial",
+    fontWeight = "normal",
+    fontStyle = "normal"
+  ) => {
+    if (!text)
+      return { willOverflow: false, estimatedLines: 0, estimatedTextHeight: 0 };
+
     // Method 1: Canvas-based measurement (most accurate)
-    const canvasMetrics = measureTextAccurately(text, fontSize, fontFamily, fontWeight, fontStyle);
-    
+    const canvasMetrics = measureTextAccurately(
+      text,
+      fontSize,
+      fontFamily,
+      fontWeight,
+      fontStyle
+    );
+
     // IMPROVED: More generous line height calculation
     let lineHeightPx;
-    if (typeof lineHeight === 'string' && lineHeight.includes('px')) {
+    if (typeof lineHeight === "string" && lineHeight.includes("px")) {
       lineHeightPx = parseFloat(lineHeight);
-    } else if (typeof lineHeight === 'number') {
+    } else if (typeof lineHeight === "number") {
       lineHeightPx = lineHeight * fontSize;
     } else {
       // Parse CSS line-height values like "1.2", "1.5", etc.
       const numericLineHeight = parseFloat(lineHeight) || 1.2;
       lineHeightPx = numericLineHeight * fontSize;
     }
-    
+
     // FIXED: More accurate word-based wrapping like InDesign
     const effectiveWidth = containerWidth - 4; // Account for padding
-    
+
     // Split text into words and measure actual width
-    const words = text.split(/\s+/).filter(word => word.length > 0);
+    const words = text.split(/\s+/).filter((word) => word.length > 0);
     const lines = [];
-    let currentLine = '';
+    let currentLine = "";
     let currentLineWidth = 0;
-    
+
     // Create canvas context for accurate word measurement
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
     ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
-    
+
     for (let i = 0; i < words.length; i++) {
       const word = words[i];
       const wordWidth = ctx.measureText(word).width;
-      const spaceWidth = ctx.measureText(' ').width;
-      
+      const spaceWidth = ctx.measureText(" ").width;
+
       // Check if adding this word would exceed the line width
-      const wordWithSpaceWidth = currentLine ? wordWidth + spaceWidth : wordWidth;
-      
-      if (currentLine && (currentLineWidth + wordWithSpaceWidth > effectiveWidth)) {
+      const wordWithSpaceWidth = currentLine
+        ? wordWidth + spaceWidth
+        : wordWidth;
+
+      if (
+        currentLine &&
+        currentLineWidth + wordWithSpaceWidth > effectiveWidth
+      ) {
         // Start a new line
         lines.push(currentLine);
         currentLine = word;
@@ -487,7 +623,7 @@ export default function Viewer() {
       } else {
         // Add word to current line
         if (currentLine) {
-          currentLine += ' ' + word;
+          currentLine += " " + word;
           currentLineWidth += wordWithSpaceWidth;
         } else {
           currentLine = word;
@@ -495,18 +631,18 @@ export default function Viewer() {
         }
       }
     }
-    
+
     // Add the last line if it has content
     if (currentLine) {
       lines.push(currentLine);
     }
-    
+
     const estimatedLines = Math.max(1, lines.length);
     const estimatedTextHeight = estimatedLines * lineHeightPx;
-    
+
     // Account for padding in available height
     const availableHeight = containerHeight - 4;
-    
+
     return {
       estimatedLines,
       estimatedTextHeight,
@@ -515,60 +651,85 @@ export default function Viewer() {
       actualLines: lines, // Include actual line breakdown for debugging
       willOverflow: estimatedTextHeight > availableHeight,
       overfillRatio: estimatedTextHeight / availableHeight,
-      overflowSeverity: estimatedTextHeight > availableHeight * 1.5 ? 'severe' :
-                       estimatedTextHeight > availableHeight * 1.2 ? 'moderate' : 'minor'
+      overflowSeverity:
+        estimatedTextHeight > availableHeight * 1.5
+          ? "severe"
+          : estimatedTextHeight > availableHeight * 1.2
+          ? "moderate"
+          : "minor",
     };
   };
 
   // ENHANCED: Multiple text fitting strategies for pixel-perfect display
   const TEXT_FITTING_STRATEGIES = {
-    AUTO_SCALE: 'auto_scale',           // Reduce font size to fit
-    TRUNCATE: 'truncate',               // Cut off with ellipsis
-    ALLOW_OVERFLOW: 'allow_overflow',   // Let text overflow naturally
-    PRECISE_FIT: 'precise_fit',         // InDesign-style precise fitting
-    COMPRESS_LINES: 'compress_lines'    // Reduce line height first
+    AUTO_SCALE: "auto_scale", // Reduce font size to fit
+    TRUNCATE: "truncate", // Cut off with ellipsis
+    ALLOW_OVERFLOW: "allow_overflow", // Let text overflow naturally
+    PRECISE_FIT: "precise_fit", // InDesign-style precise fitting
+    COMPRESS_LINES: "compress_lines", // Reduce line height first
   };
 
   // Configuration - you can change this based on your preference
-  const [textFittingStrategy, setTextFittingStrategy] = useState(TEXT_FITTING_STRATEGIES.PRECISE_FIT);
+  const [textFittingStrategy, setTextFittingStrategy] = useState(
+    TEXT_FITTING_STRATEGIES.PRECISE_FIT
+  );
 
-  const getOptimalTextStyles = (baseStyles, textMetrics, containerWidth, containerHeight, strategy = textFittingStrategy) => {
+  const getOptimalTextStyles = (
+    baseStyles,
+    textMetrics,
+    containerWidth,
+    containerHeight,
+    strategy = textFittingStrategy
+  ) => {
     if (!textMetrics.willOverflow) {
-      return { styles: baseStyles, wasAdjusted: false, adjustmentDetails: null };
+      return {
+        styles: baseStyles,
+        wasAdjusted: false,
+        adjustmentDetails: null,
+      };
     }
 
     const fontSize = parseFloat(baseStyles.fontSize);
     const lineHeight = parseFloat(baseStyles.lineHeight);
-    
+
     switch (strategy) {
       case TEXT_FITTING_STRATEGIES.AUTO_SCALE: {
         // Progressive font size reduction
-        const maxReduction = textMetrics.overflowSeverity === 'severe' ? 0.7 : 
-                            textMetrics.overflowSeverity === 'moderate' ? 0.8 : 0.9;
-        const scaleFactor = Math.max(maxReduction, 1 / textMetrics.overfillRatio);
-        
+        const maxReduction =
+          textMetrics.overflowSeverity === "severe"
+            ? 0.7
+            : textMetrics.overflowSeverity === "moderate"
+            ? 0.8
+            : 0.9;
+        const scaleFactor = Math.max(
+          maxReduction,
+          1 / textMetrics.overfillRatio
+        );
+
         return {
           styles: {
             ...baseStyles,
             fontSize: `${Math.max(8, fontSize * scaleFactor)}px`,
             lineHeight: Math.max(0.9, lineHeight * scaleFactor),
-            overflow: "hidden"
+            overflow: "hidden",
           },
           wasAdjusted: true,
-          adjustmentDetails: { 
-            type: 'font_scaled', 
+          adjustmentDetails: {
+            type: "font_scaled",
             scaleFactor: scaleFactor,
             originalSize: fontSize,
-            newSize: fontSize * scaleFactor
-          }
+            newSize: fontSize * scaleFactor,
+          },
         };
       }
 
       case TEXT_FITTING_STRATEGIES.TRUNCATE: {
         // Calculate how many lines can fit
-        const availableLines = Math.floor(textMetrics.availableHeight / textMetrics.lineHeightPx);
+        const availableLines = Math.floor(
+          textMetrics.availableHeight / textMetrics.lineHeightPx
+        );
         const truncateAtLine = Math.max(1, availableLines);
-        
+
         return {
           styles: {
             ...baseStyles,
@@ -577,14 +738,14 @@ export default function Viewer() {
             display: "-webkit-box",
             WebkitLineClamp: truncateAtLine,
             WebkitBoxOrient: "vertical",
-            lineHeight: baseStyles.lineHeight
+            lineHeight: baseStyles.lineHeight,
           },
           wasAdjusted: true,
-          adjustmentDetails: { 
-            type: 'text_truncated', 
+          adjustmentDetails: {
+            type: "text_truncated",
             visibleLines: truncateAtLine,
-            totalLines: textMetrics.estimatedLines
-          }
+            totalLines: textMetrics.estimatedLines,
+          },
         };
       }
 
@@ -593,21 +754,21 @@ export default function Viewer() {
         const targetHeight = textMetrics.availableHeight;
         const currentHeight = textMetrics.estimatedTextHeight;
         const compressionRatio = targetHeight / currentHeight;
-        
+
         if (compressionRatio > 0.8) {
           // Just compress line height
           return {
             styles: {
               ...baseStyles,
               lineHeight: Math.max(0.8, lineHeight * compressionRatio),
-              overflow: "hidden"
+              overflow: "hidden",
             },
             wasAdjusted: true,
-            adjustmentDetails: { 
-              type: 'line_height_compressed', 
+            adjustmentDetails: {
+              type: "line_height_compressed",
               originalLineHeight: lineHeight,
-              newLineHeight: lineHeight * compressionRatio
-            }
+              newLineHeight: lineHeight * compressionRatio,
+            },
           };
         } else {
           // Compress both line height and font size
@@ -617,90 +778,100 @@ export default function Viewer() {
               ...baseStyles,
               fontSize: `${fontSize * fontReduction}px`,
               lineHeight: Math.max(0.8, lineHeight * compressionRatio),
-              overflow: "hidden"
+              overflow: "hidden",
             },
             wasAdjusted: true,
-            adjustmentDetails: { 
-              type: 'full_compression', 
+            adjustmentDetails: {
+              type: "full_compression",
               fontReduction: fontReduction,
-              lineHeightReduction: compressionRatio
-            }
+              lineHeightReduction: compressionRatio,
+            },
           };
         }
       }
 
       case TEXT_FITTING_STRATEGIES.PRECISE_FIT: {
         // ENHANCED: More nuanced fitting approach
-        const compressionNeeded = textMetrics.availableHeight / textMetrics.estimatedTextHeight;
-        
+        const compressionNeeded =
+          textMetrics.availableHeight / textMetrics.estimatedTextHeight;
+
         if (compressionNeeded >= 0.95) {
           // Text fits well, just ensure no overflow
           return {
             styles: {
               ...baseStyles,
-              overflow: "hidden"
+              overflow: "hidden",
             },
             wasAdjusted: false,
-            adjustmentDetails: { type: 'no_adjustment_needed' }
+            adjustmentDetails: { type: "no_adjustment_needed" },
           };
         } else if (compressionNeeded > 0.85) {
           // Minor adjustment - just reduce line height slightly
           const lineHeightReduction = Math.max(0.9, compressionNeeded * 1.05);
-          
+
           return {
             styles: {
               ...baseStyles,
-              lineHeight: Math.max(0.9, parseFloat(baseStyles.lineHeight) * lineHeightReduction),
-              overflow: "hidden"
+              lineHeight: Math.max(
+                0.9,
+                parseFloat(baseStyles.lineHeight) * lineHeightReduction
+              ),
+              overflow: "hidden",
             },
             wasAdjusted: true,
-            adjustmentDetails: { 
-              type: 'minor_line_height_adjustment', 
+            adjustmentDetails: {
+              type: "minor_line_height_adjustment",
               lineHeightReduction,
-              originalLineHeight: baseStyles.lineHeight
-            }
+              originalLineHeight: baseStyles.lineHeight,
+            },
           };
         } else if (compressionNeeded > 0.7) {
           // Moderate adjustment - compress both font and line height proportionally
-          const fontScale = Math.max(0.9, Math.sqrt(compressionNeeded));  // Less aggressive font scaling
+          const fontScale = Math.max(0.9, Math.sqrt(compressionNeeded)); // Less aggressive font scaling
           const lineScale = Math.max(0.85, compressionNeeded / fontScale);
-          
+
           return {
             styles: {
               ...baseStyles,
               fontSize: `${fontSize * fontScale}px`,
-              lineHeight: Math.max(0.85, parseFloat(baseStyles.lineHeight) * lineScale),
-              overflow: "hidden"
+              lineHeight: Math.max(
+                0.85,
+                parseFloat(baseStyles.lineHeight) * lineScale
+              ),
+              overflow: "hidden",
             },
             wasAdjusted: true,
-            adjustmentDetails: { 
-              type: 'moderate_dual_adjustment', 
-              fontScale, 
-              lineScale, 
-              compressionNeeded 
-            }
+            adjustmentDetails: {
+              type: "moderate_dual_adjustment",
+              fontScale,
+              lineScale,
+              compressionNeeded,
+            },
           };
         } else {
           // Major adjustment - apply reasonable compression then allow slight overflow
-          const maxFontScale = 0.85;  // Less aggressive than before
-          const maxLineScale = 0.8;   // Less aggressive than before
-          
+          const maxFontScale = 0.85; // Less aggressive than before
+          const maxLineScale = 0.8; // Less aggressive than before
+
           return {
             styles: {
               ...baseStyles,
               fontSize: `${fontSize * maxFontScale}px`,
-              lineHeight: Math.max(0.8, parseFloat(baseStyles.lineHeight) * maxLineScale),
+              lineHeight: Math.max(
+                0.8,
+                parseFloat(baseStyles.lineHeight) * maxLineScale
+              ),
               overflow: "hidden",
               // Allow some overflow rather than harsh truncation
-              maxHeight: `${textMetrics.availableHeight}px`
+              maxHeight: `${textMetrics.availableHeight}px`,
             },
             wasAdjusted: true,
-            adjustmentDetails: { 
-              type: 'major_adjustment_with_overflow', 
-              fontScale: maxFontScale, 
+            adjustmentDetails: {
+              type: "major_adjustment_with_overflow",
+              fontScale: maxFontScale,
               lineScale: maxLineScale,
-              allowedOverflow: true
-            }
+              allowedOverflow: true,
+            },
           };
         }
       }
@@ -710,145 +881,219 @@ export default function Viewer() {
         return {
           styles: {
             ...baseStyles,
-            overflow: "visible" // Let text overflow naturally
+            overflow: "visible", // Let text overflow naturally
           },
           wasAdjusted: false,
-          adjustmentDetails: { type: 'overflow_allowed' }
+          adjustmentDetails: { type: "overflow_allowed" },
         };
       }
     }
   };
 
-  const renderFormattedText = (story, containerHeight = null, adjustedFontSize = null) => {
+  const renderFormattedText = (
+    story,
+    containerHeight = null,
+    adjustedFontSize = null
+  ) => {
     if (!story.formattedContent || !Array.isArray(story.formattedContent)) {
       // Use CSS to preserve all whitespace and newlines
-      if (typeof story.text === 'string') {
-        return <span style={{ whiteSpace: 'pre-line' }}>{story.text}</span>;
+      if (typeof story.text === "string") {
+        return <span style={{ whiteSpace: "pre-line" }}>{story.text}</span>;
       }
       return <span>{story.text}</span>;
     }
 
-    return story.formattedContent.map((content, index) => {
-      // FIXED: Be more selective about line breaks to prevent unnecessary overflow
-      if (content.formatting?.isBreak && content.formatting.breakType === "line") {
-        // Only render explicit line breaks, skip unnecessary ones
-        if (content.formatting.source === 'Br element within range' || 
-            content.formatting.source === 'Br element at end of range' ||
-            content.formatting.source === 'direct Br element') {
+    // DEBUG: Count line breaks in formatted content
+    const lineBreakCount = story.formattedContent.filter(
+      (item) => item.formatting?.isBreak
+    ).length;
+    const consecutiveBreaks = [];
+    let currentBreakGroup = [];
+
+    story.formattedContent.forEach((item, index) => {
+      if (item.formatting?.isBreak) {
+        currentBreakGroup.push({
+          index,
+          source: item.formatting.source,
+          breakType: item.formatting.breakType,
+        });
+      } else if (currentBreakGroup.length > 0) {
+        if (currentBreakGroup.length > 1) {
+          consecutiveBreaks.push(currentBreakGroup);
+        }
+        currentBreakGroup = [];
+      }
+    });
+
+    if (currentBreakGroup.length > 1) {
+      consecutiveBreaks.push(currentBreakGroup);
+    }
+
+    console.log(
+      `🎨 Rendering formatted text with ${lineBreakCount} total line breaks`
+    );
+    if (consecutiveBreaks.length > 0) {
+      console.log(
+        `🎨 Found ${consecutiveBreaks.length} groups of consecutive line breaks:`,
+        consecutiveBreaks
+      );
+    }
+
+    return story.formattedContent
+      .map((content, index) => {
+        // FIXED: Render ALL line breaks to preserve user's intended spacing
+        if (content.formatting?.isBreak) {
+          // Render any type of line break - don't filter based on source
+          console.log(
+            `🎨 Rendering line break ${index}: source=${content.formatting.source}, type=${content.formatting.breakType}`
+          );
           return <br key={index} />;
         }
-        // Skip implicit and between-range breaks that might cause overflow
-        return null;
-      }
 
-      const formatting = content.formatting || {};
-      // CRITICAL FIX: Use adjusted font size if overflow prevention was applied
-      const originalFontSize = formatting.fontSize || story.styling?.fontSize || 12;
-      const fontSize = adjustedFontSize || originalFontSize;
-      
-      // DEBUG: Log style resolution for any text with formatting applied (generic check)
-      const hasFormatting = formatting.fontStyle || formatting.characterStyle || formatting.paragraphStyle;
-      const finalFontStyle = getFontStyle(formatting.fontStyle);
-      
-      if (hasFormatting || finalFontStyle === "italic") {
-        console.log('🎨 Style resolution for text:', JSON.stringify(content.text?.substring(0, 20) + '...'), {
-          rawFormatting: formatting,
-          resolvedFontStyle: formatting.fontStyle,
-          storyDefaultStyle: story.styling?.fontStyle,
-          finalFontStyle: finalFontStyle,
-          characterStyle: formatting.characterStyle,
-          paragraphStyle: formatting.paragraphStyle
-        });
-        
-        // WARN: Alert if italic is being applied when it shouldn't be
-        if (finalFontStyle === "italic" && (!formatting.fontStyle || formatting.fontStyle === 'Regular')) {
-          console.warn('⚠️  UNEXPECTED ITALIC: Text is being styled as italic but fontStyle is:', formatting.fontStyle);
+        const formatting = content.formatting || {};
+        // CRITICAL FIX: Use adjusted font size if overflow prevention was applied
+        const originalFontSize =
+          formatting.fontSize || story.styling?.fontSize || 12;
+        const fontSize = adjustedFontSize || originalFontSize;
+
+        // DEBUG: Log style resolution for any text with formatting applied (generic check)
+        const hasFormatting =
+          formatting.fontStyle ||
+          formatting.characterStyle ||
+          formatting.paragraphStyle;
+        const finalFontStyle = getFontStyle(formatting.fontStyle);
+
+        if (hasFormatting || finalFontStyle === "italic") {
+          console.log(
+            "🎨 Style resolution for text:",
+            JSON.stringify(content.text?.substring(0, 20) + "..."),
+            {
+              rawFormatting: formatting,
+              resolvedFontStyle: formatting.fontStyle,
+              storyDefaultStyle: story.styling?.fontStyle,
+              finalFontStyle: finalFontStyle,
+              characterStyle: formatting.characterStyle,
+              paragraphStyle: formatting.paragraphStyle,
+            }
+          );
+
+          // WARN: Alert if italic is being applied when it shouldn't be
+          if (
+            finalFontStyle === "italic" &&
+            (!formatting.fontStyle || formatting.fontStyle === "Regular")
+          ) {
+            console.warn(
+              "⚠️  UNEXPECTED ITALIC: Text is being styled as italic but fontStyle is:",
+              formatting.fontStyle
+            );
+          }
         }
-      }
-      
-      // IMPROVED: More generous line height calculation for individual spans
-      let lineHeight = "inherit"; // Inherit from parent container
-      
-      if (formatting.effectiveLineHeight) {
-        lineHeight = formatting.effectiveLineHeight;
-      } else if (formatting.leading !== undefined) {
-        if (formatting.leading === "auto") {
-          lineHeight = "inherit";
-        } else if (typeof formatting.leading === "number") {
-          // IMPROVED: More generous line height range to prevent text chopping
-          const ratio = formatting.leading / fontSize;
-          lineHeight = Math.max(1.1, Math.min(2.5, ratio)); // More generous range
+
+        // IMPROVED: More generous line height calculation for individual spans
+        let lineHeight = "inherit"; // Inherit from parent container
+
+        if (formatting.effectiveLineHeight) {
+          lineHeight = formatting.effectiveLineHeight;
+        } else if (formatting.leading !== undefined) {
+          if (formatting.leading === "auto") {
+            lineHeight = "inherit";
+          } else if (typeof formatting.leading === "number") {
+            // IMPROVED: More generous line height range to prevent text chopping
+            const ratio = formatting.leading / fontSize;
+            lineHeight = Math.max(1.1, Math.min(2.5, ratio)); // More generous range
+          }
         }
-      }
 
-      const style = {
-        fontSize: `${fontSize}px`,
-        fontFamily: formatting.fontFamily || story.styling?.fontFamily || "Arial, sans-serif",
-        fontWeight: getFontWeight(formatting.fontStyle),
-        fontStyle: getFontStyle(formatting.fontStyle),
-        color: convertColor(formatting.fillColor) || "black",
-        textAlign: getTextAlign(formatting.alignment),
-        lineHeight: lineHeight,
-        letterSpacing: formatting.tracking ? `${formatting.tracking / 1000}em` : "normal",
-        
-        // FIXED: Remove margins that could cause spacing issues
-        margin: 0,
-        padding: 0,
-        
-        // Only apply indentation if explicitly specified
-        ...(formatting.leftIndent && { marginLeft: `${formatting.leftIndent}px` }),
-        ...(formatting.rightIndent && { marginRight: `${formatting.rightIndent}px` }),
-        ...(formatting.firstLineIndent && { textIndent: `${formatting.firstLineIndent}px` }),
-        ...(formatting.spaceBefore && { marginTop: `${formatting.spaceBefore}px` }),
-        ...(formatting.spaceAfter && { marginBottom: `${formatting.spaceAfter}px` }),
-        
-        textDecoration: "none", // FIXED: Removed automatic underline detection to prevent false positives
-        
-        // TODO: Add proper underline detection based on actual formatting attributes
-        // textDecoration: formatting.characterStyle?.includes("Underline") ? "underline" : "none",
-      };
+        const style = {
+          fontSize: `${fontSize}px`,
+          fontFamily:
+            formatting.fontFamily ||
+            story.styling?.fontFamily ||
+            "Arial, sans-serif",
+          fontWeight: getFontWeight(formatting.fontStyle),
+          fontStyle: getFontStyle(formatting.fontStyle),
+          color: convertColor(formatting.fillColor) || "black",
+          textAlign: getTextAlign(formatting.alignment),
+          lineHeight: lineHeight,
+          letterSpacing: formatting.tracking
+            ? `${formatting.tracking / 1000}em`
+            : "normal",
 
-      // CRITICAL FIX: Add space after span if needed to prevent word joining
-      const currentText = content.text || '';
-      const nextContent = story.formattedContent[index + 1];
-      const needsSpaceAfter = nextContent && 
-                             !nextContent.formatting?.isBreak && 
-                             !currentText.endsWith(' ') && 
-                             !currentText.endsWith('\n') &&
-                             nextContent.text && 
-                             !nextContent.text.startsWith(' ') &&
-                             !nextContent.text.startsWith('\n');
+          // FIXED: Remove margins that could cause spacing issues
+          margin: 0,
+          padding: 0,
 
-      // DEBUG: Log space insertion for problematic text
-      if ((currentText.includes('pa') && nextContent?.text?.includes('voluptusda')) ||
-          (currentText.includes('voluptusda') && index > 0)) {
-        console.log(`🔧 Space insertion check [${index}]:`, {
-          currentText: JSON.stringify(currentText),
-          nextText: nextContent ? JSON.stringify(nextContent.text) : 'none',
-          needsSpaceAfter,
-          currentEndsWithSpace: currentText.endsWith(' '),
-          nextStartsWithSpace: nextContent?.text?.startsWith(' ')
-        });
-      }
+          // Only apply indentation if explicitly specified
+          ...(formatting.leftIndent && {
+            marginLeft: `${formatting.leftIndent}px`,
+          }),
+          ...(formatting.rightIndent && {
+            marginRight: `${formatting.rightIndent}px`,
+          }),
+          ...(formatting.firstLineIndent && {
+            textIndent: `${formatting.firstLineIndent}px`,
+          }),
+          ...(formatting.spaceBefore && {
+            marginTop: `${formatting.spaceBefore}px`,
+          }),
+          ...(formatting.spaceAfter && {
+            marginBottom: `${formatting.spaceAfter}px`,
+          }),
 
-      return (
-        <React.Fragment key={index}>
-          <span style={style}>
-            {content.text}
-          </span>
-          {needsSpaceAfter && ' '}
-        </React.Fragment>
-      );
-    }).filter(Boolean); // Remove null entries from skipped line breaks
+          textDecoration: "none", // FIXED: Removed automatic underline detection to prevent false positives
+
+          // TODO: Add proper underline detection based on actual formatting attributes
+          // textDecoration: formatting.characterStyle?.includes("Underline") ? "underline" : "none",
+        };
+
+        // CRITICAL FIX: Add space after span if needed to prevent word joining
+        const currentText = content.text || "";
+        const nextContent = story.formattedContent[index + 1];
+        const needsSpaceAfter =
+          nextContent &&
+          !nextContent.formatting?.isBreak &&
+          !currentText.endsWith(" ") &&
+          !currentText.endsWith("\n") &&
+          nextContent.text &&
+          !nextContent.text.startsWith(" ") &&
+          !nextContent.text.startsWith("\n");
+
+        // DEBUG: Log space insertion for problematic text
+        if (
+          (currentText.includes("pa") &&
+            nextContent?.text?.includes("voluptusda")) ||
+          (currentText.includes("voluptusda") && index > 0)
+        ) {
+          console.log(`🔧 Space insertion check [${index}]:`, {
+            currentText: JSON.stringify(currentText),
+            nextText: nextContent ? JSON.stringify(nextContent.text) : "none",
+            needsSpaceAfter,
+            currentEndsWithSpace: currentText.endsWith(" "),
+            nextStartsWithSpace: nextContent?.text?.startsWith(" "),
+          });
+        }
+
+        return (
+          <React.Fragment key={index}>
+            <span style={style}>{content.text}</span>
+            {needsSpaceAfter && " "}
+          </React.Fragment>
+        );
+      })
+      .filter(Boolean); // Remove null entries from skipped line breaks
   };
 
-  const getStoryStyles = (story, containerHeight = null, containerWidth = null) => {
+  const getStoryStyles = (
+    story,
+    containerHeight = null,
+    containerWidth = null
+  ) => {
     const styling = story.styling || {};
     const fontSize = styling.fontSize || 12;
-    
+
     // IMPROVED: More generous line height calculation to prevent text chopping
     let lineHeight = "1.3"; // More generous default CSS line-height
-    
+
     if (styling.effectiveLineHeight) {
       lineHeight = styling.effectiveLineHeight;
     } else if (styling.leading !== undefined) {
@@ -869,31 +1114,33 @@ export default function Viewer() {
       color: convertColor(styling.fillColor) || "black",
       textAlign: getTextAlign(styling.alignment),
       lineHeight: lineHeight,
-      letterSpacing: styling.tracking ? `${styling.tracking / 1000}em` : "normal",
-      
+      letterSpacing: styling.tracking
+        ? `${styling.tracking / 1000}em`
+        : "normal",
+
       // IMPROVED: Minimal padding to prevent container size conflicts
-      padding: "1px 2px", 
+      padding: "1px 2px",
       margin: 0,
-      
+
       // FIXED: Use full container size, let CSS handle overflow properly
       height: "100%", // Use full container height
       width: "100%", // Use full container width
       minHeight: `${fontSize * 1.4}px`, // More generous minimum height
-      
+
       wordWrap: "break-word",
       overflow: "visible", // CHANGED: Allow text to be visible instead of hidden
       boxSizing: "border-box",
-      
-      // IMPROVED: Better text layout handling 
+
+      // IMPROVED: Better text layout handling
       display: "block",
-      whiteSpace: "pre-wrap", 
-      wordBreak: "break-word", 
+      whiteSpace: "pre-wrap",
+      wordBreak: "break-word",
       overflowWrap: "break-word",
-      
+
       // IMPROVED: Allow text to flow naturally
       textOverflow: "visible", // Don't clip text
       lineClamp: "none", // Allow long words to break if needed
-      
+
       // Remove flexbox alignment that might cause issues
       // justifyContent: styling.alignment === "CenterAlign" ? "center" : "flex-start",
     };
@@ -902,28 +1149,29 @@ export default function Viewer() {
   // ENHANCED: Extract InDesign-accurate formatting for precise text measurement
   const getInDesignAccurateFormatting = (story) => {
     const styling = story.styling || {};
-    const firstFormatted = story.formattedContent?.find(item => 
-      item.formatting && !item.formatting.isBreak
+    const firstFormatted = story.formattedContent?.find(
+      (item) => item.formatting && !item.formatting.isBreak
     );
     const formatting = firstFormatted?.formatting || styling;
-    
+
     return {
       fontSize: formatting.fontSize || styling.fontSize || 12,
-      fontFamily: formatting.fontFamily || styling.fontFamily || "Arial, sans-serif",
+      fontFamily:
+        formatting.fontFamily || styling.fontFamily || "Arial, sans-serif",
       fontWeight: getFontWeight(formatting.fontStyle || styling.fontStyle),
       fontStyle: getFontStyle(formatting.fontStyle || styling.fontStyle),
       color: convertColor(formatting.fillColor || styling.fillColor) || "black",
       textAlign: getTextAlign(formatting.alignment || styling.alignment),
-      
+
       // InDesign-specific properties for precise measurement
-      leading: formatting.leading || styling.leading || 'auto',
-      leadingType: formatting.leadingType || styling.leadingType || 'auto',
+      leading: formatting.leading || styling.leading || "auto",
+      leadingType: formatting.leadingType || styling.leadingType || "auto",
       tracking: formatting.tracking || styling.tracking || 0,
       baselineShift: formatting.baselineShift || 0,
-      
+
       // Text frame properties
-      firstBaselineOffset: formatting.firstBaselineOffset || 'AscentOffset',
-      verticalJustification: formatting.verticalJustification || 'TopAlign'
+      firstBaselineOffset: formatting.firstBaselineOffset || "AscentOffset",
+      verticalJustification: formatting.verticalJustification || "TopAlign",
     };
   };
 
@@ -947,171 +1195,310 @@ export default function Viewer() {
         }}
       >
         {/* Text Fitting Strategy Selector */}
-        <div style={{
-          backgroundColor: "#e3f2fd",
-          padding: "12px",
-          borderRadius: "6px",
-          marginBottom: "16px",
-          border: "1px solid #2196f3"
-        }}>
-          <h4 style={{ margin: "0 0 8px 0", color: "#1976d2", fontSize: "14px" }}>
+        <div
+          style={{
+            backgroundColor: "#e3f2fd",
+            padding: "12px",
+            borderRadius: "6px",
+            marginBottom: "16px",
+            border: "1px solid #2196f3",
+          }}
+        >
+          <h4
+            style={{ margin: "0 0 8px 0", color: "#1976d2", fontSize: "14px" }}
+          >
             🎯 Text Fitting Strategy
           </h4>
-          <select 
-            value={textFittingStrategy} 
+          <select
+            value={textFittingStrategy}
             onChange={(e) => setTextFittingStrategy(e.target.value)}
             style={{
               width: "100%",
               padding: "6px",
               borderRadius: "4px",
               border: "1px solid #ccc",
-              fontSize: "12px"
+              fontSize: "12px",
             }}
           >
-            <option value={TEXT_FITTING_STRATEGIES.PRECISE_FIT}>🎯 Precise Fit (InDesign-style)</option>
-            <option value={TEXT_FITTING_STRATEGIES.AUTO_SCALE}>📏 Auto Scale Font</option>
-            <option value={TEXT_FITTING_STRATEGIES.TRUNCATE}>✂️ Truncate with Ellipsis</option>
-            <option value={TEXT_FITTING_STRATEGIES.COMPRESS_LINES}>📊 Compress Line Height</option>
-            <option value={TEXT_FITTING_STRATEGIES.ALLOW_OVERFLOW}>🌊 Allow Overflow</option>
+            <option value={TEXT_FITTING_STRATEGIES.PRECISE_FIT}>
+              🎯 Precise Fit (InDesign-style)
+            </option>
+            <option value={TEXT_FITTING_STRATEGIES.AUTO_SCALE}>
+              📏 Auto Scale Font
+            </option>
+            <option value={TEXT_FITTING_STRATEGIES.TRUNCATE}>
+              ✂️ Truncate with Ellipsis
+            </option>
+            <option value={TEXT_FITTING_STRATEGIES.COMPRESS_LINES}>
+              📊 Compress Line Height
+            </option>
+            <option value={TEXT_FITTING_STRATEGIES.ALLOW_OVERFLOW}>
+              🌊 Allow Overflow
+            </option>
           </select>
           <div style={{ fontSize: "10px", color: "#666", marginTop: "4px" }}>
-            {textFittingStrategy === TEXT_FITTING_STRATEGIES.PRECISE_FIT && "Smart font & line height adjustment with truncation fallback"}
-            {textFittingStrategy === TEXT_FITTING_STRATEGIES.AUTO_SCALE && "Reduce font size proportionally to fit container"}
-            {textFittingStrategy === TEXT_FITTING_STRATEGIES.TRUNCATE && "Cut off text with ellipsis when it overflows"}
-            {textFittingStrategy === TEXT_FITTING_STRATEGIES.COMPRESS_LINES && "Reduce line height first, then font size"}
-            {textFittingStrategy === TEXT_FITTING_STRATEGIES.ALLOW_OVERFLOW && "Let text overflow naturally (original behavior)"}
+            {textFittingStrategy === TEXT_FITTING_STRATEGIES.PRECISE_FIT &&
+              "Smart font & line height adjustment with truncation fallback"}
+            {textFittingStrategy === TEXT_FITTING_STRATEGIES.AUTO_SCALE &&
+              "Reduce font size proportionally to fit container"}
+            {textFittingStrategy === TEXT_FITTING_STRATEGIES.TRUNCATE &&
+              "Cut off text with ellipsis when it overflows"}
+            {textFittingStrategy === TEXT_FITTING_STRATEGIES.COMPRESS_LINES &&
+              "Reduce line height first, then font size"}
+            {textFittingStrategy === TEXT_FITTING_STRATEGIES.ALLOW_OVERFLOW &&
+              "Let text overflow naturally (original behavior)"}
           </div>
         </div>
 
         {/* Background Color Configuration */}
-        <div style={{
-          backgroundColor: "#fff3e0",
-          padding: "12px",
-          borderRadius: "6px",
-          marginBottom: "16px",
-          border: "1px solid #ff9800"
-        }}>
-          <h4 style={{ margin: "0 0 8px 0", color: "#f57700", fontSize: "14px" }}>
+        <div
+          style={{
+            backgroundColor: "#fff3e0",
+            padding: "12px",
+            borderRadius: "6px",
+            marginBottom: "16px",
+            border: "1px solid #ff9800",
+          }}
+        >
+          <h4
+            style={{ margin: "0 0 8px 0", color: "#f57700", fontSize: "14px" }}
+          >
             🎨 Background Color
           </h4>
-          
+
           {/* Background Mode Selector */}
-          <select 
-            value={backgroundConfig.mode} 
-            onChange={(e) => setBackgroundConfig({...backgroundConfig, mode: e.target.value})}
+          <select
+            value={backgroundConfig.mode}
+            onChange={(e) =>
+              setBackgroundConfig({ ...backgroundConfig, mode: e.target.value })
+            }
             style={{
               width: "100%",
               padding: "6px",
               borderRadius: "4px",
               border: "1px solid #ccc",
               fontSize: "12px",
-              marginBottom: "8px"
+              marginBottom: "8px",
             }}
           >
-            {backgroundModes.map(mode => (
-              <option key={mode.value} value={mode.value}>{mode.label}</option>
+            {backgroundModes.map((mode) => (
+              <option key={mode.value} value={mode.value}>
+                {mode.label}
+              </option>
             ))}
           </select>
-          
+
           {/* Custom Color Picker - shown when custom mode selected */}
-          {backgroundConfig.mode === 'custom' && (
+          {backgroundConfig.mode === "custom" && (
             <div style={{ marginBottom: "8px" }}>
-              <label style={{ fontSize: "11px", color: "#666", display: "block", marginBottom: "4px" }}>
+              <label
+                style={{
+                  fontSize: "11px",
+                  color: "#666",
+                  display: "block",
+                  marginBottom: "4px",
+                }}
+              >
                 Custom Color:
               </label>
-              <input 
-                type="color" 
+              <input
+                type="color"
                 value={backgroundConfig.customColor}
-                onChange={(e) => setBackgroundConfig({...backgroundConfig, customColor: e.target.value})}
+                onChange={(e) =>
+                  setBackgroundConfig({
+                    ...backgroundConfig,
+                    customColor: e.target.value,
+                  })
+                }
                 style={{
                   width: "100%",
                   height: "30px",
                   border: "1px solid #ccc",
-                  borderRadius: "4px"
+                  borderRadius: "4px",
                 }}
               />
             </div>
           )}
-          
+
           {/* Advanced Options - shown when auto mode selected */}
-          {backgroundConfig.mode === 'auto' && (
+          {backgroundConfig.mode === "auto" && (
             <div style={{ fontSize: "11px", marginTop: "8px" }}>
-              <label style={{ display: "flex", alignItems: "center", marginBottom: "4px" }}>
-                <input 
-                  type="checkbox" 
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "4px",
+                }}
+              >
+                <input
+                  type="checkbox"
                   checked={backgroundConfig.preferPaperColor}
-                  onChange={(e) => setBackgroundConfig({...backgroundConfig, preferPaperColor: e.target.checked})}
+                  onChange={(e) =>
+                    setBackgroundConfig({
+                      ...backgroundConfig,
+                      preferPaperColor: e.target.checked,
+                    })
+                  }
                   style={{ marginRight: "6px" }}
                 />
                 Prefer Paper color
               </label>
-              <label style={{ display: "flex", alignItems: "center", marginBottom: "4px" }}>
-                <input 
-                  type="checkbox" 
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "4px",
+                }}
+              >
+                <input
+                  type="checkbox"
                   checked={backgroundConfig.allowColorAnalysis}
-                  onChange={(e) => setBackgroundConfig({...backgroundConfig, allowColorAnalysis: e.target.checked})}
+                  onChange={(e) =>
+                    setBackgroundConfig({
+                      ...backgroundConfig,
+                      allowColorAnalysis: e.target.checked,
+                    })
+                  }
                   style={{ marginRight: "6px" }}
                 />
                 Allow color analysis
               </label>
               <label style={{ display: "flex", alignItems: "center" }}>
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   checked={backgroundConfig.fallbackToWhite}
-                  onChange={(e) => setBackgroundConfig({...backgroundConfig, fallbackToWhite: e.target.checked})}
+                  onChange={(e) =>
+                    setBackgroundConfig({
+                      ...backgroundConfig,
+                      fallbackToWhite: e.target.checked,
+                    })
+                  }
                   style={{ marginRight: "6px" }}
                 />
                 Fallback to white
               </label>
             </div>
           )}
-          
+
           {/* Current Background Display */}
-          <div style={{
-            marginTop: "8px",
-            padding: "6px",
-            backgroundColor: "#f5f5f5",
-            borderRadius: "3px",
-            fontSize: "11px"
-          }}>
-            <strong>Current:</strong> {documentData ? getDocumentBackgroundColor(documentData) : 'Loading...'}
+          <div
+            style={{
+              marginTop: "8px",
+              padding: "6px",
+              backgroundColor: "#f5f5f5",
+              borderRadius: "3px",
+              fontSize: "11px",
+            }}
+          >
+            <strong>Current:</strong>{" "}
+            {documentData
+              ? getDocumentBackgroundColor(documentData)
+              : "Loading..."}
           </div>
         </div>
 
         {/* Status Indicators Legend */}
-        <div style={{
-          backgroundColor: "#f9f9f9",
-          padding: "8px",
-          borderRadius: "4px",
-          marginBottom: "16px",
-          fontSize: "11px"
-        }}>
-          <div style={{ fontWeight: "bold", marginBottom: "6px" }}>📊 Status Indicators:</div>
+        <div
+          style={{
+            backgroundColor: "#f9f9f9",
+            padding: "8px",
+            borderRadius: "4px",
+            marginBottom: "16px",
+            fontSize: "11px",
+          }}
+        >
+          <div style={{ fontWeight: "bold", marginBottom: "6px" }}>
+            📊 Status Indicators:
+          </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
             <span style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-              <span style={{ backgroundColor: "#4caf50", color: "white", padding: "1px 3px", borderRadius: "2px" }}>🎯</span>
+              <span
+                style={{
+                  backgroundColor: "#4caf50",
+                  color: "white",
+                  padding: "1px 3px",
+                  borderRadius: "2px",
+                }}
+              >
+                🎯
+              </span>
               Precise Fit
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-              <span style={{ backgroundColor: "#2196f3", color: "white", padding: "1px 3px", borderRadius: "2px" }}>📏</span>
+              <span
+                style={{
+                  backgroundColor: "#2196f3",
+                  color: "white",
+                  padding: "1px 3px",
+                  borderRadius: "2px",
+                }}
+              >
+                📏
+              </span>
               Font Scaled
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-              <span style={{ backgroundColor: "#ff9800", color: "white", padding: "1px 3px", borderRadius: "2px" }}>✂️</span>
+              <span
+                style={{
+                  backgroundColor: "#ff9800",
+                  color: "white",
+                  padding: "1px 3px",
+                  borderRadius: "2px",
+                }}
+              >
+                ✂️
+              </span>
               Truncated
             </span>
           </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "4px" }}>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "8px",
+              marginTop: "4px",
+            }}
+          >
             <span style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-              <span style={{ backgroundColor: "#f44336", color: "white", padding: "1px 2px", borderRadius: "1px", fontSize: "9px" }}>S</span>
+              <span
+                style={{
+                  backgroundColor: "#f44336",
+                  color: "white",
+                  padding: "1px 2px",
+                  borderRadius: "1px",
+                  fontSize: "9px",
+                }}
+              >
+                S
+              </span>
               Severe overflow
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-              <span style={{ backgroundColor: "#ff9800", color: "white", padding: "1px 2px", borderRadius: "1px", fontSize: "9px" }}>M</span>
+              <span
+                style={{
+                  backgroundColor: "#ff9800",
+                  color: "white",
+                  padding: "1px 2px",
+                  borderRadius: "1px",
+                  fontSize: "9px",
+                }}
+              >
+                M
+              </span>
               Moderate
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-              <span style={{ backgroundColor: "#ffeb3b", color: "black", padding: "1px 2px", borderRadius: "1px", fontSize: "9px" }}>L</span>
+              <span
+                style={{
+                  backgroundColor: "#ffeb3b",
+                  color: "black",
+                  padding: "1px 2px",
+                  borderRadius: "1px",
+                  fontSize: "9px",
+                }}
+              >
+                L
+              </span>
               Light
             </span>
           </div>
@@ -1298,13 +1685,14 @@ export default function Viewer() {
         <div
           style={{
             position: "relative",
-            width:
-              (documentData.pageInfo?.dimensions?.width || 612) + "px",
-            height:
-              (documentData.pageInfo?.dimensions?.height || 792) + "px",
+            width: (documentData.pageInfo?.dimensions?.width || 612) + "px",
+            height: (documentData.pageInfo?.dimensions?.height || 792) + "px",
             backgroundColor: (() => {
               const bgColor = getDocumentBackgroundColor(documentData);
-              console.log('🎨 Final background color being applied to DOCUMENT CANVAS only:', bgColor);
+              console.log(
+                "🎨 Final background color being applied to DOCUMENT CANVAS only:",
+                bgColor
+              );
               return bgColor;
             })(),
             margin: "0 auto",
@@ -1323,13 +1711,21 @@ export default function Viewer() {
             const marginTop = documentData.pageInfo?.margins?.top || 0;
             const marginRight = documentData.pageInfo?.margins?.right || 0;
             const marginBottom = documentData.pageInfo?.margins?.bottom || 0;
-            
-            console.log('📐 PAGE DIMENSIONS DEBUG:');
+
+            console.log("📐 PAGE DIMENSIONS DEBUG:");
             console.log(`   📏 Page size: ${pageWidth} × ${pageHeight}px`);
-            console.log(`   📏 Margins: top=${marginTop}, right=${marginRight}, bottom=${marginBottom}, left=${marginLeft}`);
-            console.log(`   📏 Content area: ${pageWidth - marginLeft - marginRight} × ${pageHeight - marginTop - marginBottom}px`);
-            console.log(`   📏 Dotted border position: top=${marginTop}, left=${marginLeft}, right=${marginRight}, bottom=${marginBottom}`);
-            
+            console.log(
+              `   📏 Margins: top=${marginTop}, right=${marginRight}, bottom=${marginBottom}, left=${marginLeft}`
+            );
+            console.log(
+              `   📏 Content area: ${pageWidth - marginLeft - marginRight} × ${
+                pageHeight - marginTop - marginBottom
+              }px`
+            );
+            console.log(
+              `   📏 Dotted border position: top=${marginTop}, left=${marginLeft}, right=${marginRight}, bottom=${marginBottom}`
+            );
+
             return null; // This is just for debugging, return nothing
           })()}
           {/* Margins Visualization */}
@@ -1358,9 +1754,9 @@ export default function Viewer() {
               element.position.y
             );
             const marginLeft = documentData.pageInfo?.margins?.left || 0;
-            
+
             const marginTop = documentData.pageInfo?.margins?.top || 0;
-            console.log("Margin : " , marginLeft,marginTop);
+            console.log("Margin : ", marginLeft, marginTop);
 
             return (
               <div
@@ -1368,9 +1764,9 @@ export default function Viewer() {
                 onClick={() => setSelectedElement(element)}
                 style={{
                   position: "absolute",
-                  left:  element.position.x    + "px",
+                  left: element.position.x + "px",
                   // left: marginLeft + element.position.x    + "px",
-                  top: marginTop + element.position.y  + "px",
+                  top: marginTop + element.position.y + "px",
                   width: element.position.width + "px",
                   height: element.position.height + "px",
                   backgroundColor: element.fill
@@ -1552,78 +1948,100 @@ export default function Viewer() {
                 {/* PIXEL-PERFECT Text Rendering with Advanced Fitting Strategies */}
                 {element.type === "TextFrame" &&
                   element.parentStory &&
-                  documentData.stories[element.parentStory] && (() => {
+                  documentData.stories[element.parentStory] &&
+                  (() => {
                     const story = documentData.stories[element.parentStory];
-                    
+
                     // ENHANCED: Calculate precise text frame metrics using InDesign-compatible system
-                    const frameMetrics = InDesignTextMetrics.calculateTextFrameInsets(
-                      element, 
-                      element.textFramePreferences
-                    );
-                    
+                    const frameMetrics =
+                      InDesignTextMetrics.calculateTextFrameInsets(
+                        element,
+                        element.textFramePreferences
+                      );
+
                     // Get story formatting with InDesign-accurate properties
-                    const storyFormatting = getInDesignAccurateFormatting(story);
-                    
+                    const storyFormatting =
+                      getInDesignAccurateFormatting(story);
+
                     // Clean text to remove excessive line breaks that could cause overflow
-                    const cleanText = (story.text || '').replace(/\n\s*\n/g, '\n').trim();
-                    
+                    const cleanText = (story.text || "")
+                      .replace(/\n\s*\n/g, "\n")
+                      .trim();
+
                     // ENHANCED: Use InDesign-accurate text measurement
-                    const textMeasurement = InDesignTextMetrics.measureTextPrecisely(
-                      cleanText,
-                      storyFormatting,
-                      frameMetrics
-                    );
-                    
+                    const textMeasurement =
+                      InDesignTextMetrics.measureTextPrecisely(
+                        cleanText,
+                        storyFormatting,
+                        frameMetrics
+                      );
+
                     // IMPROVED: Generate CSS styles with full container dimensions
-                    let finalStyles = getStoryStyles(story, element.position.height, element.position.width);
+                    let finalStyles = getStoryStyles(
+                      story,
+                      element.position.height,
+                      element.position.width
+                    );
                     let wasAdjusted = false;
                     let adjustmentDetails = null;
-                    
+
                     // IMPROVED: Use full container dimensions for overflow detection
                     const containerWidth = element.position.width; // Use full width
                     const containerHeight = element.position.height; // Use full height
-                    
+
                     // TEMPORARILY DISABLED: Apply overflow prevention if needed (may be causing text chopping)
                     if (false && textMeasurement.willOverflow) {
-                      console.log(`📏 Text overflow detected in story ${element.parentStory}:`, {
-                        textHeight: textMeasurement.textHeight,
-                        availableHeight: textMeasurement.availableHeight,
-                        overflowAmount: textMeasurement.overflowAmount,
-                        lineCount: textMeasurement.lineCount
-                      });
-                      
-                      const adjustment = InDesignTextMetrics.calculateOptimalFontSize(
-                        textMeasurement, 
-                        storyFormatting,
-                        0.25 // Maximum 25% font size reduction for better overflow prevention
+                      console.log(
+                        `📏 Text overflow detected in story ${element.parentStory}:`,
+                        {
+                          textHeight: textMeasurement.textHeight,
+                          availableHeight: textMeasurement.availableHeight,
+                          overflowAmount: textMeasurement.overflowAmount,
+                          lineCount: textMeasurement.lineCount,
+                        }
                       );
-                      
+
+                      const adjustment =
+                        InDesignTextMetrics.calculateOptimalFontSize(
+                          textMeasurement,
+                          storyFormatting,
+                          0.25 // Maximum 25% font size reduction for better overflow prevention
+                        );
+
                       if (adjustment) {
                         finalStyles = {
                           ...finalStyles,
-                          ...adjustment.adjustedStyles
+                          ...adjustment.adjustedStyles,
                         };
                         wasAdjusted = true;
                         adjustmentDetails = adjustment;
                       }
                     }
-                    
+
                     // Extract adjusted font size for text spans
-                    const adjustedFontSize = wasAdjusted && adjustmentDetails ? 
-                      adjustmentDetails.newFontSize : null;
-                    
+                    const adjustedFontSize =
+                      wasAdjusted && adjustmentDetails
+                        ? adjustmentDetails.newFontSize
+                        : null;
+
                     const createTooltip = () => {
                       const baseInfo = `Story: ${element.parentStory}\nFrame: ${element.position.width}×${element.position.height}px\nContent: ${frameMetrics.contentArea.width}×${frameMetrics.contentArea.height}px`;
-                      
+
                       if (!wasAdjusted) {
                         return `${baseInfo}\nText fits perfectly! ✅`;
                       }
-                      
-                      return `${baseInfo}\nAdjusted: ${adjustmentDetails.adjustmentType}\nFont: ${adjustmentDetails.originalFontSize}px → ${adjustmentDetails.newFontSize}px\nScale: ${(adjustmentDetails.scaleFactor * 100).toFixed(1)}%`;
+
+                      return `${baseInfo}\nAdjusted: ${
+                        adjustmentDetails.adjustmentType
+                      }\nFont: ${adjustmentDetails.originalFontSize}px → ${
+                        adjustmentDetails.newFontSize
+                      }px\nScale: ${(
+                        adjustmentDetails.scaleFactor * 100
+                      ).toFixed(1)}%`;
                     };
-                    
+
                     return (
-                      <div 
+                      <div
                         style={{
                           // HYBRID APPROACH: Use full frame size but apply insets as padding
                           position: "absolute",
@@ -1631,10 +2049,10 @@ export default function Viewer() {
                           left: "0px", // Use full frame positioning
                           width: `${element.position.width}px`, // Use full frame width
                           height: `${element.position.height}px`, // Use full frame height
-                          
+
                           // HYBRID: Apply insets as padding to create visual spacing without reducing text area too much
                           padding: `${frameMetrics.insets.top}px ${frameMetrics.insets.right}px ${frameMetrics.insets.bottom}px ${frameMetrics.insets.left}px`,
-                          
+
                           // Text styling from story
                           fontSize: `${finalStyles.fontSize}`,
                           fontFamily: finalStyles.fontFamily,
@@ -1644,9 +2062,9 @@ export default function Viewer() {
                           textAlign: finalStyles.textAlign,
                           lineHeight: finalStyles.lineHeight,
                           letterSpacing: finalStyles.letterSpacing,
-                          
+
                           margin: 0,
-                          
+
                           // Text layout - allow overflow to prevent chopping
                           display: "block",
                           whiteSpace: "pre-wrap",
@@ -1654,49 +2072,58 @@ export default function Viewer() {
                           overflowWrap: "break-word",
                           overflow: "visible", // CRITICAL: Allow text to overflow to prevent chopping
                           boxSizing: "border-box",
-                        }} 
+                        }}
                         title={createTooltip()}
                       >
-                        {renderFormattedText(story, element.position.height, adjustedFontSize)}
-                        
+                        {renderFormattedText(
+                          story,
+                          element.position.height,
+                          adjustedFontSize
+                        )}
+
                         {/* Enhanced Status Indicators */}
                         {wasAdjusted && (
-                          <div style={{
-                            position: 'absolute',
-                            top: '-2px',
-                            left: '-2px',
-                            backgroundColor: adjustmentDetails?.stillOverflows ? '#ff5722' : '#4caf50',
-                            color: 'white',
-                            fontSize: '8px',
-                            padding: '1px 3px',
-                            borderRadius: '2px',
-                            zIndex: 1000,
-                            pointerEvents: 'none',
-                            fontFamily: 'monospace'
-                          }}>
-                            {adjustmentDetails?.stillOverflows ? '⚠️' : '🎯'}
-                          </div>
-                        )}
-                        
-                        {/* Perfect fit indicator */}
-                        {!wasAdjusted && !textMeasurement.willOverflow && (
-                          <div style={{
-                            position: 'absolute',
-                            top: '-2px',
-                            right: '-2px',
-                            backgroundColor: '#2e7d32',
-                            color: 'white',
-                            fontSize: '8px',
-                            padding: '1px 3px',
-                            borderRadius: '2px',
-                            zIndex: 1000,
-                            pointerEvents: 'none',
-                            fontFamily: 'monospace'
-                          }}>
-                            ✅
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: "-2px",
+                              left: "-2px",
+                              backgroundColor: adjustmentDetails?.stillOverflows
+                                ? "#ff5722"
+                                : "#4caf50",
+                              color: "white",
+                              fontSize: "8px",
+                              padding: "1px 3px",
+                              borderRadius: "2px",
+                              zIndex: 1000,
+                              pointerEvents: "none",
+                              fontFamily: "monospace",
+                            }}
+                          >
+                            {adjustmentDetails?.stillOverflows ? "⚠️" : "🎯"}
                           </div>
                         )}
 
+                        {/* Perfect fit indicator */}
+                        {!wasAdjusted && !textMeasurement.willOverflow && (
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: "-2px",
+                              right: "-2px",
+                              backgroundColor: "#2e7d32",
+                              color: "white",
+                              fontSize: "8px",
+                              padding: "1px 3px",
+                              borderRadius: "2px",
+                              zIndex: 1000,
+                              pointerEvents: "none",
+                              fontFamily: "monospace",
+                            }}
+                          >
+                            ✅
+                          </div>
+                        )}
                       </div>
                     );
                   })()}
