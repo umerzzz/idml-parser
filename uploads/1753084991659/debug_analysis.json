@@ -1,0 +1,659 @@
+{
+  "timestamp": "2025-07-21T08:03:12.055Z",
+  "uploadId": "1753084991659",
+  "idmlFile": {
+    "name": "idml1212.idml",
+    "size": 46647,
+    "path": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753084991659\\idml1212.idml"
+  },
+  "idmlContents": {
+    "basic": {
+      "totalFiles": 14,
+      "allFiles": [
+        "mimetype",
+        "designmap.xml",
+        "META-INF/container.xml",
+        "META-INF/metadata.xml",
+        "Resources/Graphic.xml",
+        "Resources/Fonts.xml",
+        "Resources/Styles.xml",
+        "Resources/Preferences.xml",
+        "XML/Tags.xml",
+        "MasterSpreads/MasterSpread_ud5.xml",
+        "Spreads/Spread_uce.xml",
+        "XML/BackingStory.xml",
+        "Stories/Story_u111.xml",
+        "Stories/Story_ue4.xml"
+      ],
+      "folders": [
+        "mimetype",
+        "designmap.xml",
+        "META-INF",
+        "Resources",
+        "XML",
+        "MasterSpreads",
+        "Spreads",
+        "Stories"
+      ],
+      "imageFiles": [],
+      "hasLinksFolder": false,
+      "linksFolderContents": []
+    },
+    "detailed": {
+      "totalFiles": 14,
+      "filesByType": {
+        "": [
+          "mimetype"
+        ],
+        ".xml": [
+          "designmap.xml",
+          "META-INF/container.xml",
+          "META-INF/metadata.xml",
+          "Resources/Graphic.xml",
+          "Resources/Fonts.xml",
+          "Resources/Styles.xml",
+          "Resources/Preferences.xml",
+          "XML/Tags.xml",
+          "MasterSpreads/MasterSpread_ud5.xml",
+          "Spreads/Spread_uce.xml",
+          "XML/BackingStory.xml",
+          "Stories/Story_u111.xml",
+          "Stories/Story_ue4.xml"
+        ]
+      },
+      "allFiles": [
+        "mimetype",
+        "designmap.xml",
+        "META-INF/container.xml",
+        "META-INF/metadata.xml",
+        "Resources/Graphic.xml",
+        "Resources/Fonts.xml",
+        "Resources/Styles.xml",
+        "Resources/Preferences.xml",
+        "XML/Tags.xml",
+        "MasterSpreads/MasterSpread_ud5.xml",
+        "Spreads/Spread_uce.xml",
+        "XML/BackingStory.xml",
+        "Stories/Story_u111.xml",
+        "Stories/Story_ue4.xml"
+      ],
+      "binaryFiles": [],
+      "xmlFiles": [
+        "designmap.xml",
+        "META-INF/container.xml",
+        "META-INF/metadata.xml",
+        "Resources/Graphic.xml",
+        "Resources/Fonts.xml",
+        "Resources/Styles.xml",
+        "Resources/Preferences.xml",
+        "XML/Tags.xml",
+        "MasterSpreads/MasterSpread_ud5.xml",
+        "Spreads/Spread_uce.xml",
+        "XML/BackingStory.xml",
+        "Stories/Story_u111.xml",
+        "Stories/Story_ue4.xml"
+      ],
+      "imageFiles": [],
+      "unknownFiles": [],
+      "fileDetails": {
+        "mimetype": {
+          "compressedSize": 43,
+          "uncompressedSize": 43,
+          "compressionMethod": 0,
+          "isDirectory": false,
+          "extension": ""
+        },
+        "designmap.xml": {
+          "compressedSize": 3503,
+          "uncompressedSize": 17481,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "META-INF/container.xml": {
+          "compressedSize": 167,
+          "uncompressedSize": 253,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "META-INF/metadata.xml": {
+          "compressedSize": 12148,
+          "uncompressedSize": 25892,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Graphic.xml": {
+          "compressedSize": 1184,
+          "uncompressedSize": 7664,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Fonts.xml": {
+          "compressedSize": 2443,
+          "uncompressedSize": 6616,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Styles.xml": {
+          "compressedSize": 5922,
+          "uncompressedSize": 41932,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Preferences.xml": {
+          "compressedSize": 10104,
+          "uncompressedSize": 61622,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "XML/Tags.xml": {
+          "compressedSize": 220,
+          "uncompressedSize": 303,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "MasterSpreads/MasterSpread_ud5.xml": {
+          "compressedSize": 739,
+          "uncompressedSize": 2480,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Spreads/Spread_uce.xml": {
+          "compressedSize": 2791,
+          "uncompressedSize": 13243,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "XML/BackingStory.xml": {
+          "compressedSize": 362,
+          "uncompressedSize": 647,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Stories/Story_u111.xml": {
+          "compressedSize": 476,
+          "uncompressedSize": 1060,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Stories/Story_ue4.xml": {
+          "compressedSize": 4899,
+          "uncompressedSize": 20413,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        }
+      },
+      "suspiciousFiles": [],
+      "largeBinaryFiles": []
+    },
+    "spreadAnalysis": {
+      "spreadsAnalyzed": 1,
+      "imageReferences": [
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "path": "Spread.Spread.Rectangle.Image.@_ImageTypeName",
+          "value": "$ID/Portable Network Graphics (PNG)"
+        }
+      ],
+      "linkReferences": [
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "path": "Spread.Spread.Rectangle.Image.Link",
+          "value": "{\"@_Self\":\"u10c\",\"@_AssetURL\":\"$ID/\",\"@_AssetID\":\"$ID/\",\"@_RenditionData\":\"Actual\",\"@_LinkResourceURI\":\"file:C:/Users/hp/Downloads/food-mix-salad-noodles-grillea-chicken-garlic-greena-top-view-removeb"
+        }
+      ],
+      "placedContentDetails": [
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "Image",
+          "path": "Spread.Spread.Rectangle.Image",
+          "details": {
+            "Properties": {
+              "Profile": {
+                "#text": "$ID/None",
+                "@_type": "string"
+              },
+              "GraphicBounds": {
+                "@_Left": 0,
+                "@_Top": 0,
+                "@_Right": 612,
+                "@_Bottom": 408
+              }
+            },
+            "TextWrapPreference": {
+              "Properties": {
+                "TextWrapOffset": {
+                  "@_Top": 0,
+                  "@_Left": 0,
+                  "@_Bottom": 0,
+                  "@_Right": 0
+                }
+              },
+              "ContourOption": {
+                "@_ContourType": "SameAsClipping",
+                "@_IncludeInsideEdges": false,
+                "@_ContourPathName": "$ID/"
+              },
+              "@_Inverse": false,
+              "@_ApplyToMasterPageOnly": false,
+              "@_TextWrapSide": "BothSides",
+              "@_TextWrapMode": "None"
+            },
+            "Link": {
+              "@_Self": "u10c",
+              "@_AssetURL": "$ID/",
+              "@_AssetID": "$ID/",
+              "@_RenditionData": "Actual",
+              "@_LinkResourceURI": "file:C:/Users/hp/Downloads/food-mix-salad-noodles-grillea-chicken-garlic-greena-top-view-removebg-preview.png",
+              "@_LinkResourceFormat": "$ID/Portable Network Graphics (PNG)",
+              "@_StoredState": "Normal",
+              "@_LinkClassID": 35906,
+              "@_LinkClientID": 257,
+              "@_LinkResourceModified": false,
+              "@_LinkObjectModified": false,
+              "@_ShowInUI": true,
+              "@_CanEmbed": true,
+              "@_CanUnembed": true,
+              "@_CanPackage": true,
+              "@_ImportPolicy": "NoAutoImport",
+              "@_ExportPolicy": "NoAutoExport",
+              "@_LinkImportStamp": "file 133835024600822080 285168",
+              "@_LinkImportModificationTime": "2025-02-08T20:34:20",
+              "@_LinkImportTime": "2025-07-18T14:21:54",
+              "@_LinkResourceSize": "0~459f0"
+            },
+            "ClippingPathSettings": {
+              "@_ClippingType": "None",
+              "@_InvertPath": false,
+              "@_IncludeInsideEdges": false,
+              "@_RestrictToFrame": false,
+              "@_UseHighResolutionImage": true,
+              "@_Threshold": 25,
+              "@_Tolerance": 2,
+              "@_InsetFrame": 0,
+              "@_AppliedPathName": "$ID/",
+              "@_Index": -1
+            },
+            "ImageIOPreference": {
+              "@_ApplyPhotoshopClippingPath": true,
+              "@_AllowAutoEmbedding": true,
+              "@_AlphaChannelName": "$ID/"
+            },
+            "@_Self": "u109",
+            "@_Space": "$ID/#Links_RGB",
+            "@_ActualPpi": "72 72",
+            "@_EffectivePpi": "103 103",
+            "@_ImageRenderingIntent": "UseColorSettings",
+            "@_OverriddenPageItemProps": "",
+            "@_LocalDisplaySetting": "Default",
+            "@_ImageTypeName": "$ID/Portable Network Graphics (PNG)",
+            "@_AppliedObjectStyle": "ObjectStyle/$ID/[None]",
+            "@_ItemTransform": "0.7 0 0 0.7 -314 -195.20000000000005",
+            "@_ParentInterfaceChangeCount": "",
+            "@_TargetInterfaceChangeCount": "",
+            "@_LastUpdatedInterfaceChangeCount": "",
+            "@_HorizontalLayoutConstraints": "FlexibleDimension FixedDimension FlexibleDimension",
+            "@_VerticalLayoutConstraints": "FlexibleDimension FixedDimension FlexibleDimension",
+            "@_GradientFillStart": "0 0",
+            "@_GradientFillLength": 0,
+            "@_GradientFillAngle": 0,
+            "@_GradientFillHiliteLength": 0,
+            "@_GradientFillHiliteAngle": 0,
+            "@_Visible": true,
+            "@_Name": "$ID/"
+          }
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseHighResolutionImage",
+          "path": "Spread.Spread.Rectangle.Image.ClippingPathSettings.@_UseHighResolutionImage",
+          "details": true
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "ImageIOPreference",
+          "path": "Spread.Spread.Rectangle.Image.ImageIOPreference",
+          "details": {
+            "@_ApplyPhotoshopClippingPath": true,
+            "@_AllowAutoEmbedding": true,
+            "@_AlphaChannelName": "$ID/"
+          }
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageRenderingIntent",
+          "path": "Spread.Spread.Rectangle.Image.@_ImageRenderingIntent",
+          "details": "UseColorSettings"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageTypeName",
+          "path": "Spread.Spread.Rectangle.Image.@_ImageTypeName",
+          "details": "$ID/Portable Network Graphics (PNG)"
+        }
+      ]
+    },
+    "suspiciousFileSamples": []
+  },
+  "packageUpload": {
+    "totalUploadedFiles": 1,
+    "uploadedFiles": [
+      {
+        "name": "idml1212.idml",
+        "size": 46647,
+        "mimetype": "application/octet-stream"
+      }
+    ],
+    "isPackageUpload": false
+  },
+  "processingResults": {
+    "elementsFound": 3,
+    "storiesFound": 2,
+    "contentFrames": [
+      {
+        "id": "u10f",
+        "type": "Rectangle",
+        "name": "$ID/",
+        "position": {
+          "x": 110,
+          "y": 195.2,
+          "width": 428.4,
+          "height": 285.6,
+          "rotation": 0
+        },
+        "fill": "Color/None",
+        "stroke": "Color/None",
+        "strokeWeight": 0,
+        "parentStory": null,
+        "linkedImage": {
+          "fileName": "embedded_u10f.jpg",
+          "url": null,
+          "isEmbedded": true,
+          "embeddedType": "$ID/Portable Network Graphics (PNG)",
+          "embeddedData": "72 72",
+          "framePosition": {
+            "x": 110,
+            "y": 195.2,
+            "width": 428.4,
+            "height": 285.6,
+            "rotation": 0
+          },
+          "imagePosition": {
+            "x": -620,
+            "y": -399.20000000000005,
+            "width": 299.87999999999994,
+            "height": 199.91999999999996,
+            "scaleX": 0.7,
+            "scaleY": 0.7
+          }
+        },
+        "visible": true,
+        "locked": false,
+        "isContentFrame": true,
+        "hasPlacedContent": true,
+        "contentType": "Image",
+        "imagePosition": {
+          "x": -620,
+          "y": -399.20000000000005,
+          "width": 299.87999999999994,
+          "height": 199.91999999999996,
+          "scaleX": 0.7,
+          "scaleY": 0.7
+        },
+        "placedContent": {
+          "type": "Image",
+          "href": "72 72",
+          "isEmbedded": true,
+          "bounds": null,
+          "transform": {
+            "a": 0.7,
+            "b": 0,
+            "c": 0,
+            "d": 0.7,
+            "tx": -314,
+            "ty": -195.20000000000005
+          },
+          "actualPpi": "72 72",
+          "effectivePpi": "103 103",
+          "imageTypeName": "$ID/Portable Network Graphics (PNG)",
+          "space": "$ID/#Links_RGB"
+        }
+      }
+    ],
+    "embeddedImages": [
+      {
+        "id": "u10f",
+        "type": "Rectangle",
+        "name": "$ID/",
+        "position": {
+          "x": 110,
+          "y": 195.2,
+          "width": 428.4,
+          "height": 285.6,
+          "rotation": 0
+        },
+        "fill": "Color/None",
+        "stroke": "Color/None",
+        "strokeWeight": 0,
+        "parentStory": null,
+        "linkedImage": {
+          "fileName": "embedded_u10f.jpg",
+          "url": null,
+          "isEmbedded": true,
+          "embeddedType": "$ID/Portable Network Graphics (PNG)",
+          "embeddedData": "72 72",
+          "framePosition": {
+            "x": 110,
+            "y": 195.2,
+            "width": 428.4,
+            "height": 285.6,
+            "rotation": 0
+          },
+          "imagePosition": {
+            "x": -620,
+            "y": -399.20000000000005,
+            "width": 299.87999999999994,
+            "height": 199.91999999999996,
+            "scaleX": 0.7,
+            "scaleY": 0.7
+          }
+        },
+        "visible": true,
+        "locked": false,
+        "isContentFrame": true,
+        "hasPlacedContent": true,
+        "contentType": "Image",
+        "imagePosition": {
+          "x": -620,
+          "y": -399.20000000000005,
+          "width": 299.87999999999994,
+          "height": 199.91999999999996,
+          "scaleX": 0.7,
+          "scaleY": 0.7
+        },
+        "placedContent": {
+          "type": "Image",
+          "href": "72 72",
+          "isEmbedded": true,
+          "bounds": null,
+          "transform": {
+            "a": 0.7,
+            "b": 0,
+            "c": 0,
+            "d": 0.7,
+            "tx": -314,
+            "ty": -195.20000000000005
+          },
+          "actualPpi": "72 72",
+          "effectivePpi": "103 103",
+          "imageTypeName": "$ID/Portable Network Graphics (PNG)",
+          "space": "$ID/#Links_RGB"
+        }
+      }
+    ],
+    "placeholders": []
+  },
+  "imageExtraction": {
+    "totalFound": 0,
+    "totalExtracted": 0,
+    "extractedImages": [],
+    "extractionSuccess": false,
+    "method": "none"
+  }
+}
