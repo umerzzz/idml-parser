@@ -1,5 +1,6 @@
 node_modules
 
+#cursor rules
 # Logs
 logs
 *.log
@@ -9,11 +10,13 @@ yarn-error.log*
 dev-debug.log
 # Dependency directories
 node_modules/
+
 # Environment variables
 .env
 # Editor directories and files
 .idea
 .vscode
+*.cursor
 *.suo
 *.ntvs*
 *.njsproj
