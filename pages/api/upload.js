@@ -347,10 +347,19 @@ export default async function handler(req, res) {
     // Initialize individual modules instead of the monolithic processor
     const xmlParser = new IDMLXMLParser();
     const fileExtractor = new FileExtractor();
-    const styleParser = new StyleParser();
-    const elementParser = new ElementParser();
-    const storyParser = new StoryParser(styleParser);
-    const documentParser = new DocumentParser(elementParser, styleParser); // FIXED: Pass StyleParser
+
+    // FIXED: Initialize UnitConverter before using it
+    const UnitConverter = require("../../lib/utils/UnitConverter");
+    const unitConverter = new UnitConverter(96); // Default web DPI
+
+    const styleParser = new StyleParser(unitConverter); // ADDED: Pass UnitConverter
+    const elementParser = new ElementParser(unitConverter); // ADDED: Pass UnitConverter
+    const storyParser = new StoryParser(styleParser, unitConverter); // ADDED: Pass UnitConverter
+    const documentParser = new DocumentParser(
+      elementParser,
+      styleParser,
+      unitConverter
+    ); // FIXED: Pass StyleParser and UnitConverter
     const imageProcessor = new ImageProcessor(fileExtractor);
     const debugAnalyzer = new DebugAnalyzer();
 
@@ -534,6 +543,8 @@ export default async function handler(req, res) {
         type: element.type,
         name: element.name,
         position: element.position,
+        // ADDED: Include pixel position created by ElementParser
+        pixelPosition: element.pixelPosition,
         fill: element.fillColor,
         stroke: element.strokeColor,
         strokeWeight: element.strokeWeight,

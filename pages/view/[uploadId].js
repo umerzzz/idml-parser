@@ -9,6 +9,8 @@ export default function Viewer() {
   const [documentData, setDocumentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedElement, setSelectedElement] = useState(null);
+  const [showMargins, setShowMargins] = useState(true);
+  const [showDebugInfo, setShowDebugInfo] = useState(false);
 
   // CONFIGURATION OPTIONS - Make background detection flexible
   const [backgroundConfig, setBackgroundConfig] = useState({
@@ -43,6 +45,48 @@ export default function Viewer() {
       const response = await fetch(`/api/document/${uploadId}`);
       const data = await response.json();
       console.log("📄 Document data:", data);
+
+      // DEBUG: Check element positioning data in detail
+      console.log("🔍 DEBUG DATA STRUCTURE:");
+      console.log("DATA EXISTS:", !!data);
+      console.log("DATA.ELEMENTS EXISTS:", !!data?.elements);
+      console.log("DATA.ELEMENTS LENGTH:", data?.elements?.length);
+      console.log("DATA KEYS:", data ? Object.keys(data) : "no data");
+      console.log("FULL DATA OBJECT:", data);
+
+      if (data && data.elements && data.elements.length > 0) {
+        console.log("🔍 ELEMENT POSITIONING ANALYSIS:");
+        console.log("RAW ELEMENTS ARRAY:", data.elements);
+
+        data.elements.forEach((element, index) => {
+          console.log(`\n=== ELEMENT ${index} ===`);
+          console.log("ELEMENT ID:", element.id);
+          console.log("ELEMENT NAME:", element.name);
+          console.log("ELEMENT TYPE:", element.type);
+          console.log("ORIGINAL POSITION:", element.position);
+          console.log("PIXEL POSITION:", element.pixelPosition);
+
+          // Check for Y=0 issues
+          if (element.position?.y === 0) {
+            console.log("🚨 ORIGINAL POSITION Y IS ZERO!");
+          }
+          if (element.pixelPosition?.y === 0) {
+            console.log("🚨 PIXEL POSITION Y IS ZERO!");
+          }
+
+          // Show what coordinates we're actually using for positioning
+          const finalPosition = element.pixelPosition || element.position;
+          console.log("FINAL POSITION FOR RENDERING:", finalPosition);
+
+          // Show each coordinate explicitly
+          console.log("FINAL X:", finalPosition?.x);
+          console.log("FINAL Y:", finalPosition?.y);
+          console.log("FINAL WIDTH:", finalPosition?.width);
+          console.log("FINAL HEIGHT:", finalPosition?.height);
+        });
+      } else {
+        console.log("🚨 NO ELEMENTS FOUND! This is the problem.");
+      }
       setDocumentData(data);
       setLoading(false);
     } catch (error) {
@@ -53,6 +97,18 @@ export default function Viewer() {
 
   // Use ColorUtils for color conversion
   const convertColor = (colorRef) => {
+    // If colorRef is a string and matches a color in resources, use the color object
+    if (
+      typeof colorRef === "string" &&
+      documentData.resources &&
+      documentData.resources.colors &&
+      documentData.resources.colors[colorRef]
+    ) {
+      return ColorUtils.convertIdmlColorToRgb(
+        documentData.resources.colors[colorRef]
+      );
+    }
+    // Otherwise, pass through (handles objects or fallback)
     return ColorUtils.convertIdmlColorToRgb(colorRef);
   };
 
@@ -60,6 +116,38 @@ export default function Viewer() {
     console.log("🔍 Starting improved background color detection...", {
       config: backgroundConfig,
     });
+
+    // 1. Look for a full-page rectangle with a fill (prefer this over swatch analysis)
+    if (documentData.elements) {
+      const pageWidth =
+        documentData.pageInfo?.dimensions?.pixelDimensions?.width || 612;
+      const pageHeight =
+        documentData.pageInfo?.dimensions?.pixelDimensions?.height || 792;
+
+      // Find the largest rectangle with a non-None fill
+      const fullPageRects = documentData.elements.filter(
+        (el) =>
+          el.type === "Rectangle" &&
+          el.pixelPosition &&
+          el.pixelPosition.x <= 5 &&
+          el.pixelPosition.y <= 5 &&
+          el.pixelPosition.width >= pageWidth * 0.95 &&
+          el.pixelPosition.height >= pageHeight * 0.95 &&
+          el.fill &&
+          el.fill !== "Color/None"
+      );
+      if (fullPageRects.length > 0) {
+        // Use the largest by area
+        const bgRect = fullPageRects.reduce((a, b) =>
+          a.pixelPosition.width * a.pixelPosition.height >
+          b.pixelPosition.width * b.pixelPosition.height
+            ? a
+            : b
+        );
+        console.log("🎨 Using full-page rectangle as background:", bgRect.fill);
+        return convertColor(bgRect.fill);
+      }
+    }
 
     // Handle configured background modes
     if (backgroundConfig.mode === "white") {
@@ -158,8 +246,10 @@ export default function Viewer() {
 
     // Strategy 4: Look for a large background rectangle element with actual fill
     if (documentData.elements) {
-      const pageWidth = documentData.pageInfo?.dimensions?.width || 612;
-      const pageHeight = documentData.pageInfo?.dimensions?.height || 792;
+      const pageWidth =
+        documentData.pageInfo?.dimensions?.pixelDimensions?.width || 612;
+      const pageHeight =
+        documentData.pageInfo?.dimensions?.pixelDimensions?.height || 792;
 
       console.log(
         "📄 Searching for background in",
@@ -1397,6 +1487,54 @@ export default function Viewer() {
           </div>
         </div>
 
+        {/* View Controls */}
+        <div
+          style={{
+            backgroundColor: "#f0f8ff",
+            padding: "12px",
+            borderRadius: "4px",
+            marginBottom: "16px",
+          }}
+        >
+          <h4 style={{ margin: "0 0 8px 0", fontSize: "14px", color: "#333" }}>
+            🔧 View Controls
+          </h4>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <label
+              style={{
+                display: "flex",
+                alignItems: "center",
+                fontSize: "12px",
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={showMargins}
+                onChange={(e) => setShowMargins(e.target.checked)}
+                style={{ marginRight: "8px" }}
+              />
+              Show Page Margins (dotted lines)
+            </label>
+
+            <label
+              style={{
+                display: "flex",
+                alignItems: "center",
+                fontSize: "12px",
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={showDebugInfo}
+                onChange={(e) => setShowDebugInfo(e.target.checked)}
+                style={{ marginRight: "8px" }}
+              />
+              Show Debug Information
+            </label>
+          </div>
+        </div>
+
         {/* Status Indicators Legend */}
         <div
           style={{
@@ -1508,10 +1646,124 @@ export default function Viewer() {
         <p>Version: {documentData.document?.version}</p>
         <p>Pages: {documentData.document?.pageCount}</p>
         <p>
-          Size: {Math.round(documentData.pageInfo?.dimensions?.width || 0)} ×{" "}
-          {Math.round(documentData.pageInfo?.dimensions?.height || 0)}{" "}
-          {documentData.pageInfo?.dimensions?.units}
+          Size:{" "}
+          {Math.round(
+            documentData.pageInfo?.dimensions?.pixelDimensions?.width ||
+              documentData.pageInfo?.dimensions?.width ||
+              0
+          )}{" "}
+          ×{" "}
+          {Math.round(
+            documentData.pageInfo?.dimensions?.pixelDimensions?.height ||
+              documentData.pageInfo?.dimensions?.height ||
+              0
+          )}
+          px
+          {documentData.pageInfo?.dimensions?.pixelDimensions && (
+            <span style={{ fontSize: "12px", color: "#666", display: "block" }}>
+              (Original: {Math.round(documentData.pageInfo.dimensions.width)} ×{" "}
+              {Math.round(documentData.pageInfo.dimensions.height)}{" "}
+              {documentData.pageInfo.dimensions.units})
+            </span>
+          )}
         </p>
+
+        {/* Unit Conversion Info */}
+        {documentData.unitConversion && (
+          <div
+            style={{
+              marginTop: "10px",
+              padding: "8px",
+              backgroundColor: "#e8f4fd",
+              borderRadius: "4px",
+              fontSize: "12px",
+            }}
+          >
+            <strong>📐 Unit Conversion:</strong>
+            <br />
+            Status:{" "}
+            {documentData.unitConversion.enabled ? "✅ Enabled" : "❌ Disabled"}
+            <br />
+            DPI: {documentData.unitConversion.dpi}
+            <br />
+            Original: {documentData.unitConversion.originalUnits} → Pixels
+            {documentData.unitConversion.convertedToPixels && (
+              <span style={{ color: "#28a745", fontWeight: "bold" }}> ✅</span>
+            )}
+          </div>
+        )}
+
+        {/* Positioning Debug Info */}
+        {documentData.pageInfo?.margins && (
+          <div
+            style={{
+              marginTop: "10px",
+              padding: "8px",
+              backgroundColor: "#fff3cd",
+              borderRadius: "4px",
+              fontSize: "11px",
+            }}
+          >
+            <strong>📏 Positioning Debug:</strong>
+            <br />
+            Page:{" "}
+            {Math.round(
+              documentData.pageInfo.dimensions?.pixelDimensions?.width ||
+                documentData.pageInfo.dimensions?.width ||
+                0
+            )}{" "}
+            ×{" "}
+            {Math.round(
+              documentData.pageInfo.dimensions?.pixelDimensions?.height ||
+                documentData.pageInfo.dimensions?.height ||
+                0
+            )}
+            px
+            <br />
+            Margins (px): T:
+            {documentData.pageInfo.margins.pixelMargins?.top ||
+              documentData.pageInfo.margins.top ||
+              0}
+            R:
+            {documentData.pageInfo.margins.pixelMargins?.right ||
+              documentData.pageInfo.margins.right ||
+              0}
+            B:
+            {documentData.pageInfo.margins.pixelMargins?.bottom ||
+              documentData.pageInfo.margins.bottom ||
+              0}
+            L:
+            {documentData.pageInfo.margins.pixelMargins?.left ||
+              documentData.pageInfo.margins.left ||
+              0}
+            <br />
+            Content Area:{" "}
+            {Math.round(
+              (documentData.pageInfo.dimensions?.pixelDimensions?.width ||
+                documentData.pageInfo.dimensions?.width ||
+                0) -
+                (documentData.pageInfo.margins.pixelMargins?.left ||
+                  documentData.pageInfo.margins.left ||
+                  0) -
+                (documentData.pageInfo.margins.pixelMargins?.right ||
+                  documentData.pageInfo.margins.right ||
+                  0)
+            )}{" "}
+            ×{" "}
+            {Math.round(
+              (documentData.pageInfo.dimensions?.pixelDimensions?.height ||
+                documentData.pageInfo.dimensions?.height ||
+                0) -
+                (documentData.pageInfo.margins.pixelMargins?.top ||
+                  documentData.pageInfo.margins.top ||
+                  0) -
+                (documentData.pageInfo.margins.pixelMargins?.bottom ||
+                  documentData.pageInfo.margins.bottom ||
+                  0)
+            )}
+            px
+          </div>
+        )}
 
         {/* Package Info */}
         {documentData.packageInfo && (
@@ -1557,11 +1809,15 @@ export default function Viewer() {
               ? element.name
               : `${element.type}_${element.id}`}
             <br />
-            Pos: ({Math.round(element.position.x)},{" "}
-            {Math.round(element.position.y)})
+            Pos: ({Math.round(
+              (element.pixelPosition || element.position).x
+            )}, {Math.round((element.pixelPosition || element.position).y)})px
             <br />
-            Size: {Math.round(element.position.width)} ×{" "}
-            {Math.round(element.position.height)}
+            Size:{" "}
+            {Math.round(
+              (element.pixelPosition || element.position).width
+            )} ×{" "}
+            {Math.round((element.pixelPosition || element.position).height)}px
             {element.isContentFrame && (
               <>
                 <br />
@@ -1685,8 +1941,14 @@ export default function Viewer() {
         <div
           style={{
             position: "relative",
-            width: (documentData.pageInfo?.dimensions?.width || 612) + "px",
-            height: (documentData.pageInfo?.dimensions?.height || 792) + "px",
+            width:
+              (documentData.pageInfo?.dimensions?.pixelDimensions?.width ||
+                documentData.pageInfo?.dimensions?.width ||
+                612) + "px",
+            height:
+              (documentData.pageInfo?.dimensions?.pixelDimensions?.height ||
+                documentData.pageInfo?.dimensions?.height ||
+                792) + "px",
             backgroundColor: (() => {
               const bgColor = getDocumentBackgroundColor(documentData);
               console.log(
@@ -1705,58 +1967,130 @@ export default function Viewer() {
         >
           {(() => {
             // DEBUG: Log page dimensions and margins
-            const pageWidth = documentData.pageInfo?.dimensions?.width || 612;
-            const pageHeight = documentData.pageInfo?.dimensions?.height || 792;
-            const marginLeft = documentData.pageInfo?.margins?.left || 0;
-            const marginTop = documentData.pageInfo?.margins?.top || 0;
-            const marginRight = documentData.pageInfo?.margins?.right || 0;
-            const marginBottom = documentData.pageInfo?.margins?.bottom || 0;
+            const pageWidth =
+              documentData.pageInfo?.dimensions?.pixelDimensions?.width ||
+              documentData.pageInfo?.dimensions?.width ||
+              612;
+            const pageHeight =
+              documentData.pageInfo?.dimensions?.pixelDimensions?.height ||
+              documentData.pageInfo?.dimensions?.height ||
+              792;
+            const marginLeft =
+              documentData.pageInfo?.margins?.pixelMargins?.left ||
+              documentData.pageInfo?.margins?.left ||
+              0;
+            const marginTop =
+              documentData.pageInfo?.margins?.pixelMargins?.top ||
+              documentData.pageInfo?.margins?.top ||
+              0;
+            const marginRight =
+              documentData.pageInfo?.margins?.pixelMargins?.right ||
+              documentData.pageInfo?.margins?.right ||
+              0;
+            const marginBottom =
+              documentData.pageInfo?.margins?.pixelMargins?.bottom ||
+              documentData.pageInfo?.margins?.bottom ||
+              0;
 
-            console.log("📐 PAGE DIMENSIONS DEBUG:");
-            console.log(`   📏 Page size: ${pageWidth} × ${pageHeight}px`);
-            console.log(
-              `   📏 Margins: top=${marginTop}, right=${marginRight}, bottom=${marginBottom}, left=${marginLeft}`
-            );
-            console.log(
-              `   📏 Content area: ${pageWidth - marginLeft - marginRight} × ${
-                pageHeight - marginTop - marginBottom
-              }px`
-            );
-            console.log(
-              `   📏 Dotted border position: top=${marginTop}, left=${marginLeft}, right=${marginRight}, bottom=${marginBottom}`
-            );
+            if (showDebugInfo) {
+              console.log("📐 PAGE DIMENSIONS DEBUG:");
+              console.log(`   📏 Page size: ${pageWidth} × ${pageHeight}px`);
+              console.log(
+                `   📏 Margins: top=${marginTop}, right=${marginRight}, bottom=${marginBottom}, left=${marginLeft}`
+              );
+              console.log(
+                `   📏 Content area: ${
+                  pageWidth - marginLeft - marginRight
+                } × ${pageHeight - marginTop - marginBottom}px`
+              );
+              console.log(
+                `   📏 Dotted border position: top=${marginTop}, left=${marginLeft}, right=${marginRight}, bottom=${marginBottom}`
+              );
+            }
 
             return null; // This is just for debugging, return nothing
           })()}
-          {/* Margins Visualization */}
-          {documentData.pageInfo?.margins && (
-            <div
-              style={{
-                position: "absolute",
-                top: documentData.pageInfo.margins.top + "px",
-                left: documentData.pageInfo.margins.left + "px",
-                right: documentData.pageInfo.margins.right + "px",
-                bottom: documentData.pageInfo.margins.bottom + "px",
-                border: "3px dashed rgba(10, 0, 0, 0.3)",
-                pointerEvents: "none",
-                zIndex: 100,
-              }}
-            />
-          )}
+          {/* Margins Visualization - only show when enabled */}
+          {showMargins &&
+            documentData.pageInfo?.margins &&
+            (() => {
+              const visualMarginTop =
+                documentData.pageInfo.margins.pixelMargins?.top ||
+                documentData.pageInfo.margins.top ||
+                0;
+              const visualMarginLeft =
+                documentData.pageInfo.margins.pixelMargins?.left ||
+                documentData.pageInfo.margins.left ||
+                0;
+              const visualMarginRight =
+                documentData.pageInfo.margins.pixelMargins?.right ||
+                documentData.pageInfo.margins.right ||
+                0;
+              const visualMarginBottom =
+                documentData.pageInfo.margins.pixelMargins?.bottom ||
+                documentData.pageInfo.margins.bottom ||
+                0;
+
+              if (showDebugInfo) {
+                console.log("📐 MARGIN VISUALIZATION:", {
+                  top: visualMarginTop,
+                  left: visualMarginLeft,
+                  right: visualMarginRight,
+                  bottom: visualMarginBottom,
+                });
+              }
+
+              return (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: visualMarginTop + "px",
+                    left: visualMarginLeft + "px",
+                    right: visualMarginRight + "px",
+                    bottom: visualMarginBottom + "px",
+                    border: "3px dashed rgba(255, 0, 0, 0.4)",
+                    pointerEvents: "none",
+                    zIndex: 100,
+                  }}
+                />
+              );
+            })()}
           {(documentData.elements || []).map((element, index) => {
+            // ENFORCED: Only use pixelPosition (in pixels) for rendering
+            if (!element.pixelPosition) {
+              console.warn(
+                `⚠️ Skipping element ${element.id} because pixelPosition is missing!`
+              );
+              return null;
+            }
+            const elementPosition = element.pixelPosition;
             const isContentFrame =
               element.isContentFrame || element.hasPlacedContent;
             const hasPlacedContent = element.placedContent;
-            console.log(
-              "🧱",
-              element.id,
-              element.position.x - 478.031496063,
-              element.position.y
-            );
-            const marginLeft = documentData.pageInfo?.margins?.left || 0;
 
-            const marginTop = documentData.pageInfo?.margins?.top || 0;
-            console.log("Margin : ", marginLeft, marginTop);
+            // FIXED: Remove margin application - margins are for visual guidelines only
+            // Element positions should be exactly as calculated from IDML coordinates
+            // Margins in the UI are just dotted lines showing the content area
+
+            if (showDebugInfo) {
+              console.log(
+                "🧱 Element positioning:",
+                element.id,
+                "Type:",
+                element.type,
+                "Position source:",
+                element.pixelPosition ? "pixelPosition" : "position",
+                "Final coords:",
+                {
+                  x: elementPosition.x,
+                  y: elementPosition.y,
+                  width: elementPosition.width,
+                  height: elementPosition.height,
+                },
+                "Conversion info:",
+                element.position?._conversionInfo
+              );
+            }
 
             return (
               <div
@@ -1764,11 +2098,12 @@ export default function Viewer() {
                 onClick={() => setSelectedElement(element)}
                 style={{
                   position: "absolute",
-                  left: element.position.x + "px",
-                  // left: marginLeft + element.position.x    + "px",
-                  top: marginTop + element.position.y + "px",
-                  width: element.position.width + "px",
-                  height: element.position.height + "px",
+                  // FIXED: Use element position directly without any margin offsets
+                  // This ensures pixel-perfect positioning matching InDesign layout
+                  left: elementPosition.x + "px",
+                  top: elementPosition.y + "px",
+                  width: elementPosition.width + "px",
+                  height: elementPosition.height + "px",
                   backgroundColor: element.fill
                     ? convertColor(element.fill)
                     : "transparent",
@@ -1782,8 +2117,8 @@ export default function Viewer() {
                       : "1px dashed rgba(0,0,0,0.3)",
                   cursor: "pointer",
                   overflow: "visible", // CRITICAL: Allow text containers to overflow frame if needed
-                  transform: element.position.rotation
-                    ? `rotate(${element.position.rotation}deg)`
+                  transform: elementPosition.rotation
+                    ? `rotate(${elementPosition.rotation}deg)`
                     : undefined,
                   transformOrigin: "center center",
                   zIndex: index,
@@ -1794,8 +2129,29 @@ export default function Viewer() {
                 }}
                 title={`${element.type} (${element.id})${
                   isContentFrame ? " - Content Frame" : ""
-                }`}
+                }$[PIXEL ONLY]`}
               >
+                {/* Debug position label */}
+                {showDebugInfo && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "-20px",
+                      left: "0px",
+                      fontSize: "10px",
+                      background: "rgba(255, 255, 0, 0.8)",
+                      padding: "2px 4px",
+                      borderRadius: "2px",
+                      pointerEvents: "none",
+                      zIndex: 1000,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {element.id}: ({Math.round(elementPosition.x)},{" "}
+                    {Math.round(elementPosition.y)})
+                  </div>
+                )}
+
                 {/* Enhanced Image Rendering for both embedded and external images */}
                 {((hasPlacedContent &&
                   element.placedContent?.type === "Image") ||
@@ -1985,9 +2341,9 @@ export default function Viewer() {
                     let wasAdjusted = false;
                     let adjustmentDetails = null;
 
-                    // IMPROVED: Use full container dimensions for overflow detection
-                    const containerWidth = element.position.width; // Use full width
-                    const containerHeight = element.position.height; // Use full height
+                    // IMPROVED: Use full container dimensions for overflow detection (in pixels)
+                    const containerWidth = elementPosition.width; // Use full width in pixels
+                    const containerHeight = elementPosition.height; // Use full height in pixels // Use full height
 
                     // TEMPORARILY DISABLED: Apply overflow prevention if needed (may be causing text chopping)
                     if (false && textMeasurement.willOverflow) {
@@ -2047,8 +2403,8 @@ export default function Viewer() {
                           position: "absolute",
                           top: "0px", // Use full frame positioning
                           left: "0px", // Use full frame positioning
-                          width: `${element.position.width}px`, // Use full frame width
-                          height: `${element.position.height}px`, // Use full frame height
+                          width: `${elementPosition.width}px`, // Use full frame width in pixels
+                          height: `${elementPosition.height}px`, // Use full frame height in pixels
 
                           // HYBRID: Apply insets as padding to create visual spacing without reducing text area too much
                           padding: `${frameMetrics.insets.top}px ${frameMetrics.insets.right}px ${frameMetrics.insets.bottom}px ${frameMetrics.insets.left}px`,
@@ -2147,8 +2503,8 @@ export default function Viewer() {
                     >
                       🖼️ Content Frame
                       <br />
-                      {Math.round(element.position.width)}×
-                      {Math.round(element.position.height)}
+                      {Math.round(elementPosition.width)}×
+                      {Math.round(elementPosition.height)}px
                       {element.name && element.name !== "$ID/" && (
                         <>
                           <br />
@@ -2180,8 +2536,8 @@ export default function Viewer() {
                     >
                       {element.type}
                       <br />
-                      {Math.round(element.position.width)}×
-                      {Math.round(element.position.height)}
+                      {Math.round(elementPosition.width)}×
+                      {Math.round(elementPosition.height)}px
                     </div>
                   )}
               </div>
@@ -2206,12 +2562,26 @@ export default function Viewer() {
               <strong>{selectedElement.type}</strong> ({selectedElement.id})
               <br />
               <strong>Position:</strong> (
-              {Math.round(selectedElement.position.x)},{" "}
-              {Math.round(selectedElement.position.y)})
+              {Math.round(
+                (selectedElement.pixelPosition || selectedElement.position).x
+              )}
+              ,{" "}
+              {Math.round(
+                (selectedElement.pixelPosition || selectedElement.position).y
+              )}
+              )px
               <br />
               <strong>Size:</strong>{" "}
-              {Math.round(selectedElement.position.width)} ×{" "}
-              {Math.round(selectedElement.position.height)}
+              {Math.round(
+                (selectedElement.pixelPosition || selectedElement.position)
+                  .width
+              )}{" "}
+              ×{" "}
+              {Math.round(
+                (selectedElement.pixelPosition || selectedElement.position)
+                  .height
+              )}
+              px
               {selectedElement.isContentFrame && (
                 <>
                   <br />
