@@ -16,6 +16,9 @@ import {
   IDMLUtils,
 } from "../../lib/index.js";
 
+// ADDED: Import NextFontMapper for automatic font processing
+const NextFontMapper = require("../../lib/utils/NextFontMapper");
+
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
@@ -225,6 +228,226 @@ function createComprehensiveProcessedData(rawData, moduleData = {}) {
   console.log("- Resources included:", !!processedData.resources);
 
   return processedData;
+}
+
+/**
+ * Improved font extraction that handles the actual document structure
+ * @param {Object} documentData - Processed IDML document data
+ * @param {NextFontMapper} fontMapper - Font mapper instance
+ * @returns {Array} Array of font configurations
+ */
+function extractDocumentFontsImproved(documentData, fontMapper) {
+  const usedFonts = new Set();
+  const fontConfigs = [];
+
+  console.log("🔍 Extracting fonts from document data (improved)...");
+
+  // Extract fonts from stories (main source)
+  if (documentData.stories) {
+    Object.values(documentData.stories).forEach((story) => {
+      // Check story-level styling first
+      if (story.styling && story.styling.fontFamily) {
+        const key = `${story.styling.fontFamily}-${
+          story.styling.fontStyle || "Regular"
+        }`;
+        if (!usedFonts.has(key)) {
+          usedFonts.add(key);
+          const config = fontMapper.mapToNextFont(
+            story.styling.fontFamily,
+            story.styling.fontStyle || "Regular",
+            story.styling.fontSize || 16
+          );
+          fontConfigs.push(config);
+          console.log(`   📝 Found story font: "${story.styling.fontFamily}"`);
+        }
+      }
+
+      // Check formatted content segments
+      if (story.formattedContent) {
+        story.formattedContent.forEach((segment) => {
+          if (segment.formatting) {
+            const fontFamily =
+              segment.formatting.fontFamily || story.styling?.fontFamily;
+            const fontStyle =
+              segment.formatting.fontStyle ||
+              story.styling?.fontStyle ||
+              "Regular";
+
+            if (fontFamily) {
+              const key = `${fontFamily}-${fontStyle}`;
+              if (!usedFonts.has(key)) {
+                usedFonts.add(key);
+                const config = fontMapper.mapToNextFont(
+                  fontFamily,
+                  fontStyle,
+                  segment.formatting.fontSize || story.styling?.fontSize || 16
+                );
+                fontConfigs.push(config);
+                console.log(`   📝 Found segment font: "${fontFamily}"`);
+              }
+            }
+          }
+        });
+      }
+    });
+  }
+
+  // Extract fonts from resources (fallback/additional)
+  if (documentData.resources && documentData.resources.fonts) {
+    Object.values(documentData.resources.fonts).forEach((fontFamily) => {
+      if (fontFamily.name) {
+        const key = `${fontFamily.name}-Regular`;
+        if (!usedFonts.has(key)) {
+          usedFonts.add(key);
+          const config = fontMapper.mapToNextFont(
+            fontFamily.name,
+            "Regular",
+            16
+          );
+          fontConfigs.push(config);
+          console.log(`   📝 Found resource font: "${fontFamily.name}"`);
+        }
+      }
+    });
+  }
+
+  console.log(
+    `📊 Extracted ${fontConfigs.length} unique fonts from document (improved)`
+  );
+
+  // Log summary
+  fontConfigs.forEach((font, index) => {
+    console.log(
+      `   ${index + 1}. "${font.originalFamily}" → "${font.fontFamily}" (${
+        font.nextFont
+      })`
+    );
+  });
+
+  return fontConfigs;
+}
+
+/**
+ * Process Next.js fonts for the document
+ * @param {Object} documentData - Processed IDML document data
+ * @param {NextFontMapper} fontMapper - Font mapper instance
+ * @returns {Object} Next.js font configuration
+ */
+function processNextFonts(documentData, fontMapper) {
+  console.log("🔤 Starting Next.js font processing...");
+
+  // Clear previous cache
+  fontMapper.clearCache();
+
+  // Extract and map all unique fonts from the document
+  const mappedFonts = extractDocumentFontsImproved(documentData, fontMapper);
+
+  // Process stories to add Next.js font info to formatted content
+  if (documentData.stories) {
+    Object.values(documentData.stories).forEach((story) => {
+      // Process story-level styling
+      if (story.styling && story.styling.fontFamily) {
+        const nextFontConfig = fontMapper.mapToNextFont(
+          story.styling.fontFamily,
+          story.styling.fontStyle || "Regular",
+          story.styling.fontSize || 16
+        );
+
+        // Add Next.js font information to the story
+        story.styling.nextFont = nextFontConfig;
+      }
+
+      // Process formatted content segments
+      if (story.formattedContent) {
+        story.formattedContent.forEach((segment) => {
+          if (segment.formatting) {
+            // Try multiple font family sources
+            const fontFamily =
+              segment.formatting.fontFamily || story.styling?.fontFamily;
+            const fontStyle =
+              segment.formatting.fontStyle ||
+              story.styling?.fontStyle ||
+              "Regular";
+            const fontSize =
+              segment.formatting.fontSize || story.styling?.fontSize || 16;
+
+            if (fontFamily) {
+              const nextFontConfig = fontMapper.mapToNextFont(
+                fontFamily,
+                fontStyle,
+                fontSize
+              );
+
+              // Add Next.js font information to the segment
+              segment.formatting.nextFont = nextFontConfig;
+
+              // Also add font family if missing
+              if (!segment.formatting.fontFamily) {
+                segment.formatting.fontFamily = fontFamily;
+              }
+            }
+          }
+        });
+      }
+    });
+  }
+
+  // Generate Next.js code snippets
+  const fontImports = fontMapper.generateNextFontImports();
+  const fontVariables = fontMapper.generateFontVariables();
+  const usedFontNames = Array.from(fontMapper.nextFontImports);
+
+  // Create CSS variables for all fonts
+  const cssVariables =
+    mappedFonts.length > 0
+      ? mappedFonts
+          .map(
+            (font) => `${font.nextFontVariable}: ${font.fontFamilyFallback};`
+          )
+          .join("\n  ")
+      : "";
+
+  const nextFontConfig = {
+    // Mapped fonts
+    usedFonts: mappedFonts,
+    totalFonts: mappedFonts.length,
+
+    // Next.js code generation
+    imports: fontImports,
+    variables: fontVariables,
+    cssVariables: cssVariables,
+    usedFontNames: usedFontNames,
+
+    // Usage examples
+    examples: {
+      className:
+        mappedFonts.length > 0
+          ? `\${${mappedFonts[0].nextFont.toLowerCase()}.className}`
+          : "",
+      variable: mappedFonts.length > 0 ? mappedFonts[0].nextFontVariable : "",
+      fontFamily: mappedFonts.length > 0 ? mappedFonts[0].fontFamily : "",
+    },
+
+    // Implementation guide
+    implementation: {
+      step1: "Add the imports to your page or component",
+      step2: "Initialize the fonts with the provided variables",
+      step3: "Use the className or CSS variables in your components",
+      step4: "All fonts are loaded from Next.js, not user's machine",
+    },
+  };
+
+  console.log(`🎯 Next.js font processing summary:`);
+  console.log(`   📊 Total fonts mapped: ${mappedFonts.length}`);
+  console.log(
+    `   📦 Google Fonts: ${mappedFonts.filter((f) => f.isGoogleFont).length}`
+  );
+  console.log(
+    `   🖥️  System Fonts: ${mappedFonts.filter((f) => f.isSystemFont).length}`
+  );
+  console.log(`   🔗 Unique Next.js fonts: ${usedFontNames.length}`);
+
+  return nextFontConfig;
 }
 
 export default async function handler(req, res) {
@@ -627,6 +850,14 @@ export default async function handler(req, res) {
     console.log(
       "✅ IDML processing completed. Elements:",
       documentData.elements.length
+    );
+
+    // ADDED: Automatic Next.js font processing
+    console.log("🔤 Processing Next.js fonts automatically...");
+    const fontMapper = new NextFontMapper();
+    documentData.nextFonts = processNextFonts(documentData, fontMapper);
+    console.log(
+      `✅ Font processing completed. Mapped ${documentData.nextFonts.usedFonts.length} unique fonts`
     );
 
     // Create ENHANCED debug JSON file
