@@ -2,7 +2,7 @@
   "document": {
     "version": 15.1,
     "pageCount": 1,
-    "name": "Untitled-1.indd",
+    "name": "catpackage.indd",
     "dimensions": {
       "width": 612,
       "height": 792,
@@ -28,372 +28,75 @@
   },
   "elements": [
     {
-      "id": "uf6",
-      "type": "TextFrame",
+      "id": "uea",
+      "type": "Rectangle",
       "name": "$ID/",
       "position": {
-        "x": 50,
+        "x": 130,
         "y": 0,
-        "width": 256,
-        "height": 164,
+        "width": 265,
+        "height": 148,
         "rotation": 0
       },
       "fill": "Color/None",
       "stroke": "Color/None",
       "strokeWeight": 0,
-      "parentStory": "ue4",
-      "visible": true,
-      "locked": false,
-      "isContentFrame": false,
-      "hasPlacedContent": false,
-      "contentType": null,
-      "imagePosition": null,
-      "placedContent": null
-    },
-    {
-      "id": "u10d",
-      "type": "TextFrame",
-      "name": "$ID/",
-      "position": {
-        "x": 294,
-        "y": 236,
-        "width": 260,
-        "height": 202,
-        "rotation": 0
+      "parentStory": null,
+      "linkedImage": {
+        "fileName": "panda.jpg",
+        "url": "/api/image/1753182361792/ExtractedImages/panda.jpg",
+        "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753182361792\\ExtractedImages\\panda.jpg",
+        "isEmbedded": "true",
+        "framePosition": {
+          "x": 130,
+          "y": 0,
+          "width": 265,
+          "height": 148,
+          "rotation": 0
+        },
+        "imagePosition": {
+          "x": -265,
+          "y": -148,
+          "width": 265,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        }
       },
-      "fill": "Color/None",
-      "stroke": "Color/None",
-      "strokeWeight": 0,
-      "parentStory": "ufb",
       "visible": true,
       "locked": false,
-      "isContentFrame": false,
-      "hasPlacedContent": false,
-      "contentType": null,
-      "imagePosition": null,
-      "placedContent": null
-    },
-    {
-      "id": "u124",
-      "type": "TextFrame",
-      "name": "$ID/",
-      "position": {
-        "x": 62,
-        "y": 506,
-        "width": 290,
-        "height": 170,
-        "rotation": 0
+      "isContentFrame": true,
+      "hasPlacedContent": true,
+      "contentType": "Image",
+      "imagePosition": {
+        "x": -265,
+        "y": -148,
+        "width": 265,
+        "height": 148,
+        "scaleX": 1,
+        "scaleY": 1
       },
-      "fill": "Color/None",
-      "stroke": "Color/None",
-      "strokeWeight": 0,
-      "parentStory": "u112",
-      "visible": true,
-      "locked": false,
-      "isContentFrame": false,
-      "hasPlacedContent": false,
-      "contentType": null,
-      "imagePosition": null,
-      "placedContent": null
+      "placedContent": {
+        "type": "Image",
+        "href": "72 72",
+        "isEmbedded": true,
+        "bounds": null,
+        "transform": {
+          "a": 1,
+          "b": 0,
+          "c": 0,
+          "d": 1,
+          "tx": -132.5,
+          "ty": -74
+        },
+        "actualPpi": "72 72",
+        "effectivePpi": "72 72",
+        "imageTypeName": "$ID/JPEG",
+        "space": "$ID/#Links_RGB"
+      }
     }
   ],
-  "stories": {
-    "u112": {
-      "text": "text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text",
-      "wordCount": 42,
-      "characterCount": 209,
-      "textColor": null,
-      "hasLineBreaks": false,
-      "lineBreakCount": 0,
-      "styling": {
-        "fontSize": 24,
-        "fontFamily": "Minion Pro",
-        "alignment": "LeftAlign",
-        "fillColor": "Color/Black",
-        "fontStyle": "Regular",
-        "leading": "auto",
-        "leadingType": "auto",
-        "effectiveLineHeight": 1.2,
-        "tracking": 0,
-        "kerning": 0
-      },
-      "formattedContent": [
-        {
-          "text": "text text text text text text text text text text text text text text text text text text text text",
-          "formatting": {
-            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
-            "characterStyle": "CharacterStyle/$ID/[No character style]",
-            "fontSize": 24,
-            "fontReference": "",
-            "fillColor": "Color/Black",
-            "fontStyle": "Regular",
-            "alignment": "LeftAlign",
-            "leading": "auto",
-            "leadingType": "auto",
-            "effectiveLineHeight": 1.2,
-            "leftIndent": 0,
-            "rightIndent": 0,
-            "firstLineIndent": 0,
-            "spaceBefore": 0,
-            "spaceAfter": 0,
-            "tracking": 0,
-            "kerning": 0,
-            "fontFamily": "Minion Pro"
-          }
-        },
-        {
-          "text": " ",
-          "formatting": {
-            "isSpace": true,
-            "source": "between character style ranges (aggressive)",
-            "currentStyle": "CharacterStyle/$ID/[No character style]",
-            "nextStyle": "CharacterStyle/$ID/[No character style]"
-          }
-        },
-        {
-          "text": "text text text text text text text text text text text text text text text text text text text text text text",
-          "formatting": {
-            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
-            "characterStyle": "CharacterStyle/$ID/[No character style]",
-            "fontSize": 24,
-            "fontReference": "",
-            "fillColor": "Color/Black",
-            "fontStyle": "Regular",
-            "alignment": "LeftAlign",
-            "leading": "auto",
-            "leadingType": "auto",
-            "effectiveLineHeight": 1.2,
-            "leftIndent": 0,
-            "rightIndent": 0,
-            "firstLineIndent": 0,
-            "spaceBefore": 0,
-            "spaceAfter": 0,
-            "tracking": 0,
-            "kerning": 0,
-            "fontFamily": "Minion Pro"
-          }
-        }
-      ]
-    },
-    "ufb": {
-      "text": "text text text text text text\ntext text text text text text\ntext text text text text text text text text text text text text text text text text text text text text text text text text text text text text text",
-      "wordCount": 42,
-      "characterCount": 209,
-      "textColor": null,
-      "hasLineBreaks": true,
-      "lineBreakCount": 2,
-      "styling": {
-        "fontSize": 24,
-        "fontFamily": "Minion Pro",
-        "alignment": "LeftAlign",
-        "fillColor": "Color/Black",
-        "fontStyle": "Regular",
-        "leading": "auto",
-        "leadingType": "auto",
-        "effectiveLineHeight": 1.2,
-        "tracking": 0,
-        "kerning": 0
-      },
-      "formattedContent": [
-        {
-          "text": "text text text text text text",
-          "formatting": {
-            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
-            "characterStyle": "CharacterStyle/$ID/[No character style]",
-            "fontSize": 24,
-            "fontReference": "",
-            "fillColor": "Color/Black",
-            "fontStyle": "Regular",
-            "alignment": "LeftAlign",
-            "leading": "auto",
-            "leadingType": "auto",
-            "effectiveLineHeight": 1.2,
-            "leftIndent": 0,
-            "rightIndent": 0,
-            "firstLineIndent": 0,
-            "spaceBefore": 0,
-            "spaceAfter": 0,
-            "tracking": 0,
-            "kerning": 0,
-            "fontFamily": "Minion Pro"
-          }
-        },
-        {
-          "text": "\n",
-          "formatting": {
-            "isBreak": true,
-            "breakType": "line",
-            "position": "between_content",
-            "source": "Br element within range"
-          }
-        },
-        {
-          "text": "text text text text text text",
-          "formatting": {
-            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
-            "characterStyle": "CharacterStyle/$ID/[No character style]",
-            "fontSize": 24,
-            "fontReference": "",
-            "fillColor": "Color/Black",
-            "fontStyle": "Regular",
-            "alignment": "LeftAlign",
-            "leading": "auto",
-            "leadingType": "auto",
-            "effectiveLineHeight": 1.2,
-            "leftIndent": 0,
-            "rightIndent": 0,
-            "firstLineIndent": 0,
-            "spaceBefore": 0,
-            "spaceAfter": 0,
-            "tracking": 0,
-            "kerning": 0,
-            "fontFamily": "Minion Pro"
-          }
-        },
-        {
-          "text": "\n",
-          "formatting": {
-            "isBreak": true,
-            "breakType": "line",
-            "position": "between_content",
-            "source": "Br element within range"
-          }
-        },
-        {
-          "text": "text text text text text text text text",
-          "formatting": {
-            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
-            "characterStyle": "CharacterStyle/$ID/[No character style]",
-            "fontSize": 24,
-            "fontReference": "",
-            "fillColor": "Color/Black",
-            "fontStyle": "Regular",
-            "alignment": "LeftAlign",
-            "leading": "auto",
-            "leadingType": "auto",
-            "effectiveLineHeight": 1.2,
-            "leftIndent": 0,
-            "rightIndent": 0,
-            "firstLineIndent": 0,
-            "spaceBefore": 0,
-            "spaceAfter": 0,
-            "tracking": 0,
-            "kerning": 0,
-            "fontFamily": "Minion Pro"
-          }
-        },
-        {
-          "text": " ",
-          "formatting": {
-            "isSpace": true,
-            "source": "between character style ranges (aggressive)",
-            "currentStyle": "CharacterStyle/$ID/[No character style]",
-            "nextStyle": "CharacterStyle/$ID/[No character style]"
-          }
-        },
-        {
-          "text": "text text text text text text text text text text text text text text text text text text text text text text",
-          "formatting": {
-            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
-            "characterStyle": "CharacterStyle/$ID/[No character style]",
-            "fontSize": 24,
-            "fontReference": "",
-            "fillColor": "Color/Black",
-            "fontStyle": "Regular",
-            "alignment": "LeftAlign",
-            "leading": "auto",
-            "leadingType": "auto",
-            "effectiveLineHeight": 1.2,
-            "leftIndent": 0,
-            "rightIndent": 0,
-            "firstLineIndent": 0,
-            "spaceBefore": 0,
-            "spaceAfter": 0,
-            "tracking": 0,
-            "kerning": 0,
-            "fontFamily": "Minion Pro"
-          }
-        }
-      ]
-    },
-    "ue4": {
-      "text": "text text text text text text\ntext text text text text text text text text text text text text text text text text text text text text text text text",
-      "wordCount": 30,
-      "characterCount": 149,
-      "textColor": null,
-      "hasLineBreaks": true,
-      "lineBreakCount": 1,
-      "styling": {
-        "fontSize": 24,
-        "fontFamily": "Minion Pro",
-        "alignment": "LeftAlign",
-        "fillColor": "Color/Black",
-        "fontStyle": "Regular",
-        "leading": "auto",
-        "leadingType": "auto",
-        "effectiveLineHeight": 1.2,
-        "tracking": 0,
-        "kerning": 0
-      },
-      "formattedContent": [
-        {
-          "text": "text text text text text text",
-          "formatting": {
-            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
-            "characterStyle": "CharacterStyle/$ID/[No character style]",
-            "fontSize": 24,
-            "fontReference": "",
-            "fillColor": "Color/Black",
-            "fontStyle": "Regular",
-            "alignment": "LeftAlign",
-            "leading": "auto",
-            "leadingType": "auto",
-            "effectiveLineHeight": 1.2,
-            "leftIndent": 0,
-            "rightIndent": 0,
-            "firstLineIndent": 0,
-            "spaceBefore": 0,
-            "spaceAfter": 0,
-            "tracking": 0,
-            "kerning": 0,
-            "fontFamily": "Minion Pro"
-          }
-        },
-        {
-          "text": "\n",
-          "formatting": {
-            "isBreak": true,
-            "breakType": "line",
-            "position": "between_content",
-            "source": "Br element within range"
-          }
-        },
-        {
-          "text": "text text text text text text text text text text text text text text text text text text text text text text text text",
-          "formatting": {
-            "paragraphStyle": "ParagraphStyle/$ID/NormalParagraphStyle",
-            "characterStyle": "CharacterStyle/$ID/[No character style]",
-            "fontSize": 24,
-            "fontReference": "",
-            "fillColor": "Color/Black",
-            "fontStyle": "Regular",
-            "alignment": "LeftAlign",
-            "leading": "auto",
-            "leadingType": "auto",
-            "effectiveLineHeight": 1.2,
-            "leftIndent": 0,
-            "rightIndent": 0,
-            "firstLineIndent": 0,
-            "spaceBefore": 0,
-            "spaceAfter": 0,
-            "tracking": 0,
-            "kerning": 0,
-            "fontFamily": "Minion Pro"
-          }
-        }
-      ]
-    }
-  },
+  "stories": {},
   "styles": {
     "paragraph": {
       "ParagraphStyle/$ID/[No paragraph style]": {
@@ -971,167 +674,72 @@
       ],
       "pageItems": [
         {
-          "type": "TextFrame",
-          "self": "uf6",
+          "type": "Rectangle",
+          "self": "uea",
           "name": "$ID/",
           "visible": true,
           "locked": false,
           "geometricBounds": {
-            "top": -82,
-            "left": -128,
-            "bottom": 82,
-            "right": 128,
-            "width": 256,
-            "height": 164
+            "top": -74,
+            "left": -132.5,
+            "bottom": 74,
+            "right": 132.5,
+            "width": 265,
+            "height": 148
           },
           "itemTransform": {
             "a": 1,
             "b": 0,
             "c": 0,
             "d": 1,
-            "tx": 178,
-            "ty": -258
+            "tx": 262.5,
+            "ty": -94
           },
           "itemLayer": "ucb",
           "fillColor": "Color/None",
           "strokeColor": "Color/None",
           "strokeWeight": 0,
-          "parentStory": "ue4",
-          "isContentFrame": false,
-          "hasPlacedContent": false,
-          "contentType": null,
-          "textFramePreferences": {
-            "textColumnCount": 1,
-            "textColumnGutter": 0,
-            "firstBaselineOffset": "AscentOffset",
-            "autoSizingReferencePoint": "CenterPoint",
-            "autoSizingType": "Off",
-            "verticalJustification": "TopAlign",
-            "insetSpacing": {
-              "top": 0,
-              "right": 0,
-              "bottom": 0,
-              "left": 0
+          "parentStory": null,
+          "isContentFrame": true,
+          "hasPlacedContent": true,
+          "contentType": "Image",
+          "placedContent": {
+            "type": "Image",
+            "href": "72 72",
+            "isEmbedded": true,
+            "bounds": null,
+            "transform": {
+              "a": 1,
+              "b": 0,
+              "c": 0,
+              "d": 1,
+              "tx": -132.5,
+              "ty": -74
             },
-            "useMinimumHeight": false,
-            "minimumFirstBaselineOffset": 0,
-            "ignoreWrap": false
+            "actualPpi": "72 72",
+            "effectivePpi": "72 72",
+            "imageTypeName": "$ID/JPEG",
+            "space": "$ID/#Links_RGB"
+          },
+          "cornerEffects": {
+            "topLeftCornerRadius": 0,
+            "topRightCornerRadius": 0,
+            "bottomLeftCornerRadius": 0,
+            "bottomRightCornerRadius": 0
+          },
+          "imagePosition": {
+            "x": -265,
+            "y": -148,
+            "width": 265,
+            "height": 148,
+            "scaleX": 1,
+            "scaleY": 1
           },
           "position": {
-            "x": 50,
+            "x": 130,
             "y": 0,
-            "width": 256,
-            "height": 164,
-            "rotation": 0
-          }
-        },
-        {
-          "type": "TextFrame",
-          "self": "u10d",
-          "name": "$ID/",
-          "visible": true,
-          "locked": false,
-          "geometricBounds": {
-            "top": -101,
-            "left": -130,
-            "bottom": 101,
-            "right": 130,
-            "width": 260,
-            "height": 202
-          },
-          "itemTransform": {
-            "a": 1,
-            "b": 0,
-            "c": 0,
-            "d": 1,
-            "tx": 424,
-            "ty": -3
-          },
-          "itemLayer": "ucb",
-          "fillColor": "Color/None",
-          "strokeColor": "Color/None",
-          "strokeWeight": 0,
-          "parentStory": "ufb",
-          "isContentFrame": false,
-          "hasPlacedContent": false,
-          "contentType": null,
-          "textFramePreferences": {
-            "textColumnCount": 1,
-            "textColumnGutter": 0,
-            "firstBaselineOffset": "AscentOffset",
-            "autoSizingReferencePoint": "CenterPoint",
-            "autoSizingType": "Off",
-            "verticalJustification": "TopAlign",
-            "insetSpacing": {
-              "top": 0,
-              "right": 0,
-              "bottom": 0,
-              "left": 0
-            },
-            "useMinimumHeight": false,
-            "minimumFirstBaselineOffset": 0,
-            "ignoreWrap": false
-          },
-          "position": {
-            "x": 294,
-            "y": 236,
-            "width": 260,
-            "height": 202,
-            "rotation": 0
-          }
-        },
-        {
-          "type": "TextFrame",
-          "self": "u124",
-          "name": "$ID/",
-          "visible": true,
-          "locked": false,
-          "geometricBounds": {
-            "top": -85,
-            "left": -145,
-            "bottom": 85,
-            "right": 145,
-            "width": 290,
-            "height": 170
-          },
-          "itemTransform": {
-            "a": 1,
-            "b": 0,
-            "c": 0,
-            "d": 1,
-            "tx": 207,
-            "ty": 251
-          },
-          "itemLayer": "ucb",
-          "fillColor": "Color/None",
-          "strokeColor": "Color/None",
-          "strokeWeight": 0,
-          "parentStory": "u112",
-          "isContentFrame": false,
-          "hasPlacedContent": false,
-          "contentType": null,
-          "textFramePreferences": {
-            "textColumnCount": 1,
-            "textColumnGutter": 0,
-            "firstBaselineOffset": "AscentOffset",
-            "autoSizingReferencePoint": "CenterPoint",
-            "autoSizingType": "Off",
-            "verticalJustification": "TopAlign",
-            "insetSpacing": {
-              "top": 0,
-              "right": 0,
-              "bottom": 0,
-              "left": 0
-            },
-            "useMinimumHeight": false,
-            "minimumFirstBaselineOffset": 0,
-            "ignoreWrap": false
-          },
-          "position": {
-            "x": 62,
-            "y": 506,
-            "width": 290,
-            "height": 170,
+            "width": 265,
+            "height": 148,
             "rotation": 0
           }
         }
@@ -1526,9 +1134,9 @@
   "debug22": {
     "coordinateOffset": {
       "x": 0,
-      "y": 340
+      "y": 168
     },
-    "contentFramesCount": 0,
+    "contentFramesCount": 1,
     "imagesLinkedCount": 0,
     "embeddedImagesCount": 0
   },
@@ -1537,13 +1145,13 @@
     "hasFonts": false,
     "linksCount": 0,
     "fontsCount": 0,
-    "extractedImagesCount": 0
+    "extractedImagesCount": 1
   },
   "processingInfo": {
-    "timestamp": "2025-07-21T07:59:44.367Z",
+    "timestamp": "2025-07-22T11:06:02.012Z",
     "moduleDataIncluded": true,
-    "elementsCount": 3,
-    "storiesCount": 3,
+    "elementsCount": 1,
+    "storiesCount": 0,
     "noDataFiltered": true,
     "processingVersion": "2.0-comprehensive"
   }

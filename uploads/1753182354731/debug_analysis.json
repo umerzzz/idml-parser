@@ -1,14 +1,14 @@
 {
-  "timestamp": "2025-07-21T08:03:12.055Z",
-  "uploadId": "1753084991659",
+  "timestamp": "2025-07-22T11:05:55.053Z",
+  "uploadId": "1753182354731",
   "idmlFile": {
-    "name": "idml1212.idml",
-    "size": 46647,
-    "path": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753084991659\\idml1212.idml"
+    "name": "idmlPackage.idml",
+    "size": 40978,
+    "path": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753182354731\\idmlPackage.idml"
   },
   "idmlContents": {
     "basic": {
-      "totalFiles": 14,
+      "totalFiles": 12,
       "allFiles": [
         "mimetype",
         "designmap.xml",
@@ -21,9 +21,7 @@
         "XML/Tags.xml",
         "MasterSpreads/MasterSpread_ud5.xml",
         "Spreads/Spread_uce.xml",
-        "XML/BackingStory.xml",
-        "Stories/Story_u111.xml",
-        "Stories/Story_ue4.xml"
+        "XML/BackingStory.xml"
       ],
       "folders": [
         "mimetype",
@@ -32,15 +30,14 @@
         "Resources",
         "XML",
         "MasterSpreads",
-        "Spreads",
-        "Stories"
+        "Spreads"
       ],
       "imageFiles": [],
       "hasLinksFolder": false,
       "linksFolderContents": []
     },
     "detailed": {
-      "totalFiles": 14,
+      "totalFiles": 12,
       "filesByType": {
         "": [
           "mimetype"
@@ -56,9 +53,7 @@
           "XML/Tags.xml",
           "MasterSpreads/MasterSpread_ud5.xml",
           "Spreads/Spread_uce.xml",
-          "XML/BackingStory.xml",
-          "Stories/Story_u111.xml",
-          "Stories/Story_ue4.xml"
+          "XML/BackingStory.xml"
         ]
       },
       "allFiles": [
@@ -73,9 +68,7 @@
         "XML/Tags.xml",
         "MasterSpreads/MasterSpread_ud5.xml",
         "Spreads/Spread_uce.xml",
-        "XML/BackingStory.xml",
-        "Stories/Story_u111.xml",
-        "Stories/Story_ue4.xml"
+        "XML/BackingStory.xml"
       ],
       "binaryFiles": [],
       "xmlFiles": [
@@ -89,9 +82,7 @@
         "XML/Tags.xml",
         "MasterSpreads/MasterSpread_ud5.xml",
         "Spreads/Spread_uce.xml",
-        "XML/BackingStory.xml",
-        "Stories/Story_u111.xml",
-        "Stories/Story_ue4.xml"
+        "XML/BackingStory.xml"
       ],
       "imageFiles": [],
       "unknownFiles": [],
@@ -104,8 +95,8 @@
           "extension": ""
         },
         "designmap.xml": {
-          "compressedSize": 3503,
-          "uncompressedSize": 17481,
+          "compressedSize": 3476,
+          "uncompressedSize": 17384,
           "compressionMethod": 8,
           "isDirectory": false,
           "extension": ".xml"
@@ -118,8 +109,8 @@
           "extension": ".xml"
         },
         "META-INF/metadata.xml": {
-          "compressedSize": 12148,
-          "uncompressedSize": 25892,
+          "compressedSize": 12135,
+          "uncompressedSize": 22053,
           "compressionMethod": 8,
           "isDirectory": false,
           "extension": ".xml"
@@ -167,8 +158,8 @@
           "extension": ".xml"
         },
         "Spreads/Spread_uce.xml": {
-          "compressedSize": 2791,
-          "uncompressedSize": 13243,
+          "compressedSize": 2775,
+          "uncompressedSize": 8168,
           "compressionMethod": 8,
           "isDirectory": false,
           "extension": ".xml"
@@ -176,20 +167,6 @@
         "XML/BackingStory.xml": {
           "compressedSize": 362,
           "uncompressedSize": 647,
-          "compressionMethod": 8,
-          "isDirectory": false,
-          "extension": ".xml"
-        },
-        "Stories/Story_u111.xml": {
-          "compressedSize": 476,
-          "uncompressedSize": 1060,
-          "compressionMethod": 8,
-          "isDirectory": false,
-          "extension": ".xml"
-        },
-        "Stories/Story_ue4.xml": {
-          "compressedSize": 4899,
-          "uncompressedSize": 20413,
           "compressionMethod": 8,
           "isDirectory": false,
           "extension": ".xml"
@@ -204,113 +181,17 @@
         {
           "file": "Spreads/Spread_uce.xml",
           "path": "Spread.Spread.Rectangle.Image.@_ImageTypeName",
-          "value": "$ID/Portable Network Graphics (PNG)"
+          "value": "$ID/JPEG"
         }
       ],
       "linkReferences": [
         {
           "file": "Spreads/Spread_uce.xml",
           "path": "Spread.Spread.Rectangle.Image.Link",
-          "value": "{\"@_Self\":\"u10c\",\"@_AssetURL\":\"$ID/\",\"@_AssetID\":\"$ID/\",\"@_RenditionData\":\"Actual\",\"@_LinkResourceURI\":\"file:C:/Users/hp/Downloads/food-mix-salad-noodles-grillea-chicken-garlic-greena-top-view-removeb"
+          "value": "{\"@_Self\":\"u2bb\",\"@_AssetURL\":\"$ID/\",\"@_AssetID\":\"$ID/\",\"@_RenditionData\":\"Actual\",\"@_LinkResourceURI\":\"file:C:/Users/hp/Downloads/idmlPackage%20Folder/Links/car.jpg\",\"@_LinkResourceFormat\":\"$ID/JPEG\""
         }
       ],
       "placedContentDetails": [
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_ImageConversionType",
-          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImageConversionType",
-          "details": "JPEG"
-        },
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_ImageExportResolution",
-          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImageExportResolution",
-          "details": "Ppi300"
-        },
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_ImageAlignment",
-          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImageAlignment",
-          "details": "AlignLeft"
-        },
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_ImageSpaceBefore",
-          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImageSpaceBefore",
-          "details": 0
-        },
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_ImageSpaceAfter",
-          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImageSpaceAfter",
-          "details": 0
-        },
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_UseImagePageBreak",
-          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_UseImagePageBreak",
-          "details": false
-        },
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_ImagePageBreak",
-          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_ImagePageBreak",
-          "details": "PageBreakBefore"
-        },
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_CustomImageAlignment",
-          "path": "Spread.Spread.TextFrame.0.ObjectExportOption.@_CustomImageAlignment",
-          "details": false
-        },
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_ImageConversionType",
-          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImageConversionType",
-          "details": "JPEG"
-        },
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_ImageExportResolution",
-          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImageExportResolution",
-          "details": "Ppi300"
-        },
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_ImageAlignment",
-          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImageAlignment",
-          "details": "AlignLeft"
-        },
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_ImageSpaceBefore",
-          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImageSpaceBefore",
-          "details": 0
-        },
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_ImageSpaceAfter",
-          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImageSpaceAfter",
-          "details": 0
-        },
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_UseImagePageBreak",
-          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_UseImagePageBreak",
-          "details": false
-        },
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_ImagePageBreak",
-          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_ImagePageBreak",
-          "details": "PageBreakBefore"
-        },
-        {
-          "file": "Spreads/Spread_uce.xml",
-          "elementType": "@_CustomImageAlignment",
-          "path": "Spread.Spread.TextFrame.1.ObjectExportOption.@_CustomImageAlignment",
-          "details": false
-        },
         {
           "file": "Spreads/Spread_uce.xml",
           "elementType": "@_ImageConversionType",
@@ -366,14 +247,14 @@
           "details": {
             "Properties": {
               "Profile": {
-                "#text": "$ID/None",
+                "#text": "$ID/Embedded",
                 "@_type": "string"
               },
               "GraphicBounds": {
                 "@_Left": 0,
                 "@_Top": 0,
-                "@_Right": 612,
-                "@_Bottom": 408
+                "@_Right": 960,
+                "@_Bottom": 643
               }
             },
             "TextWrapPreference": {
@@ -395,13 +276,18 @@
               "@_TextWrapSide": "BothSides",
               "@_TextWrapMode": "None"
             },
+            "MetadataPacketPreference": {
+              "Properties": {
+                "Contents": "<?xpacket begin=\"﻿\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?>\n<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Adobe XMP Core 6.0-c002 79.164460, 2020/05/12-16:04:17        \">\n   <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n      <rdf:Description rdf:about=\"\"\n            xmlns:tiff=\"http://ns.adobe.com/tiff/1.0/\"\n            xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n         <tiff:XResolution>72/1</tiff:XResolution>\n         <tiff:YResolution>72/1</tiff:YResolution>\n         <tiff:ResolutionUnit>2</tiff:ResolutionUnit>\n         <tiff:YCbCrPositioning>1</tiff:YCbCrPositioning>\n         <dc:rights>\n            <rdf:Alt>\n               <rdf:li xml:lang=\"x-default\">JamesHolm.se</rdf:li>\n            </rdf:Alt>\n         </dc:rights>\n         <dc:creator>\n            <rdf:Seq>\n               <rdf:li>JamesHolm.se</rdf:li>\n            </rdf:Seq>\n         </dc:creator>\n      </rdf:Description>\n   </rdf:RDF>\n</x:xmpmeta>\n<?xpacket end=\"r\"?>"
+              }
+            },
             "Link": {
-              "@_Self": "u10c",
+              "@_Self": "u2bb",
               "@_AssetURL": "$ID/",
               "@_AssetID": "$ID/",
               "@_RenditionData": "Actual",
-              "@_LinkResourceURI": "file:C:/Users/hp/Downloads/food-mix-salad-noodles-grillea-chicken-garlic-greena-top-view-removebg-preview.png",
-              "@_LinkResourceFormat": "$ID/Portable Network Graphics (PNG)",
+              "@_LinkResourceURI": "file:C:/Users/hp/Downloads/idmlPackage%20Folder/Links/car.jpg",
+              "@_LinkResourceFormat": "$ID/JPEG",
               "@_StoredState": "Normal",
               "@_LinkClassID": 35906,
               "@_LinkClientID": 257,
@@ -413,10 +299,10 @@
               "@_CanPackage": true,
               "@_ImportPolicy": "NoAutoImport",
               "@_ExportPolicy": "NoAutoExport",
-              "@_LinkImportStamp": "file 133835024600822080 285168",
-              "@_LinkImportModificationTime": "2025-02-08T20:34:20",
-              "@_LinkImportTime": "2025-07-18T14:21:54",
-              "@_LinkResourceSize": "0~459f0"
+              "@_LinkImportStamp": "file 133975641076049457 201531",
+              "@_LinkImportModificationTime": "2025-07-21T14:35:07",
+              "@_LinkImportTime": "2025-07-21T14:46:10",
+              "@_LinkResourceSize": "0~3133b"
             },
             "ClippingPathSettings": {
               "@_ClippingType": "None",
@@ -435,16 +321,16 @@
               "@_AllowAutoEmbedding": true,
               "@_AlphaChannelName": "$ID/"
             },
-            "@_Self": "u109",
+            "@_Self": "u2b6",
             "@_Space": "$ID/#Links_RGB",
             "@_ActualPpi": "72 72",
-            "@_EffectivePpi": "103 103",
+            "@_EffectivePpi": "72 72",
             "@_ImageRenderingIntent": "UseColorSettings",
             "@_OverriddenPageItemProps": "",
             "@_LocalDisplaySetting": "Default",
-            "@_ImageTypeName": "$ID/Portable Network Graphics (PNG)",
+            "@_ImageTypeName": "$ID/JPEG",
             "@_AppliedObjectStyle": "ObjectStyle/$ID/[None]",
-            "@_ItemTransform": "0.7 0 0 0.7 -314 -195.20000000000005",
+            "@_ItemTransform": "1 0 0 1 -480 -321.5",
             "@_ParentInterfaceChangeCount": "",
             "@_TargetInterfaceChangeCount": "",
             "@_LastUpdatedInterfaceChangeCount": "",
@@ -485,36 +371,51 @@
           "file": "Spreads/Spread_uce.xml",
           "elementType": "@_ImageTypeName",
           "path": "Spread.Spread.Rectangle.Image.@_ImageTypeName",
-          "details": "$ID/Portable Network Graphics (PNG)"
+          "details": "$ID/JPEG"
         }
       ]
     },
     "suspiciousFileSamples": []
   },
   "packageUpload": {
-    "totalUploadedFiles": 1,
+    "totalUploadedFiles": 4,
     "uploadedFiles": [
       {
-        "name": "idml1212.idml",
-        "size": 46647,
+        "name": "idmlPackage.idml",
+        "size": 40978,
         "mimetype": "application/octet-stream"
+      },
+      {
+        "name": "idmlPackage.indd",
+        "size": 1384448,
+        "mimetype": "application/octet-stream"
+      },
+      {
+        "name": "idmlPackage.pdf",
+        "size": 157818,
+        "mimetype": "application/pdf"
+      },
+      {
+        "name": "car.jpg",
+        "size": 201531,
+        "mimetype": "image/jpeg"
       }
     ],
-    "isPackageUpload": false
+    "isPackageUpload": true
   },
   "processingResults": {
-    "elementsFound": 3,
-    "storiesFound": 2,
+    "elementsFound": 1,
+    "storiesFound": 0,
     "contentFrames": [
       {
-        "id": "u10f",
+        "id": "u2b0",
         "type": "Rectangle",
         "name": "$ID/",
         "position": {
-          "x": 110,
-          "y": 195.2,
-          "width": 428.4,
-          "height": 285.6,
+          "x": 54,
+          "y": 0,
+          "width": 514,
+          "height": 584,
           "rotation": 0
         },
         "fill": "Color/None",
@@ -522,25 +423,24 @@
         "strokeWeight": 0,
         "parentStory": null,
         "linkedImage": {
-          "fileName": "embedded_u10f.jpg",
-          "url": null,
-          "isEmbedded": true,
-          "embeddedType": "$ID/Portable Network Graphics (PNG)",
-          "embeddedData": "72 72",
+          "fileName": "car.jpg",
+          "url": "/api/image/1753182354731/Links/car.jpg",
+          "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753182354731\\Links\\car.jpg",
+          "isEmbedded": "false",
           "framePosition": {
-            "x": 110,
-            "y": 195.2,
-            "width": 428.4,
-            "height": 285.6,
+            "x": 54,
+            "y": 0,
+            "width": 514,
+            "height": 584,
             "rotation": 0
           },
           "imagePosition": {
-            "x": -620,
-            "y": -399.20000000000005,
-            "width": 299.87999999999994,
-            "height": 199.91999999999996,
-            "scaleX": 0.7,
-            "scaleY": 0.7
+            "x": -737,
+            "y": -613.5,
+            "width": 514,
+            "height": 584,
+            "scaleX": 1,
+            "scaleY": 1
           }
         },
         "visible": true,
@@ -549,12 +449,12 @@
         "hasPlacedContent": true,
         "contentType": "Image",
         "imagePosition": {
-          "x": -620,
-          "y": -399.20000000000005,
-          "width": 299.87999999999994,
-          "height": 199.91999999999996,
-          "scaleX": 0.7,
-          "scaleY": 0.7
+          "x": -737,
+          "y": -613.5,
+          "width": 514,
+          "height": 584,
+          "scaleX": 1,
+          "scaleY": 1
         },
         "placedContent": {
           "type": "Image",
@@ -562,30 +462,30 @@
           "isEmbedded": true,
           "bounds": null,
           "transform": {
-            "a": 0.7,
+            "a": 1,
             "b": 0,
             "c": 0,
-            "d": 0.7,
-            "tx": -314,
-            "ty": -195.20000000000005
+            "d": 1,
+            "tx": -480,
+            "ty": -321.5
           },
           "actualPpi": "72 72",
-          "effectivePpi": "103 103",
-          "imageTypeName": "$ID/Portable Network Graphics (PNG)",
+          "effectivePpi": "72 72",
+          "imageTypeName": "$ID/JPEG",
           "space": "$ID/#Links_RGB"
         }
       }
     ],
     "embeddedImages": [
       {
-        "id": "u10f",
+        "id": "u2b0",
         "type": "Rectangle",
         "name": "$ID/",
         "position": {
-          "x": 110,
-          "y": 195.2,
-          "width": 428.4,
-          "height": 285.6,
+          "x": 54,
+          "y": 0,
+          "width": 514,
+          "height": 584,
           "rotation": 0
         },
         "fill": "Color/None",
@@ -593,25 +493,24 @@
         "strokeWeight": 0,
         "parentStory": null,
         "linkedImage": {
-          "fileName": "embedded_u10f.jpg",
-          "url": null,
-          "isEmbedded": true,
-          "embeddedType": "$ID/Portable Network Graphics (PNG)",
-          "embeddedData": "72 72",
+          "fileName": "car.jpg",
+          "url": "/api/image/1753182354731/Links/car.jpg",
+          "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753182354731\\Links\\car.jpg",
+          "isEmbedded": "false",
           "framePosition": {
-            "x": 110,
-            "y": 195.2,
-            "width": 428.4,
-            "height": 285.6,
+            "x": 54,
+            "y": 0,
+            "width": 514,
+            "height": 584,
             "rotation": 0
           },
           "imagePosition": {
-            "x": -620,
-            "y": -399.20000000000005,
-            "width": 299.87999999999994,
-            "height": 199.91999999999996,
-            "scaleX": 0.7,
-            "scaleY": 0.7
+            "x": -737,
+            "y": -613.5,
+            "width": 514,
+            "height": 584,
+            "scaleX": 1,
+            "scaleY": 1
           }
         },
         "visible": true,
@@ -620,12 +519,12 @@
         "hasPlacedContent": true,
         "contentType": "Image",
         "imagePosition": {
-          "x": -620,
-          "y": -399.20000000000005,
-          "width": 299.87999999999994,
-          "height": 199.91999999999996,
-          "scaleX": 0.7,
-          "scaleY": 0.7
+          "x": -737,
+          "y": -613.5,
+          "width": 514,
+          "height": 584,
+          "scaleX": 1,
+          "scaleY": 1
         },
         "placedContent": {
           "type": "Image",
@@ -633,16 +532,16 @@
           "isEmbedded": true,
           "bounds": null,
           "transform": {
-            "a": 0.7,
+            "a": 1,
             "b": 0,
             "c": 0,
-            "d": 0.7,
-            "tx": -314,
-            "ty": -195.20000000000005
+            "d": 1,
+            "tx": -480,
+            "ty": -321.5
           },
           "actualPpi": "72 72",
-          "effectivePpi": "103 103",
-          "imageTypeName": "$ID/Portable Network Graphics (PNG)",
+          "effectivePpi": "72 72",
+          "imageTypeName": "$ID/JPEG",
           "space": "$ID/#Links_RGB"
         }
       }
