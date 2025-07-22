@@ -553,13 +553,23 @@ export default function Viewer() {
   };
 
   const getFontWeight = (fontStyle) => {
-    if (!fontStyle) return "normal";
+    if (!fontStyle) return "400";
+
     const style = fontStyle.toLowerCase();
-    if (style.includes("bold")) return "bold";
+
+    // Handle complex styles like "Bold Italic", "Semibold Condensed", etc.
+    if (style.includes("thin")) return "100";
+    if (style.includes("extralight") || style.includes("ultra light"))
+      return "200";
     if (style.includes("light")) return "300";
     if (style.includes("medium")) return "500";
-    if (style.includes("black")) return "900";
-    return "normal";
+    if (style.includes("demibold") || style.includes("semibold")) return "600";
+    if (style.includes("bold")) return "700";
+    if (style.includes("extrabold") || style.includes("ultra bold"))
+      return "800";
+    if (style.includes("black") || style.includes("heavy")) return "900";
+
+    return "400"; // Regular/Normal
   };
 
   const getFontStyle = (fontStyle) => {
@@ -601,6 +611,40 @@ export default function Viewer() {
 
     // Default to normal for everything else (including Regular, Medium, Bold, etc.)
     return "normal";
+  };
+
+  const extractTextDecorations = (formatting) => {
+    const decorations = [];
+
+    // Check for underline
+    if (
+      formatting.underline ||
+      (formatting.characterStyle &&
+        formatting.characterStyle.toLowerCase().includes("underline"))
+    ) {
+      decorations.push("underline");
+    }
+
+    // Check for strikethrough
+    if (
+      formatting.strikethrough ||
+      formatting.strikeThrough ||
+      (formatting.characterStyle &&
+        formatting.characterStyle.toLowerCase().includes("strikethrough"))
+    ) {
+      decorations.push("line-through");
+    }
+
+    // Check for overline
+    if (
+      formatting.overline ||
+      (formatting.characterStyle &&
+        formatting.characterStyle.toLowerCase().includes("overline"))
+    ) {
+      decorations.push("overline");
+    }
+
+    return decorations.length > 0 ? decorations.join(" ") : "none";
   };
 
   const getTextAlign = (alignment) => {
@@ -1094,20 +1138,40 @@ export default function Viewer() {
           }
         }
 
+        // ENHANCED: Use complete character styles if available
+        const completeStyles = formatting.completeStyles || {};
+
         const style = {
           fontSize: `${fontSize}px`,
           fontFamily:
             formatting.fontFamily ||
             story.styling?.fontFamily ||
             "Arial, sans-serif",
-          fontWeight: getFontWeight(formatting.fontStyle),
-          fontStyle: getFontStyle(formatting.fontStyle),
+
+          // ENHANCED: Use complete style analysis for proper font weight/style
+          fontWeight:
+            completeStyles.fontWeight ||
+            getFontWeight(formatting.fontStyle) ||
+            "400",
+          fontStyle:
+            completeStyles.fontStyle ||
+            getFontStyle(formatting.fontStyle) ||
+            "normal",
+
           color: convertColor(formatting.fillColor) || "black",
           textAlign: getTextAlign(formatting.alignment),
           lineHeight: lineHeight,
           letterSpacing: formatting.tracking
             ? `${formatting.tracking / 1000}em`
             : "normal",
+
+          // ENHANCED: Complete text decoration support
+          textDecoration:
+            completeStyles.textDecoration || extractTextDecorations(formatting),
+
+          // ENHANCED: Text effects
+          textTransform: completeStyles.textTransform || "none",
+          textShadow: completeStyles.textShadow || "none",
 
           // FIXED: Remove margins that could cause spacing issues
           margin: 0,
@@ -1130,10 +1194,14 @@ export default function Viewer() {
             marginBottom: `${formatting.spaceAfter}px`,
           }),
 
-          textDecoration: "none", // FIXED: Removed automatic underline detection to prevent false positives
-
-          // TODO: Add proper underline detection based on actual formatting attributes
-          // textDecoration: formatting.characterStyle?.includes("Underline") ? "underline" : "none",
+          // ENHANCED: Advanced InDesign properties
+          ...(completeStyles.baselineShift && {
+            verticalAlign: `${completeStyles.baselineShift}px`,
+          }),
+          ...(completeStyles.horizontalScale &&
+            completeStyles.horizontalScale !== 100 && {
+              transform: `scaleX(${completeStyles.horizontalScale / 100})`,
+            }),
         };
 
         // CRITICAL FIX: Add space after span if needed to prevent word joining

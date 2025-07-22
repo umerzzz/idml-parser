@@ -231,6 +231,203 @@ function createComprehensiveProcessedData(rawData, moduleData = {}) {
 }
 
 /**
+ * Extract complete character styles including text decorations, weights, etc.
+ * @param {Object} segmentFormatting - Character-level formatting
+ * @param {Object} storyFormatting - Story-level formatting fallback
+ * @returns {Object} Complete style object with all properties preserved
+ */
+function extractCompleteCharacterStyles(
+  segmentFormatting,
+  storyFormatting = {}
+) {
+  const styles = {
+    // Font properties
+    fontFamily:
+      segmentFormatting.fontFamily || storyFormatting.fontFamily || null,
+    fontSize: segmentFormatting.fontSize || storyFormatting.fontSize || null,
+    fontWeight: extractFontWeight(
+      segmentFormatting.fontStyle || storyFormatting.fontStyle
+    ),
+    fontStyle: extractFontStyle(
+      segmentFormatting.fontStyle || storyFormatting.fontStyle
+    ),
+
+    // Colors
+    color: segmentFormatting.fillColor || storyFormatting.fillColor || null,
+    backgroundColor: segmentFormatting.backgroundColor || null,
+
+    // Text decorations
+    textDecoration: extractTextDecorations(segmentFormatting),
+
+    // Typography
+    letterSpacing:
+      segmentFormatting.tracking || storyFormatting.tracking || null,
+    lineHeight: segmentFormatting.leading || storyFormatting.leading || null,
+
+    // Text effects
+    textShadow: extractTextShadow(segmentFormatting),
+    textTransform: extractTextTransform(segmentFormatting),
+
+    // Advanced properties
+    characterStyle: segmentFormatting.characterStyle || null,
+    paragraphStyle:
+      segmentFormatting.paragraphStyle ||
+      storyFormatting.paragraphStyle ||
+      null,
+
+    // InDesign specific
+    baselineShift: segmentFormatting.baselineShift || null,
+    horizontalScale: segmentFormatting.horizontalScale || null,
+    verticalScale: segmentFormatting.verticalScale || null,
+    kerning: segmentFormatting.kerning || null,
+
+    // Stroke properties
+    strokeColor: segmentFormatting.strokeColor || null,
+    strokeWeight: segmentFormatting.strokeWeight || null,
+
+    // Preserve selected original properties (avoid circular reference)
+    originalFormatting: {
+      fontFamily: segmentFormatting.fontFamily,
+      fontStyle: segmentFormatting.fontStyle,
+      fontSize: segmentFormatting.fontSize,
+      fillColor: segmentFormatting.fillColor,
+      characterStyle: segmentFormatting.characterStyle,
+      paragraphStyle: segmentFormatting.paragraphStyle,
+      tracking: segmentFormatting.tracking,
+      baselineShift: segmentFormatting.baselineShift,
+      horizontalScale: segmentFormatting.horizontalScale,
+      verticalScale: segmentFormatting.verticalScale,
+      kerning: segmentFormatting.kerning,
+      strokeColor: segmentFormatting.strokeColor,
+      strokeWeight: segmentFormatting.strokeWeight,
+      underline: segmentFormatting.underline,
+      strikethrough: segmentFormatting.strikethrough,
+      strikeThrough: segmentFormatting.strikeThrough,
+      overline: segmentFormatting.overline,
+    },
+  };
+
+  return styles;
+}
+
+/**
+ * Extract font weight from InDesign font style string
+ * @param {string} fontStyle - InDesign font style
+ * @returns {string} CSS font weight
+ */
+function extractFontWeight(fontStyle) {
+  if (!fontStyle) return "400";
+
+  const style = fontStyle.toLowerCase();
+
+  // Handle complex styles like "Bold Italic", "Semibold Condensed", etc.
+  if (style.includes("thin")) return "100";
+  if (style.includes("extralight") || style.includes("ultra light"))
+    return "200";
+  if (style.includes("light")) return "300";
+  if (style.includes("medium")) return "500";
+  if (style.includes("demibold") || style.includes("semibold")) return "600";
+  if (style.includes("bold")) return "700";
+  if (style.includes("extrabold") || style.includes("ultra bold")) return "800";
+  if (style.includes("black") || style.includes("heavy")) return "900";
+
+  return "400"; // Regular/Normal
+}
+
+/**
+ * Extract font style from InDesign font style string
+ * @param {string} fontStyle - InDesign font style
+ * @returns {string} CSS font style
+ */
+function extractFontStyle(fontStyle) {
+  if (!fontStyle) return "normal";
+
+  const style = fontStyle.toLowerCase();
+
+  if (style.includes("italic") || style.includes("oblique")) {
+    return "italic";
+  }
+
+  return "normal";
+}
+
+/**
+ * Extract text decorations from formatting
+ * @param {Object} formatting - Character formatting
+ * @returns {string} CSS text-decoration value
+ */
+function extractTextDecorations(formatting) {
+  const decorations = [];
+
+  // Check for underline
+  if (
+    formatting.underline ||
+    (formatting.characterStyle &&
+      formatting.characterStyle.toLowerCase().includes("underline"))
+  ) {
+    decorations.push("underline");
+  }
+
+  // Check for strikethrough
+  if (
+    formatting.strikethrough ||
+    formatting.strikeThrough ||
+    (formatting.characterStyle &&
+      formatting.characterStyle.toLowerCase().includes("strikethrough"))
+  ) {
+    decorations.push("line-through");
+  }
+
+  // Check for overline
+  if (
+    formatting.overline ||
+    (formatting.characterStyle &&
+      formatting.characterStyle.toLowerCase().includes("overline"))
+  ) {
+    decorations.push("overline");
+  }
+
+  return decorations.length > 0 ? decorations.join(" ") : "none";
+}
+
+/**
+ * Extract text shadow effects
+ * @param {Object} formatting - Character formatting
+ * @returns {string} CSS text-shadow value
+ */
+function extractTextShadow(formatting) {
+  // InDesign shadow effects - implement when available
+  if (formatting.dropShadow || formatting.textShadow) {
+    // Return CSS text-shadow format
+    return formatting.textShadow || null;
+  }
+  return null;
+}
+
+/**
+ * Extract text transform
+ * @param {Object} formatting - Character formatting
+ * @returns {string} CSS text-transform value
+ */
+function extractTextTransform(formatting) {
+  if (formatting.capitalization || formatting.textCase) {
+    const textCase = (
+      formatting.capitalization ||
+      formatting.textCase ||
+      ""
+    ).toLowerCase();
+
+    if (textCase.includes("upper")) return "uppercase";
+    if (textCase.includes("lower")) return "lowercase";
+    if (textCase.includes("title") || textCase.includes("capital"))
+      return "capitalize";
+    if (textCase.includes("small")) return "small-caps";
+  }
+
+  return "none";
+}
+
+/**
  * Improved font extraction that handles the actual document structure
  * @param {Object} documentData - Processed IDML document data
  * @param {NextFontMapper} fontMapper - Font mapper instance
@@ -372,14 +569,20 @@ function processNextFonts(documentData, fontMapper) {
               segment.formatting.fontSize || story.styling?.fontSize || 16;
 
             if (fontFamily) {
+              // Enhanced font processing with complete style preservation
               const nextFontConfig = fontMapper.mapToNextFont(
                 fontFamily,
                 fontStyle,
                 fontSize
               );
 
-              // Add Next.js font information to the segment
+              // ENHANCED: Add complete character styling preservation
               segment.formatting.nextFont = nextFontConfig;
+              segment.formatting.completeStyles =
+                extractCompleteCharacterStyles(
+                  segment.formatting,
+                  story.styling
+                );
 
               // Also add font family if missing
               if (!segment.formatting.fontFamily) {
