@@ -1030,9 +1030,19 @@ export default function Viewer() {
     adjustedFontSize = null
   ) => {
     if (!story.formattedContent || !Array.isArray(story.formattedContent)) {
+      console.log("Text value:", story.text); // Debug: check actual value before rendering
       // Use CSS to preserve all whitespace and newlines
       if (typeof story.text === "string") {
-        return <span style={{ whiteSpace: "pre-line" }}>{story.text}</span>;
+        return (
+          <span
+            style={{
+              whiteSpace: "pre-line",
+              display: "block",
+            }}
+          >
+            {story.text}
+          </span>
+        );
       }
       return <span>{story.text}</span>;
     }
