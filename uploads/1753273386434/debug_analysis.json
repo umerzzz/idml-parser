@@ -1,0 +1,1235 @@
+{
+  "timestamp": "2025-07-23T12:23:06.948Z",
+  "uploadId": "1753273386434",
+  "idmlFile": {
+    "name": "testtttt.idml",
+    "size": 43274,
+    "path": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753273386434\\testtttt.idml"
+  },
+  "idmlContents": {
+    "basic": {
+      "totalFiles": 12,
+      "allFiles": [
+        "mimetype",
+        "designmap.xml",
+        "META-INF/container.xml",
+        "META-INF/metadata.xml",
+        "Resources/Graphic.xml",
+        "Resources/Fonts.xml",
+        "Resources/Styles.xml",
+        "Resources/Preferences.xml",
+        "XML/Tags.xml",
+        "MasterSpreads/MasterSpread_ud5.xml",
+        "Spreads/Spread_uce.xml",
+        "XML/BackingStory.xml"
+      ],
+      "folders": [
+        "mimetype",
+        "designmap.xml",
+        "META-INF",
+        "Resources",
+        "XML",
+        "MasterSpreads",
+        "Spreads"
+      ],
+      "imageFiles": [],
+      "hasLinksFolder": false,
+      "linksFolderContents": []
+    },
+    "detailed": {
+      "totalFiles": 12,
+      "filesByType": {
+        "": [
+          "mimetype"
+        ],
+        ".xml": [
+          "designmap.xml",
+          "META-INF/container.xml",
+          "META-INF/metadata.xml",
+          "Resources/Graphic.xml",
+          "Resources/Fonts.xml",
+          "Resources/Styles.xml",
+          "Resources/Preferences.xml",
+          "XML/Tags.xml",
+          "MasterSpreads/MasterSpread_ud5.xml",
+          "Spreads/Spread_uce.xml",
+          "XML/BackingStory.xml"
+        ]
+      },
+      "allFiles": [
+        "mimetype",
+        "designmap.xml",
+        "META-INF/container.xml",
+        "META-INF/metadata.xml",
+        "Resources/Graphic.xml",
+        "Resources/Fonts.xml",
+        "Resources/Styles.xml",
+        "Resources/Preferences.xml",
+        "XML/Tags.xml",
+        "MasterSpreads/MasterSpread_ud5.xml",
+        "Spreads/Spread_uce.xml",
+        "XML/BackingStory.xml"
+      ],
+      "binaryFiles": [],
+      "xmlFiles": [
+        "designmap.xml",
+        "META-INF/container.xml",
+        "META-INF/metadata.xml",
+        "Resources/Graphic.xml",
+        "Resources/Fonts.xml",
+        "Resources/Styles.xml",
+        "Resources/Preferences.xml",
+        "XML/Tags.xml",
+        "MasterSpreads/MasterSpread_ud5.xml",
+        "Spreads/Spread_uce.xml",
+        "XML/BackingStory.xml"
+      ],
+      "imageFiles": [],
+      "unknownFiles": [],
+      "fileDetails": {
+        "mimetype": {
+          "compressedSize": 43,
+          "uncompressedSize": 43,
+          "compressionMethod": 0,
+          "isDirectory": false,
+          "extension": ""
+        },
+        "designmap.xml": {
+          "compressedSize": 3477,
+          "uncompressedSize": 17381,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "META-INF/container.xml": {
+          "compressedSize": 167,
+          "uncompressedSize": 253,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "META-INF/metadata.xml": {
+          "compressedSize": 7635,
+          "uncompressedSize": 18905,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Graphic.xml": {
+          "compressedSize": 1184,
+          "uncompressedSize": 7664,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Fonts.xml": {
+          "compressedSize": 2443,
+          "uncompressedSize": 6616,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Styles.xml": {
+          "compressedSize": 5922,
+          "uncompressedSize": 41932,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Preferences.xml": {
+          "compressedSize": 10104,
+          "uncompressedSize": 61622,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "XML/Tags.xml": {
+          "compressedSize": 220,
+          "uncompressedSize": 303,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "MasterSpreads/MasterSpread_ud5.xml": {
+          "compressedSize": 739,
+          "uncompressedSize": 2480,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Spreads/Spread_uce.xml": {
+          "compressedSize": 9570,
+          "uncompressedSize": 25320,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "XML/BackingStory.xml": {
+          "compressedSize": 362,
+          "uncompressedSize": 647,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        }
+      },
+      "suspiciousFiles": [],
+      "largeBinaryFiles": []
+    },
+    "spreadAnalysis": {
+      "spreadsAnalyzed": 1,
+      "imageReferences": [
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "path": "Spread.Spread.Rectangle.0.Image.@_ImageTypeName",
+          "value": "$ID/JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "path": "Spread.Spread.Rectangle.1.Image.@_ImageTypeName",
+          "value": "$ID/JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "path": "Spread.Spread.Rectangle.2.Image.@_ImageTypeName",
+          "value": "$ID/JPEG"
+        }
+      ],
+      "linkReferences": [
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "path": "Spread.Spread.Rectangle.0.Image.Link",
+          "value": "{\"@_Self\":\"ue9\",\"@_AssetURL\":\"$ID/\",\"@_AssetID\":\"$ID/\",\"@_RenditionData\":\"Actual\",\"@_LinkResourceURI\":\"file:C:/Users/hp/Downloads/testtttt%20Folder/Links/download.jpg\",\"@_LinkResourceFormat\":\"$ID/JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "path": "Spread.Spread.Rectangle.1.Image.Link",
+          "value": "{\"@_Self\":\"uef\",\"@_AssetURL\":\"$ID/\",\"@_AssetID\":\"$ID/\",\"@_RenditionData\":\"Actual\",\"@_LinkResourceURI\":\"file:C:/Users/hp/Downloads/testtttt%20Folder/Links/panda.jpg\",\"@_LinkResourceFormat\":\"$ID/JPEG\",\""
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "path": "Spread.Spread.Rectangle.2.Image.Link",
+          "value": "{\"@_Self\":\"uf7\",\"@_AssetURL\":\"$ID/\",\"@_AssetID\":\"$ID/\",\"@_RenditionData\":\"Actual\",\"@_LinkResourceURI\":\"file:C:/Users/hp/Downloads/tiger.jpg\",\"@_LinkResourceFormat\":\"$ID/JPEG\",\"@_StoredState\":\"Embedded"
+        }
+      ],
+      "placedContentDetails": [
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "Image",
+          "path": "Spread.Spread.Rectangle.0.Image",
+          "details": {
+            "Properties": {
+              "Profile": {
+                "#text": "$ID/None",
+                "@_type": "string"
+              },
+              "GraphicBounds": {
+                "@_Left": 0,
+                "@_Top": 0,
+                "@_Right": 148,
+                "@_Bottom": 148
+              }
+            },
+            "TextWrapPreference": {
+              "Properties": {
+                "TextWrapOffset": {
+                  "@_Top": 0,
+                  "@_Left": 0,
+                  "@_Bottom": 0,
+                  "@_Right": 0
+                }
+              },
+              "ContourOption": {
+                "@_ContourType": "SameAsClipping",
+                "@_IncludeInsideEdges": false,
+                "@_ContourPathName": "$ID/"
+              },
+              "@_Inverse": false,
+              "@_ApplyToMasterPageOnly": false,
+              "@_TextWrapSide": "BothSides",
+              "@_TextWrapMode": "None"
+            },
+            "Link": {
+              "@_Self": "ue9",
+              "@_AssetURL": "$ID/",
+              "@_AssetID": "$ID/",
+              "@_RenditionData": "Actual",
+              "@_LinkResourceURI": "file:C:/Users/hp/Downloads/testtttt%20Folder/Links/download.jpg",
+              "@_LinkResourceFormat": "$ID/JPEG",
+              "@_StoredState": "Normal",
+              "@_LinkClassID": 35906,
+              "@_LinkClientID": 257,
+              "@_LinkResourceModified": false,
+              "@_LinkObjectModified": false,
+              "@_ShowInUI": true,
+              "@_CanEmbed": true,
+              "@_CanUnembed": true,
+              "@_CanPackage": true,
+              "@_ImportPolicy": "NoAutoImport",
+              "@_ExportPolicy": "NoAutoExport",
+              "@_LinkImportStamp": "file 133977362544822915 4200",
+              "@_LinkImportModificationTime": "2025-07-23T14:24:14",
+              "@_LinkImportTime": "2025-07-23T14:25:35",
+              "@_LinkResourceSize": "0~1068"
+            },
+            "ClippingPathSettings": {
+              "@_ClippingType": "None",
+              "@_InvertPath": false,
+              "@_IncludeInsideEdges": false,
+              "@_RestrictToFrame": false,
+              "@_UseHighResolutionImage": true,
+              "@_Threshold": 25,
+              "@_Tolerance": 2,
+              "@_InsetFrame": 0,
+              "@_AppliedPathName": "$ID/",
+              "@_Index": -1
+            },
+            "ImageIOPreference": {
+              "@_ApplyPhotoshopClippingPath": true,
+              "@_AllowAutoEmbedding": true,
+              "@_AlphaChannelName": "$ID/"
+            },
+            "@_Self": "ue6",
+            "@_Space": "$ID/#Links_RGB",
+            "@_ActualPpi": "72 72",
+            "@_EffectivePpi": "72 72",
+            "@_ImageRenderingIntent": "UseColorSettings",
+            "@_OverriddenPageItemProps": "",
+            "@_LocalDisplaySetting": "Default",
+            "@_ImageTypeName": "$ID/JPEG",
+            "@_AppliedObjectStyle": "ObjectStyle/$ID/[None]",
+            "@_ItemTransform": "1 0 0 1 -74 -74",
+            "@_ParentInterfaceChangeCount": "",
+            "@_TargetInterfaceChangeCount": "",
+            "@_LastUpdatedInterfaceChangeCount": "",
+            "@_HorizontalLayoutConstraints": "FlexibleDimension FixedDimension FlexibleDimension",
+            "@_VerticalLayoutConstraints": "FlexibleDimension FixedDimension FlexibleDimension",
+            "@_GradientFillStart": "0 0",
+            "@_GradientFillLength": 0,
+            "@_GradientFillAngle": 0,
+            "@_GradientFillHiliteLength": 0,
+            "@_GradientFillHiliteAngle": 0,
+            "@_Visible": true,
+            "@_Name": "$ID/"
+          }
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseHighResolutionImage",
+          "path": "Spread.Spread.Rectangle.0.Image.ClippingPathSettings.@_UseHighResolutionImage",
+          "details": true
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "ImageIOPreference",
+          "path": "Spread.Spread.Rectangle.0.Image.ImageIOPreference",
+          "details": {
+            "@_ApplyPhotoshopClippingPath": true,
+            "@_AllowAutoEmbedding": true,
+            "@_AlphaChannelName": "$ID/"
+          }
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageRenderingIntent",
+          "path": "Spread.Spread.Rectangle.0.Image.@_ImageRenderingIntent",
+          "details": "UseColorSettings"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageTypeName",
+          "path": "Spread.Spread.Rectangle.0.Image.@_ImageTypeName",
+          "details": "$ID/JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "Image",
+          "path": "Spread.Spread.Rectangle.1.Image",
+          "details": {
+            "Properties": {
+              "Profile": {
+                "#text": "$ID/None",
+                "@_type": "string"
+              },
+              "GraphicBounds": {
+                "@_Left": 0,
+                "@_Top": 0,
+                "@_Right": 265,
+                "@_Bottom": 148
+              }
+            },
+            "TextWrapPreference": {
+              "Properties": {
+                "TextWrapOffset": {
+                  "@_Top": 0,
+                  "@_Left": 0,
+                  "@_Bottom": 0,
+                  "@_Right": 0
+                }
+              },
+              "ContourOption": {
+                "@_ContourType": "SameAsClipping",
+                "@_IncludeInsideEdges": false,
+                "@_ContourPathName": "$ID/"
+              },
+              "@_Inverse": false,
+              "@_ApplyToMasterPageOnly": false,
+              "@_TextWrapSide": "BothSides",
+              "@_TextWrapMode": "None"
+            },
+            "Link": {
+              "@_Self": "uef",
+              "@_AssetURL": "$ID/",
+              "@_AssetID": "$ID/",
+              "@_RenditionData": "Actual",
+              "@_LinkResourceURI": "file:C:/Users/hp/Downloads/testtttt%20Folder/Links/panda.jpg",
+              "@_LinkResourceFormat": "$ID/JPEG",
+              "@_StoredState": "Normal",
+              "@_LinkClassID": 35906,
+              "@_LinkClientID": 257,
+              "@_LinkResourceModified": false,
+              "@_LinkObjectModified": false,
+              "@_ShowInUI": true,
+              "@_CanEmbed": true,
+              "@_CanUnembed": true,
+              "@_CanPackage": true,
+              "@_ImportPolicy": "NoAutoImport",
+              "@_ExportPolicy": "NoAutoExport",
+              "@_LinkImportStamp": "file 133976480672091756 9347",
+              "@_LinkImportModificationTime": "2025-07-22T13:54:27",
+              "@_LinkImportTime": "2025-07-23T14:51:48",
+              "@_LinkResourceSize": "0~2483"
+            },
+            "ClippingPathSettings": {
+              "@_ClippingType": "None",
+              "@_InvertPath": false,
+              "@_IncludeInsideEdges": false,
+              "@_RestrictToFrame": false,
+              "@_UseHighResolutionImage": true,
+              "@_Threshold": 25,
+              "@_Tolerance": 2,
+              "@_InsetFrame": 0,
+              "@_AppliedPathName": "$ID/",
+              "@_Index": -1
+            },
+            "ImageIOPreference": {
+              "@_ApplyPhotoshopClippingPath": true,
+              "@_AllowAutoEmbedding": true,
+              "@_AlphaChannelName": "$ID/"
+            },
+            "@_Self": "uec",
+            "@_Space": "$ID/#Links_RGB",
+            "@_ActualPpi": "72 72",
+            "@_EffectivePpi": "72 72",
+            "@_ImageRenderingIntent": "UseColorSettings",
+            "@_OverriddenPageItemProps": "",
+            "@_LocalDisplaySetting": "Default",
+            "@_ImageTypeName": "$ID/JPEG",
+            "@_AppliedObjectStyle": "ObjectStyle/$ID/[None]",
+            "@_ItemTransform": "1 0 0 1 -132.5 -74",
+            "@_ParentInterfaceChangeCount": "",
+            "@_TargetInterfaceChangeCount": "",
+            "@_LastUpdatedInterfaceChangeCount": "",
+            "@_HorizontalLayoutConstraints": "FlexibleDimension FixedDimension FlexibleDimension",
+            "@_VerticalLayoutConstraints": "FlexibleDimension FixedDimension FlexibleDimension",
+            "@_GradientFillStart": "0 0",
+            "@_GradientFillLength": 0,
+            "@_GradientFillAngle": 0,
+            "@_GradientFillHiliteLength": 0,
+            "@_GradientFillHiliteAngle": 0,
+            "@_Visible": true,
+            "@_Name": "$ID/"
+          }
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseHighResolutionImage",
+          "path": "Spread.Spread.Rectangle.1.Image.ClippingPathSettings.@_UseHighResolutionImage",
+          "details": true
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "ImageIOPreference",
+          "path": "Spread.Spread.Rectangle.1.Image.ImageIOPreference",
+          "details": {
+            "@_ApplyPhotoshopClippingPath": true,
+            "@_AllowAutoEmbedding": true,
+            "@_AlphaChannelName": "$ID/"
+          }
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageRenderingIntent",
+          "path": "Spread.Spread.Rectangle.1.Image.@_ImageRenderingIntent",
+          "details": "UseColorSettings"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageTypeName",
+          "path": "Spread.Spread.Rectangle.1.Image.@_ImageTypeName",
+          "details": "$ID/JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Rectangle.2.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "Image",
+          "path": "Spread.Spread.Rectangle.2.Image",
+          "details": {
+            "Properties": {
+              "Profile": {
+                "#text": "$ID/None",
+                "@_type": "string"
+              },
+              "Contents": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAd\nHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3\nNzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJQA0QMBIgACEQED\nEQH/xAAbAAACAwEBAQAAAAAAAAAAAAAEBQIDBgABB//EADkQAAIBAwMCBAMHBAEDBQAAAAECAwAE\nEQUSITFBEyJRYQYUcTJSgZGhsfAVI0LB4TNi8SSSssLR/8QAGgEAAgMBAQAAAAAAAAAAAAAAAgMA\nAQQFBv/EACIRAAICAgICAwEBAAAAAAAAAAABAhEDIRIxE0EUIlEyYf/aAAwDAQACEQMRAD8AHf4q\naOwe41CQkk7Y1Hb3rJ6j8VTTzuLeJix44GaB1Am8ZCGURIMKC3X1p9oluFt08O1EZ6b+CSPrUVwg\ngtSZlJrTU7zdK8E/POWGBj8a8tbSa2uoXdRwckbga2Go6ZNeoIhPsX0xz+dZloBp1x/ftslWwN/R\nqkfsiS+prInkvoEmUFPLh2YYGfaiLDSlvnKR6laibbkRB8knsKSrrVrcafMxRo3Rf+mTkN7fSq7O\n1aEJIqRJKPNGQnIz05NI8at2g7/BvrOg3+mWCXdyYzExwQrZKn3rPb+Sc04uf6le6X8yl3LKMnfD\ng9AeR1xxio6HFY6pCwaDZMvBHiYLe4FRwVWiu2LQ2RUHprqWlJaxO8Inwgy27BB+hFK7BP6jceBb\n+WXGdsh20KWrI9FRBPIBxXRxNLIqLwWO3PpRslpc2kgWaJlDHBU9G9qsFp4QG3JMw4PdUP8Avr/D\nRqNgSdC4IDViR0fHpshYq21NvXOeKbWGlK4xn8cdaOq7BsSwWYfmnGn6Osh+tO49D8o7/Wm2nab4\nci4IGOuap5F6KqwHT/hpWXJjyMUm+I9OW1GI48HPNfSkvLa0h2uy5x2rHfE88d4f7Q47mh5NhUkj\nAtHk814sKE80bcx7Sc5oIttbmpJNkTCIoYRywqUnggEjrQrt/wB1DuSe5pDxMYpIKMiA1fBKhOMU\npB83WiI5gvNC4tF2aCBUo6PwV6jmsyt+FHBNVyamcHmlPFKQSkka/wAWH0FdWL/qZ9T+ddVfEZPK\n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\n",
+              "GraphicBounds": {
+                "@_Left": 0,
+                "@_Top": 0,
+                "@_Right": 209,
+                "@_Bottom": 148
+              }
+            },
+            "TextWrapPreference": {
+              "Properties": {
+                "TextWrapOffset": {
+                  "@_Top": 0,
+                  "@_Left": 0,
+                  "@_Bottom": 0,
+                  "@_Right": 0
+                }
+              },
+              "ContourOption": {
+                "@_ContourType": "SameAsClipping",
+                "@_IncludeInsideEdges": false,
+                "@_ContourPathName": "$ID/"
+              },
+              "@_Inverse": false,
+              "@_ApplyToMasterPageOnly": false,
+              "@_TextWrapSide": "BothSides",
+              "@_TextWrapMode": "None"
+            },
+            "Link": {
+              "@_Self": "uf7",
+              "@_AssetURL": "$ID/",
+              "@_AssetID": "$ID/",
+              "@_RenditionData": "Actual",
+              "@_LinkResourceURI": "file:C:/Users/hp/Downloads/tiger.jpg",
+              "@_LinkResourceFormat": "$ID/JPEG",
+              "@_StoredState": "Embedded",
+              "@_LinkClassID": 35906,
+              "@_LinkClientID": 257,
+              "@_LinkResourceModified": false,
+              "@_LinkObjectModified": false,
+              "@_ShowInUI": true,
+              "@_CanEmbed": true,
+              "@_CanUnembed": true,
+              "@_CanPackage": true,
+              "@_ImportPolicy": "NoAutoImport",
+              "@_ExportPolicy": "NoAutoExport",
+              "@_LinkImportStamp": "file 133977451650488994 6496",
+              "@_LinkImportModificationTime": "2025-07-23T16:52:45",
+              "@_LinkImportTime": "2025-07-23T16:52:54",
+              "@_LinkResourceSize": "0~1960"
+            },
+            "ClippingPathSettings": {
+              "@_ClippingType": "None",
+              "@_InvertPath": false,
+              "@_IncludeInsideEdges": false,
+              "@_RestrictToFrame": false,
+              "@_UseHighResolutionImage": true,
+              "@_Threshold": 25,
+              "@_Tolerance": 2,
+              "@_InsetFrame": 0,
+              "@_AppliedPathName": "$ID/",
+              "@_Index": -1
+            },
+            "ImageIOPreference": {
+              "@_ApplyPhotoshopClippingPath": true,
+              "@_AllowAutoEmbedding": true,
+              "@_AlphaChannelName": "$ID/"
+            },
+            "@_Self": "uf4",
+            "@_Space": "$ID/#Links_RGB",
+            "@_ActualPpi": "72 72",
+            "@_EffectivePpi": "72 72",
+            "@_ImageRenderingIntent": "UseColorSettings",
+            "@_OverriddenPageItemProps": "",
+            "@_LocalDisplaySetting": "Default",
+            "@_ImageTypeName": "$ID/JPEG",
+            "@_AppliedObjectStyle": "ObjectStyle/$ID/[None]",
+            "@_ItemTransform": "1 0 0 1 -104.5 -74",
+            "@_ParentInterfaceChangeCount": "",
+            "@_TargetInterfaceChangeCount": "",
+            "@_LastUpdatedInterfaceChangeCount": "",
+            "@_HorizontalLayoutConstraints": "FlexibleDimension FixedDimension FlexibleDimension",
+            "@_VerticalLayoutConstraints": "FlexibleDimension FixedDimension FlexibleDimension",
+            "@_GradientFillStart": "0 0",
+            "@_GradientFillLength": 0,
+            "@_GradientFillAngle": 0,
+            "@_GradientFillHiliteLength": 0,
+            "@_GradientFillHiliteAngle": 0,
+            "@_Visible": true,
+            "@_Name": "$ID/"
+          }
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseHighResolutionImage",
+          "path": "Spread.Spread.Rectangle.2.Image.ClippingPathSettings.@_UseHighResolutionImage",
+          "details": true
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "ImageIOPreference",
+          "path": "Spread.Spread.Rectangle.2.Image.ImageIOPreference",
+          "details": {
+            "@_ApplyPhotoshopClippingPath": true,
+            "@_AllowAutoEmbedding": true,
+            "@_AlphaChannelName": "$ID/"
+          }
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageRenderingIntent",
+          "path": "Spread.Spread.Rectangle.2.Image.@_ImageRenderingIntent",
+          "details": "UseColorSettings"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageTypeName",
+          "path": "Spread.Spread.Rectangle.2.Image.@_ImageTypeName",
+          "details": "$ID/JPEG"
+        }
+      ]
+    },
+    "suspiciousFileSamples": []
+  },
+  "packageUpload": {
+    "totalUploadedFiles": 5,
+    "uploadedFiles": [
+      {
+        "name": "testtttt.idml",
+        "size": 43274,
+        "mimetype": "application/octet-stream"
+      },
+      {
+        "name": "testtttt.indd",
+        "size": 1073152,
+        "mimetype": "application/octet-stream"
+      },
+      {
+        "name": "testtttt.pdf",
+        "size": 42846,
+        "mimetype": "application/pdf"
+      },
+      {
+        "name": "download.jpg",
+        "size": 4200,
+        "mimetype": "image/jpeg"
+      },
+      {
+        "name": "panda.jpg",
+        "size": 9347,
+        "mimetype": "image/jpeg"
+      }
+    ],
+    "isPackageUpload": true
+  },
+  "processingResults": {
+    "elementsFound": 3,
+    "storiesFound": 0,
+    "contentFrames": [
+      {
+        "id": "uea",
+        "type": "Rectangle",
+        "name": "$ID/",
+        "position": {
+          "x": 200,
+          "y": 174,
+          "width": 148,
+          "height": 148,
+          "rotation": 0
+        },
+        "fill": "Color/None",
+        "stroke": "Color/None",
+        "strokeWeight": 0,
+        "parentStory": null,
+        "linkedImage": {
+          "fileName": "download.jpg",
+          "url": "/api/image/1753273386434/Links/download.jpg",
+          "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753273386434\\Links\\download.jpg",
+          "isEmbedded": "false",
+          "framePosition": {
+            "x": 200,
+            "y": 174,
+            "width": 148,
+            "height": 148,
+            "rotation": 0
+          },
+          "imagePosition": {
+            "x": -148,
+            "y": -148,
+            "width": 148,
+            "height": 148,
+            "scaleX": 1,
+            "scaleY": 1
+          }
+        },
+        "visible": true,
+        "locked": false,
+        "isContentFrame": true,
+        "hasPlacedContent": true,
+        "contentType": "Image",
+        "imagePosition": {
+          "x": -148,
+          "y": -148,
+          "width": 148,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "placedContent": {
+          "type": "Image",
+          "href": "download.jpg",
+          "isEmbedded": true,
+          "bounds": null,
+          "transform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -74,
+            "ty": -74
+          },
+          "actualPpi": "72 72",
+          "effectivePpi": "72 72",
+          "imageTypeName": "$ID/JPEG",
+          "space": "$ID/#Links_RGB"
+        }
+      },
+      {
+        "id": "uf2",
+        "type": "Rectangle",
+        "name": "$ID/",
+        "position": {
+          "x": 192,
+          "y": 400,
+          "width": 265,
+          "height": 148,
+          "rotation": 0
+        },
+        "fill": "Color/None",
+        "stroke": "Color/None",
+        "strokeWeight": 0,
+        "parentStory": null,
+        "linkedImage": {
+          "fileName": "panda.jpg",
+          "url": "/api/image/1753273386434/Links/panda.jpg",
+          "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753273386434\\Links\\panda.jpg",
+          "isEmbedded": "false",
+          "framePosition": {
+            "x": 192,
+            "y": 400,
+            "width": 265,
+            "height": 148,
+            "rotation": 0
+          },
+          "imagePosition": {
+            "x": -265,
+            "y": -148,
+            "width": 265,
+            "height": 148,
+            "scaleX": 1,
+            "scaleY": 1
+          }
+        },
+        "visible": true,
+        "locked": false,
+        "isContentFrame": true,
+        "hasPlacedContent": true,
+        "contentType": "Image",
+        "imagePosition": {
+          "x": -265,
+          "y": -148,
+          "width": 265,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "placedContent": {
+          "type": "Image",
+          "href": "panda.jpg",
+          "isEmbedded": true,
+          "bounds": null,
+          "transform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -132.5,
+            "ty": -74
+          },
+          "actualPpi": "72 72",
+          "effectivePpi": "72 72",
+          "imageTypeName": "$ID/JPEG",
+          "space": "$ID/#Links_RGB"
+        }
+      },
+      {
+        "id": "uf8",
+        "type": "Rectangle",
+        "name": "$ID/",
+        "position": {
+          "x": 192,
+          "y": 0,
+          "width": 209,
+          "height": 148,
+          "rotation": 0
+        },
+        "fill": "Color/None",
+        "stroke": "Color/None",
+        "strokeWeight": 0,
+        "parentStory": null,
+        "linkedImage": {
+          "fileName": "tiger.jpg",
+          "url": "/api/image/1753273386434/ExtractedImages/tiger.jpg",
+          "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753273386434\\ExtractedImages\\tiger.jpg",
+          "isEmbedded": "true",
+          "framePosition": {
+            "x": 192,
+            "y": 0,
+            "width": 209,
+            "height": 148,
+            "rotation": 0
+          },
+          "imagePosition": {
+            "x": -209,
+            "y": -148,
+            "width": 209,
+            "height": 148,
+            "scaleX": 1,
+            "scaleY": 1
+          }
+        },
+        "visible": true,
+        "locked": false,
+        "isContentFrame": true,
+        "hasPlacedContent": true,
+        "contentType": "Image",
+        "imagePosition": {
+          "x": -209,
+          "y": -148,
+          "width": 209,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "placedContent": {
+          "type": "Image",
+          "href": "tiger.jpg",
+          "isEmbedded": true,
+          "bounds": null,
+          "transform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -104.5,
+            "ty": -74
+          },
+          "actualPpi": "72 72",
+          "effectivePpi": "72 72",
+          "imageTypeName": "$ID/JPEG",
+          "space": "$ID/#Links_RGB"
+        }
+      }
+    ],
+    "embeddedImages": [
+      {
+        "id": "uea",
+        "type": "Rectangle",
+        "name": "$ID/",
+        "position": {
+          "x": 200,
+          "y": 174,
+          "width": 148,
+          "height": 148,
+          "rotation": 0
+        },
+        "fill": "Color/None",
+        "stroke": "Color/None",
+        "strokeWeight": 0,
+        "parentStory": null,
+        "linkedImage": {
+          "fileName": "download.jpg",
+          "url": "/api/image/1753273386434/Links/download.jpg",
+          "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753273386434\\Links\\download.jpg",
+          "isEmbedded": "false",
+          "framePosition": {
+            "x": 200,
+            "y": 174,
+            "width": 148,
+            "height": 148,
+            "rotation": 0
+          },
+          "imagePosition": {
+            "x": -148,
+            "y": -148,
+            "width": 148,
+            "height": 148,
+            "scaleX": 1,
+            "scaleY": 1
+          }
+        },
+        "visible": true,
+        "locked": false,
+        "isContentFrame": true,
+        "hasPlacedContent": true,
+        "contentType": "Image",
+        "imagePosition": {
+          "x": -148,
+          "y": -148,
+          "width": 148,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "placedContent": {
+          "type": "Image",
+          "href": "download.jpg",
+          "isEmbedded": true,
+          "bounds": null,
+          "transform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -74,
+            "ty": -74
+          },
+          "actualPpi": "72 72",
+          "effectivePpi": "72 72",
+          "imageTypeName": "$ID/JPEG",
+          "space": "$ID/#Links_RGB"
+        }
+      },
+      {
+        "id": "uf2",
+        "type": "Rectangle",
+        "name": "$ID/",
+        "position": {
+          "x": 192,
+          "y": 400,
+          "width": 265,
+          "height": 148,
+          "rotation": 0
+        },
+        "fill": "Color/None",
+        "stroke": "Color/None",
+        "strokeWeight": 0,
+        "parentStory": null,
+        "linkedImage": {
+          "fileName": "panda.jpg",
+          "url": "/api/image/1753273386434/Links/panda.jpg",
+          "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753273386434\\Links\\panda.jpg",
+          "isEmbedded": "false",
+          "framePosition": {
+            "x": 192,
+            "y": 400,
+            "width": 265,
+            "height": 148,
+            "rotation": 0
+          },
+          "imagePosition": {
+            "x": -265,
+            "y": -148,
+            "width": 265,
+            "height": 148,
+            "scaleX": 1,
+            "scaleY": 1
+          }
+        },
+        "visible": true,
+        "locked": false,
+        "isContentFrame": true,
+        "hasPlacedContent": true,
+        "contentType": "Image",
+        "imagePosition": {
+          "x": -265,
+          "y": -148,
+          "width": 265,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "placedContent": {
+          "type": "Image",
+          "href": "panda.jpg",
+          "isEmbedded": true,
+          "bounds": null,
+          "transform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -132.5,
+            "ty": -74
+          },
+          "actualPpi": "72 72",
+          "effectivePpi": "72 72",
+          "imageTypeName": "$ID/JPEG",
+          "space": "$ID/#Links_RGB"
+        }
+      },
+      {
+        "id": "uf8",
+        "type": "Rectangle",
+        "name": "$ID/",
+        "position": {
+          "x": 192,
+          "y": 0,
+          "width": 209,
+          "height": 148,
+          "rotation": 0
+        },
+        "fill": "Color/None",
+        "stroke": "Color/None",
+        "strokeWeight": 0,
+        "parentStory": null,
+        "linkedImage": {
+          "fileName": "tiger.jpg",
+          "url": "/api/image/1753273386434/ExtractedImages/tiger.jpg",
+          "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753273386434\\ExtractedImages\\tiger.jpg",
+          "isEmbedded": "true",
+          "framePosition": {
+            "x": 192,
+            "y": 0,
+            "width": 209,
+            "height": 148,
+            "rotation": 0
+          },
+          "imagePosition": {
+            "x": -209,
+            "y": -148,
+            "width": 209,
+            "height": 148,
+            "scaleX": 1,
+            "scaleY": 1
+          }
+        },
+        "visible": true,
+        "locked": false,
+        "isContentFrame": true,
+        "hasPlacedContent": true,
+        "contentType": "Image",
+        "imagePosition": {
+          "x": -209,
+          "y": -148,
+          "width": 209,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "placedContent": {
+          "type": "Image",
+          "href": "tiger.jpg",
+          "isEmbedded": true,
+          "bounds": null,
+          "transform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -104.5,
+            "ty": -74
+          },
+          "actualPpi": "72 72",
+          "effectivePpi": "72 72",
+          "imageTypeName": "$ID/JPEG",
+          "space": "$ID/#Links_RGB"
+        }
+      }
+    ],
+    "placeholders": []
+  },
+  "imageExtraction": {
+    "totalFound": 1,
+    "totalExtracted": 1,
+    "extractedImages": [
+      {
+        "originalPath": "Spread.Spread.Rectangle.2.Image",
+        "extractedPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753273386434\\ExtractedImages\\tiger.jpg",
+        "fileName": "tiger.jpg",
+        "size": 6496,
+        "base64Length": 8778,
+        "linkInfo": {
+          "@_Self": "uf7",
+          "@_AssetURL": "$ID/",
+          "@_AssetID": "$ID/",
+          "@_RenditionData": "Actual",
+          "@_LinkResourceURI": "file:C:/Users/hp/Downloads/tiger.jpg",
+          "@_LinkResourceFormat": "$ID/JPEG",
+          "@_StoredState": "Embedded",
+          "@_LinkClassID": 35906,
+          "@_LinkClientID": 257,
+          "@_LinkResourceModified": false,
+          "@_LinkObjectModified": false,
+          "@_ShowInUI": true,
+          "@_CanEmbed": true,
+          "@_CanUnembed": true,
+          "@_CanPackage": true,
+          "@_ImportPolicy": "NoAutoImport",
+          "@_ExportPolicy": "NoAutoExport",
+          "@_LinkImportStamp": "file 133977451650488994 6496",
+          "@_LinkImportModificationTime": "2025-07-23T16:52:45",
+          "@_LinkImportTime": "2025-07-23T16:52:54",
+          "@_LinkResourceSize": "0~1960"
+        },
+        "isExtracted": true
+      }
+    ],
+    "extractionSuccess": true,
+    "method": "spread_xml_base64"
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "document": {
+    "version": 15.1,
+    "pageCount": 1,
+    "name": "testtttt.indd"
+  },
+  "pageInfo": {
+    "dimensions": {
+      "width": 612,
+      "height": 792,
+      "facingPages": false,
+      "units": "Points"
+    },
+    "margins": {
+      "top": 36,
+      "bottom": 36,
+      "left": 36,
+      "right": 36,
+      "columnCount": 1,
+      "columnGutter": 12
+    }
+  },
+  "elements": [
+    {
+      "id": "uea",
+      "type": "Rectangle",
+      "name": "$ID/",
+      "position": {
+        "x": 200,
+        "y": 174,
+        "width": 148,
+        "height": 148,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "linkedImage": {
+        "fileName": "download.jpg",
+        "url": "/api/image/1753271684983/Links/download.jpg",
+        "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753271684983\\Links\\download.jpg",
+        "isEmbedded": "false",
+        "framePosition": {
+          "x": 200,
+          "y": 174,
+          "width": 148,
+          "height": 148,
+          "rotation": 0
+        },
+        "imagePosition": {
+          "x": -148,
+          "y": -148,
+          "width": 148,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        }
+      },
+      "visible": true,
+      "locked": false,
+      "isContentFrame": true,
+      "hasPlacedContent": true,
+      "contentType": "Image",
+      "imagePosition": {
+        "x": -148,
+        "y": -148,
+        "width": 148,
+        "height": 148,
+        "scaleX": 1,
+        "scaleY": 1
+      },
+      "placedContent": {
+        "type": "Image",
+        "href": "download.jpg",
+        "isEmbedded": true,
+        "bounds": null,
+        "transform": {
+          "a": 1,
+          "b": 0,
+          "c": 0,
+          "d": 1,
+          "tx": -74,
+          "ty": -74
+        },
+        "actualPpi": "72 72",
+        "effectivePpi": "72 72",
+        "imageTypeName": "$ID/JPEG",
+        "space": "$ID/#Links_RGB"
+      }
+    },
+    {
+      "id": "uf2",
+      "type": "Rectangle",
+      "name": "$ID/",
+      "position": {
+        "x": 192,
+        "y": 400,
+        "width": 265,
+        "height": 148,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "linkedImage": {
+        "fileName": "panda.jpg",
+        "url": "/api/image/1753271684983/Links/panda.jpg",
+        "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753271684983\\Links\\panda.jpg",
+        "isEmbedded": "false",
+        "framePosition": {
+          "x": 192,
+          "y": 400,
+          "width": 265,
+          "height": 148,
+          "rotation": 0
+        },
+        "imagePosition": {
+          "x": -265,
+          "y": -148,
+          "width": 265,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        }
+      },
+      "visible": true,
+      "locked": false,
+      "isContentFrame": true,
+      "hasPlacedContent": true,
+      "contentType": "Image",
+      "imagePosition": {
+        "x": -265,
+        "y": -148,
+        "width": 265,
+        "height": 148,
+        "scaleX": 1,
+        "scaleY": 1
+      },
+      "placedContent": {
+        "type": "Image",
+        "href": "panda.jpg",
+        "isEmbedded": true,
+        "bounds": null,
+        "transform": {
+          "a": 1,
+          "b": 0,
+          "c": 0,
+          "d": 1,
+          "tx": -132.5,
+          "ty": -74
+        },
+        "actualPpi": "72 72",
+        "effectivePpi": "72 72",
+        "imageTypeName": "$ID/JPEG",
+        "space": "$ID/#Links_RGB"
+      }
+    },
+    {
+      "id": "uf8",
+      "type": "Rectangle",
+      "name": "$ID/",
+      "position": {
+        "x": 192,
+        "y": 0,
+        "width": 209,
+        "height": 148,
+        "rotation": 0
+      },
+      "fill": "Color/None",
+      "stroke": "Color/None",
+      "strokeWeight": 0,
+      "parentStory": null,
+      "linkedImage": {
+        "fileName": "tiger.jpg",
+        "url": "/api/image/1753271684983/ExtractedImages/tiger.jpg",
+        "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753271684983\\ExtractedImages\\tiger.jpg",
+        "isEmbedded": "true",
+        "framePosition": {
+          "x": 192,
+          "y": 0,
+          "width": 209,
+          "height": 148,
+          "rotation": 0
+        },
+        "imagePosition": {
+          "x": -209,
+          "y": -148,
+          "width": 209,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        }
+      },
+      "visible": true,
+      "locked": false,
+      "isContentFrame": true,
+      "hasPlacedContent": true,
+      "contentType": "Image",
+      "imagePosition": {
+        "x": -209,
+        "y": -148,
+        "width": 209,
+        "height": 148,
+        "scaleX": 1,
+        "scaleY": 1
+      },
+      "placedContent": {
+        "type": "Image",
+        "href": "tiger.jpg",
+        "isEmbedded": true,
+        "bounds": null,
+        "transform": {
+          "a": 1,
+          "b": 0,
+          "c": 0,
+          "d": 1,
+          "tx": -104.5,
+          "ty": -74
+        },
+        "actualPpi": "72 72",
+        "effectivePpi": "72 72",
+        "imageTypeName": "$ID/JPEG",
+        "space": "$ID/#Links_RGB"
+      }
+    }
+  ],
+  "stories": {},
+  "debug22": {
+    "coordinateOffset": {
+      "x": 0,
+      "y": 334
+    },
+    "contentFramesCount": 3,
+    "imagesLinkedCount": 0,
+    "embeddedImagesCount": 0
+  },
+  "packageInfo": {
+    "hasLinks": true,
+    "hasFonts": false,
+    "linksCount": 2,
+    "fontsCount": 0,
+    "extractedImagesCount": 1
+  }
+}

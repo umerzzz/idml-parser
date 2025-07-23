@@ -1796,6 +1796,7 @@ export default function Viewer() {
                   isContentFrame ? " - Content Frame" : ""
                 }`}
               >
+              
                 {/* Enhanced Image Rendering for both embedded and external images */}
                 {element.linkedImage && (
                   element.linkedImage.url ? (

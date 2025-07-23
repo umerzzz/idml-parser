@@ -1,0 +1,880 @@
+{
+  "timestamp": "2025-07-23T11:26:16.268Z",
+  "uploadId": "1753269975850",
+  "idmlFile": {
+    "name": "testtttt.idml",
+    "size": 34419,
+    "path": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753269975850\\testtttt.idml"
+  },
+  "idmlContents": {
+    "basic": {
+      "totalFiles": 12,
+      "allFiles": [
+        "mimetype",
+        "designmap.xml",
+        "META-INF/container.xml",
+        "META-INF/metadata.xml",
+        "Resources/Graphic.xml",
+        "Resources/Fonts.xml",
+        "Resources/Styles.xml",
+        "Resources/Preferences.xml",
+        "XML/Tags.xml",
+        "MasterSpreads/MasterSpread_ud5.xml",
+        "Spreads/Spread_uce.xml",
+        "XML/BackingStory.xml"
+      ],
+      "folders": [
+        "mimetype",
+        "designmap.xml",
+        "META-INF",
+        "Resources",
+        "XML",
+        "MasterSpreads",
+        "Spreads"
+      ],
+      "imageFiles": [],
+      "hasLinksFolder": false,
+      "linksFolderContents": []
+    },
+    "detailed": {
+      "totalFiles": 12,
+      "filesByType": {
+        "": [
+          "mimetype"
+        ],
+        ".xml": [
+          "designmap.xml",
+          "META-INF/container.xml",
+          "META-INF/metadata.xml",
+          "Resources/Graphic.xml",
+          "Resources/Fonts.xml",
+          "Resources/Styles.xml",
+          "Resources/Preferences.xml",
+          "XML/Tags.xml",
+          "MasterSpreads/MasterSpread_ud5.xml",
+          "Spreads/Spread_uce.xml",
+          "XML/BackingStory.xml"
+        ]
+      },
+      "allFiles": [
+        "mimetype",
+        "designmap.xml",
+        "META-INF/container.xml",
+        "META-INF/metadata.xml",
+        "Resources/Graphic.xml",
+        "Resources/Fonts.xml",
+        "Resources/Styles.xml",
+        "Resources/Preferences.xml",
+        "XML/Tags.xml",
+        "MasterSpreads/MasterSpread_ud5.xml",
+        "Spreads/Spread_uce.xml",
+        "XML/BackingStory.xml"
+      ],
+      "binaryFiles": [],
+      "xmlFiles": [
+        "designmap.xml",
+        "META-INF/container.xml",
+        "META-INF/metadata.xml",
+        "Resources/Graphic.xml",
+        "Resources/Fonts.xml",
+        "Resources/Styles.xml",
+        "Resources/Preferences.xml",
+        "XML/Tags.xml",
+        "MasterSpreads/MasterSpread_ud5.xml",
+        "Spreads/Spread_uce.xml",
+        "XML/BackingStory.xml"
+      ],
+      "imageFiles": [],
+      "unknownFiles": [],
+      "fileDetails": {
+        "mimetype": {
+          "compressedSize": 43,
+          "uncompressedSize": 43,
+          "compressionMethod": 0,
+          "isDirectory": false,
+          "extension": ""
+        },
+        "designmap.xml": {
+          "compressedSize": 3477,
+          "uncompressedSize": 17381,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "META-INF/container.xml": {
+          "compressedSize": 167,
+          "uncompressedSize": 253,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "META-INF/metadata.xml": {
+          "compressedSize": 5900,
+          "uncompressedSize": 16450,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Graphic.xml": {
+          "compressedSize": 1184,
+          "uncompressedSize": 7664,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Fonts.xml": {
+          "compressedSize": 2443,
+          "uncompressedSize": 6616,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Styles.xml": {
+          "compressedSize": 5922,
+          "uncompressedSize": 41932,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Preferences.xml": {
+          "compressedSize": 10104,
+          "uncompressedSize": 61622,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "XML/Tags.xml": {
+          "compressedSize": 220,
+          "uncompressedSize": 303,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "MasterSpreads/MasterSpread_ud5.xml": {
+          "compressedSize": 739,
+          "uncompressedSize": 2480,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Spreads/Spread_uce.xml": {
+          "compressedSize": 2450,
+          "uncompressedSize": 11728,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "XML/BackingStory.xml": {
+          "compressedSize": 362,
+          "uncompressedSize": 647,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        }
+      },
+      "suspiciousFiles": [],
+      "largeBinaryFiles": []
+    },
+    "spreadAnalysis": {
+      "spreadsAnalyzed": 1,
+      "imageReferences": [
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "path": "Spread.Spread.Rectangle.0.Image.@_ImageTypeName",
+          "value": "$ID/JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "path": "Spread.Spread.Rectangle.1.Image.@_ImageTypeName",
+          "value": "$ID/JPEG"
+        }
+      ],
+      "linkReferences": [
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "path": "Spread.Spread.Rectangle.0.Image.Link",
+          "value": "{\"@_Self\":\"ue9\",\"@_AssetURL\":\"$ID/\",\"@_AssetID\":\"$ID/\",\"@_RenditionData\":\"Actual\",\"@_LinkResourceURI\":\"file:C:/Users/hp/Downloads/testtttt%20Folder/testtttt%20Folder/Links/download.jpg\",\"@_LinkResourc"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "path": "Spread.Spread.Rectangle.1.Image.Link",
+          "value": "{\"@_Self\":\"uef\",\"@_AssetURL\":\"$ID/\",\"@_AssetID\":\"$ID/\",\"@_RenditionData\":\"Actual\",\"@_LinkResourceURI\":\"file:C:/Users/hp/Downloads/testtttt%20Folder/testtttt%20Folder/Links/panda.jpg\",\"@_LinkResourceFo"
+        }
+      ],
+      "placedContentDetails": [
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Rectangle.0.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "Image",
+          "path": "Spread.Spread.Rectangle.0.Image",
+          "details": {
+            "Properties": {
+              "Profile": {
+                "#text": "$ID/None",
+                "@_type": "string"
+              },
+              "GraphicBounds": {
+                "@_Left": 0,
+                "@_Top": 0,
+                "@_Right": 148,
+                "@_Bottom": 148
+              }
+            },
+            "TextWrapPreference": {
+              "Properties": {
+                "TextWrapOffset": {
+                  "@_Top": 0,
+                  "@_Left": 0,
+                  "@_Bottom": 0,
+                  "@_Right": 0
+                }
+              },
+              "ContourOption": {
+                "@_ContourType": "SameAsClipping",
+                "@_IncludeInsideEdges": false,
+                "@_ContourPathName": "$ID/"
+              },
+              "@_Inverse": false,
+              "@_ApplyToMasterPageOnly": false,
+              "@_TextWrapSide": "BothSides",
+              "@_TextWrapMode": "None"
+            },
+            "Link": {
+              "@_Self": "ue9",
+              "@_AssetURL": "$ID/",
+              "@_AssetID": "$ID/",
+              "@_RenditionData": "Actual",
+              "@_LinkResourceURI": "file:C:/Users/hp/Downloads/testtttt%20Folder/testtttt%20Folder/Links/download.jpg",
+              "@_LinkResourceFormat": "$ID/JPEG",
+              "@_StoredState": "Normal",
+              "@_LinkClassID": 35906,
+              "@_LinkClientID": 257,
+              "@_LinkResourceModified": false,
+              "@_LinkObjectModified": false,
+              "@_ShowInUI": true,
+              "@_CanEmbed": true,
+              "@_CanUnembed": true,
+              "@_CanPackage": true,
+              "@_ImportPolicy": "NoAutoImport",
+              "@_ExportPolicy": "NoAutoExport",
+              "@_LinkImportStamp": "file 133977362544822915 4200",
+              "@_LinkImportModificationTime": "2025-07-23T14:24:14",
+              "@_LinkImportTime": "2025-07-23T14:25:35",
+              "@_LinkResourceSize": "0~1068"
+            },
+            "ClippingPathSettings": {
+              "@_ClippingType": "None",
+              "@_InvertPath": false,
+              "@_IncludeInsideEdges": false,
+              "@_RestrictToFrame": false,
+              "@_UseHighResolutionImage": true,
+              "@_Threshold": 25,
+              "@_Tolerance": 2,
+              "@_InsetFrame": 0,
+              "@_AppliedPathName": "$ID/",
+              "@_Index": -1
+            },
+            "ImageIOPreference": {
+              "@_ApplyPhotoshopClippingPath": true,
+              "@_AllowAutoEmbedding": true,
+              "@_AlphaChannelName": "$ID/"
+            },
+            "@_Self": "ue6",
+            "@_Space": "$ID/#Links_RGB",
+            "@_ActualPpi": "72 72",
+            "@_EffectivePpi": "72 72",
+            "@_ImageRenderingIntent": "UseColorSettings",
+            "@_OverriddenPageItemProps": "",
+            "@_LocalDisplaySetting": "Default",
+            "@_ImageTypeName": "$ID/JPEG",
+            "@_AppliedObjectStyle": "ObjectStyle/$ID/[None]",
+            "@_ItemTransform": "1 0 0 1 -74 -74",
+            "@_ParentInterfaceChangeCount": "",
+            "@_TargetInterfaceChangeCount": "",
+            "@_LastUpdatedInterfaceChangeCount": "",
+            "@_HorizontalLayoutConstraints": "FlexibleDimension FixedDimension FlexibleDimension",
+            "@_VerticalLayoutConstraints": "FlexibleDimension FixedDimension FlexibleDimension",
+            "@_GradientFillStart": "0 0",
+            "@_GradientFillLength": 0,
+            "@_GradientFillAngle": 0,
+            "@_GradientFillHiliteLength": 0,
+            "@_GradientFillHiliteAngle": 0,
+            "@_Visible": true,
+            "@_Name": "$ID/"
+          }
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseHighResolutionImage",
+          "path": "Spread.Spread.Rectangle.0.Image.ClippingPathSettings.@_UseHighResolutionImage",
+          "details": true
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "ImageIOPreference",
+          "path": "Spread.Spread.Rectangle.0.Image.ImageIOPreference",
+          "details": {
+            "@_ApplyPhotoshopClippingPath": true,
+            "@_AllowAutoEmbedding": true,
+            "@_AlphaChannelName": "$ID/"
+          }
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageRenderingIntent",
+          "path": "Spread.Spread.Rectangle.0.Image.@_ImageRenderingIntent",
+          "details": "UseColorSettings"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageTypeName",
+          "path": "Spread.Spread.Rectangle.0.Image.@_ImageTypeName",
+          "details": "$ID/JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Rectangle.1.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "Image",
+          "path": "Spread.Spread.Rectangle.1.Image",
+          "details": {
+            "Properties": {
+              "Profile": {
+                "#text": "$ID/None",
+                "@_type": "string"
+              },
+              "GraphicBounds": {
+                "@_Left": 0,
+                "@_Top": 0,
+                "@_Right": 265,
+                "@_Bottom": 148
+              }
+            },
+            "TextWrapPreference": {
+              "Properties": {
+                "TextWrapOffset": {
+                  "@_Top": 0,
+                  "@_Left": 0,
+                  "@_Bottom": 0,
+                  "@_Right": 0
+                }
+              },
+              "ContourOption": {
+                "@_ContourType": "SameAsClipping",
+                "@_IncludeInsideEdges": false,
+                "@_ContourPathName": "$ID/"
+              },
+              "@_Inverse": false,
+              "@_ApplyToMasterPageOnly": false,
+              "@_TextWrapSide": "BothSides",
+              "@_TextWrapMode": "None"
+            },
+            "Link": {
+              "@_Self": "uef",
+              "@_AssetURL": "$ID/",
+              "@_AssetID": "$ID/",
+              "@_RenditionData": "Actual",
+              "@_LinkResourceURI": "file:C:/Users/hp/Downloads/testtttt%20Folder/testtttt%20Folder/Links/panda.jpg",
+              "@_LinkResourceFormat": "$ID/JPEG",
+              "@_StoredState": "Normal",
+              "@_LinkClassID": 35906,
+              "@_LinkClientID": 257,
+              "@_LinkResourceModified": false,
+              "@_LinkObjectModified": false,
+              "@_ShowInUI": true,
+              "@_CanEmbed": true,
+              "@_CanUnembed": true,
+              "@_CanPackage": true,
+              "@_ImportPolicy": "NoAutoImport",
+              "@_ExportPolicy": "NoAutoExport",
+              "@_LinkImportStamp": "file 133976480672091756 9347",
+              "@_LinkImportModificationTime": "2025-07-22T13:54:27",
+              "@_LinkImportTime": "2025-07-23T14:51:48",
+              "@_LinkResourceSize": "0~2483"
+            },
+            "ClippingPathSettings": {
+              "@_ClippingType": "None",
+              "@_InvertPath": false,
+              "@_IncludeInsideEdges": false,
+              "@_RestrictToFrame": false,
+              "@_UseHighResolutionImage": true,
+              "@_Threshold": 25,
+              "@_Tolerance": 2,
+              "@_InsetFrame": 0,
+              "@_AppliedPathName": "$ID/",
+              "@_Index": -1
+            },
+            "ImageIOPreference": {
+              "@_ApplyPhotoshopClippingPath": true,
+              "@_AllowAutoEmbedding": true,
+              "@_AlphaChannelName": "$ID/"
+            },
+            "@_Self": "uec",
+            "@_Space": "$ID/#Links_RGB",
+            "@_ActualPpi": "72 72",
+            "@_EffectivePpi": "72 72",
+            "@_ImageRenderingIntent": "UseColorSettings",
+            "@_OverriddenPageItemProps": "",
+            "@_LocalDisplaySetting": "Default",
+            "@_ImageTypeName": "$ID/JPEG",
+            "@_AppliedObjectStyle": "ObjectStyle/$ID/[None]",
+            "@_ItemTransform": "1 0 0 1 -132.5 -74",
+            "@_ParentInterfaceChangeCount": "",
+            "@_TargetInterfaceChangeCount": "",
+            "@_LastUpdatedInterfaceChangeCount": "",
+            "@_HorizontalLayoutConstraints": "FlexibleDimension FixedDimension FlexibleDimension",
+            "@_VerticalLayoutConstraints": "FlexibleDimension FixedDimension FlexibleDimension",
+            "@_GradientFillStart": "0 0",
+            "@_GradientFillLength": 0,
+            "@_GradientFillAngle": 0,
+            "@_GradientFillHiliteLength": 0,
+            "@_GradientFillHiliteAngle": 0,
+            "@_Visible": true,
+            "@_Name": "$ID/"
+          }
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseHighResolutionImage",
+          "path": "Spread.Spread.Rectangle.1.Image.ClippingPathSettings.@_UseHighResolutionImage",
+          "details": true
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "ImageIOPreference",
+          "path": "Spread.Spread.Rectangle.1.Image.ImageIOPreference",
+          "details": {
+            "@_ApplyPhotoshopClippingPath": true,
+            "@_AllowAutoEmbedding": true,
+            "@_AlphaChannelName": "$ID/"
+          }
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageRenderingIntent",
+          "path": "Spread.Spread.Rectangle.1.Image.@_ImageRenderingIntent",
+          "details": "UseColorSettings"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageTypeName",
+          "path": "Spread.Spread.Rectangle.1.Image.@_ImageTypeName",
+          "details": "$ID/JPEG"
+        }
+      ]
+    },
+    "suspiciousFileSamples": []
+  },
+  "packageUpload": {
+    "totalUploadedFiles": 5,
+    "uploadedFiles": [
+      {
+        "name": "testtttt.idml",
+        "size": 34419,
+        "mimetype": "application/octet-stream"
+      },
+      {
+        "name": "testtttt.indd",
+        "size": 1040384,
+        "mimetype": "application/octet-stream"
+      },
+      {
+        "name": "testtttt.pdf",
+        "size": 30793,
+        "mimetype": "application/pdf"
+      },
+      {
+        "name": "download.jpg",
+        "size": 4200,
+        "mimetype": "image/jpeg"
+      },
+      {
+        "name": "panda.jpg",
+        "size": 9347,
+        "mimetype": "image/jpeg"
+      }
+    ],
+    "isPackageUpload": true
+  },
+  "processingResults": {
+    "elementsFound": 2,
+    "storiesFound": 0,
+    "contentFrames": [
+      {
+        "id": "uea",
+        "type": "Rectangle",
+        "name": "$ID/",
+        "position": {
+          "x": 200,
+          "y": 0,
+          "width": 148,
+          "height": 148,
+          "rotation": 0
+        },
+        "fill": "Color/None",
+        "stroke": "Color/None",
+        "strokeWeight": 0,
+        "parentStory": null,
+        "linkedImage": {
+          "fileName": "download.jpg",
+          "url": "/api/image/1753269975850/Links/download.jpg",
+          "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753269975850\\Links\\download.jpg",
+          "isEmbedded": "false",
+          "framePosition": {
+            "x": 200,
+            "y": 0,
+            "width": 148,
+            "height": 148,
+            "rotation": 0
+          },
+          "imagePosition": {
+            "x": -148,
+            "y": -148,
+            "width": 148,
+            "height": 148,
+            "scaleX": 1,
+            "scaleY": 1
+          }
+        },
+        "visible": true,
+        "locked": false,
+        "isContentFrame": true,
+        "hasPlacedContent": true,
+        "contentType": "Image",
+        "imagePosition": {
+          "x": -148,
+          "y": -148,
+          "width": 148,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "placedContent": {
+          "type": "Image",
+          "href": "download.jpg",
+          "isEmbedded": true,
+          "bounds": null,
+          "transform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -74,
+            "ty": -74
+          },
+          "actualPpi": "72 72",
+          "effectivePpi": "72 72",
+          "imageTypeName": "$ID/JPEG",
+          "space": "$ID/#Links_RGB"
+        }
+      },
+      {
+        "id": "uf2",
+        "type": "Rectangle",
+        "name": "$ID/",
+        "position": {
+          "x": 192,
+          "y": 226,
+          "width": 265,
+          "height": 148,
+          "rotation": 0
+        },
+        "fill": "Color/None",
+        "stroke": "Color/None",
+        "strokeWeight": 0,
+        "parentStory": null,
+        "linkedImage": {
+          "fileName": "panda.jpg",
+          "url": "/api/image/1753269975850/Links/panda.jpg",
+          "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753269975850\\Links\\panda.jpg",
+          "isEmbedded": "false",
+          "framePosition": {
+            "x": 192,
+            "y": 226,
+            "width": 265,
+            "height": 148,
+            "rotation": 0
+          },
+          "imagePosition": {
+            "x": -265,
+            "y": -148,
+            "width": 265,
+            "height": 148,
+            "scaleX": 1,
+            "scaleY": 1
+          }
+        },
+        "visible": true,
+        "locked": false,
+        "isContentFrame": true,
+        "hasPlacedContent": true,
+        "contentType": "Image",
+        "imagePosition": {
+          "x": -265,
+          "y": -148,
+          "width": 265,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "placedContent": {
+          "type": "Image",
+          "href": "panda.jpg",
+          "isEmbedded": true,
+          "bounds": null,
+          "transform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -132.5,
+            "ty": -74
+          },
+          "actualPpi": "72 72",
+          "effectivePpi": "72 72",
+          "imageTypeName": "$ID/JPEG",
+          "space": "$ID/#Links_RGB"
+        }
+      }
+    ],
+    "embeddedImages": [
+      {
+        "id": "uea",
+        "type": "Rectangle",
+        "name": "$ID/",
+        "position": {
+          "x": 200,
+          "y": 0,
+          "width": 148,
+          "height": 148,
+          "rotation": 0
+        },
+        "fill": "Color/None",
+        "stroke": "Color/None",
+        "strokeWeight": 0,
+        "parentStory": null,
+        "linkedImage": {
+          "fileName": "download.jpg",
+          "url": "/api/image/1753269975850/Links/download.jpg",
+          "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753269975850\\Links\\download.jpg",
+          "isEmbedded": "false",
+          "framePosition": {
+            "x": 200,
+            "y": 0,
+            "width": 148,
+            "height": 148,
+            "rotation": 0
+          },
+          "imagePosition": {
+            "x": -148,
+            "y": -148,
+            "width": 148,
+            "height": 148,
+            "scaleX": 1,
+            "scaleY": 1
+          }
+        },
+        "visible": true,
+        "locked": false,
+        "isContentFrame": true,
+        "hasPlacedContent": true,
+        "contentType": "Image",
+        "imagePosition": {
+          "x": -148,
+          "y": -148,
+          "width": 148,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "placedContent": {
+          "type": "Image",
+          "href": "download.jpg",
+          "isEmbedded": true,
+          "bounds": null,
+          "transform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -74,
+            "ty": -74
+          },
+          "actualPpi": "72 72",
+          "effectivePpi": "72 72",
+          "imageTypeName": "$ID/JPEG",
+          "space": "$ID/#Links_RGB"
+        }
+      },
+      {
+        "id": "uf2",
+        "type": "Rectangle",
+        "name": "$ID/",
+        "position": {
+          "x": 192,
+          "y": 226,
+          "width": 265,
+          "height": 148,
+          "rotation": 0
+        },
+        "fill": "Color/None",
+        "stroke": "Color/None",
+        "strokeWeight": 0,
+        "parentStory": null,
+        "linkedImage": {
+          "fileName": "panda.jpg",
+          "url": "/api/image/1753269975850/Links/panda.jpg",
+          "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753269975850\\Links\\panda.jpg",
+          "isEmbedded": "false",
+          "framePosition": {
+            "x": 192,
+            "y": 226,
+            "width": 265,
+            "height": 148,
+            "rotation": 0
+          },
+          "imagePosition": {
+            "x": -265,
+            "y": -148,
+            "width": 265,
+            "height": 148,
+            "scaleX": 1,
+            "scaleY": 1
+          }
+        },
+        "visible": true,
+        "locked": false,
+        "isContentFrame": true,
+        "hasPlacedContent": true,
+        "contentType": "Image",
+        "imagePosition": {
+          "x": -265,
+          "y": -148,
+          "width": 265,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "placedContent": {
+          "type": "Image",
+          "href": "panda.jpg",
+          "isEmbedded": true,
+          "bounds": null,
+          "transform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -132.5,
+            "ty": -74
+          },
+          "actualPpi": "72 72",
+          "effectivePpi": "72 72",
+          "imageTypeName": "$ID/JPEG",
+          "space": "$ID/#Links_RGB"
+        }
+      }
+    ],
+    "placeholders": []
+  },
+  "imageExtraction": {
+    "totalFound": 0,
+    "totalExtracted": 0,
+    "extractedImages": [],
+    "extractionSuccess": false,
+    "method": "none"
+  }
+}

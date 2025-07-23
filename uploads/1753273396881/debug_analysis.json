@@ -1,0 +1,581 @@
+{
+  "timestamp": "2025-07-23T12:23:17.257Z",
+  "uploadId": "1753273396881",
+  "idmlFile": {
+    "name": "catpackage.idml",
+    "size": 42433,
+    "path": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753273396881\\catpackage.idml"
+  },
+  "idmlContents": {
+    "basic": {
+      "totalFiles": 12,
+      "allFiles": [
+        "mimetype",
+        "designmap.xml",
+        "META-INF/container.xml",
+        "META-INF/metadata.xml",
+        "Resources/Graphic.xml",
+        "Resources/Fonts.xml",
+        "Resources/Styles.xml",
+        "Resources/Preferences.xml",
+        "XML/Tags.xml",
+        "MasterSpreads/MasterSpread_ud5.xml",
+        "Spreads/Spread_uce.xml",
+        "XML/BackingStory.xml"
+      ],
+      "folders": [
+        "mimetype",
+        "designmap.xml",
+        "META-INF",
+        "Resources",
+        "XML",
+        "MasterSpreads",
+        "Spreads"
+      ],
+      "imageFiles": [],
+      "hasLinksFolder": false,
+      "linksFolderContents": []
+    },
+    "detailed": {
+      "totalFiles": 12,
+      "filesByType": {
+        "": [
+          "mimetype"
+        ],
+        ".xml": [
+          "designmap.xml",
+          "META-INF/container.xml",
+          "META-INF/metadata.xml",
+          "Resources/Graphic.xml",
+          "Resources/Fonts.xml",
+          "Resources/Styles.xml",
+          "Resources/Preferences.xml",
+          "XML/Tags.xml",
+          "MasterSpreads/MasterSpread_ud5.xml",
+          "Spreads/Spread_uce.xml",
+          "XML/BackingStory.xml"
+        ]
+      },
+      "allFiles": [
+        "mimetype",
+        "designmap.xml",
+        "META-INF/container.xml",
+        "META-INF/metadata.xml",
+        "Resources/Graphic.xml",
+        "Resources/Fonts.xml",
+        "Resources/Styles.xml",
+        "Resources/Preferences.xml",
+        "XML/Tags.xml",
+        "MasterSpreads/MasterSpread_ud5.xml",
+        "Spreads/Spread_uce.xml",
+        "XML/BackingStory.xml"
+      ],
+      "binaryFiles": [],
+      "xmlFiles": [
+        "designmap.xml",
+        "META-INF/container.xml",
+        "META-INF/metadata.xml",
+        "Resources/Graphic.xml",
+        "Resources/Fonts.xml",
+        "Resources/Styles.xml",
+        "Resources/Preferences.xml",
+        "XML/Tags.xml",
+        "MasterSpreads/MasterSpread_ud5.xml",
+        "Spreads/Spread_uce.xml",
+        "XML/BackingStory.xml"
+      ],
+      "imageFiles": [],
+      "unknownFiles": [],
+      "fileDetails": {
+        "mimetype": {
+          "compressedSize": 43,
+          "uncompressedSize": 43,
+          "compressionMethod": 0,
+          "isDirectory": false,
+          "extension": ""
+        },
+        "designmap.xml": {
+          "compressedSize": 3476,
+          "uncompressedSize": 17383,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "META-INF/container.xml": {
+          "compressedSize": 167,
+          "uncompressedSize": 253,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "META-INF/metadata.xml": {
+          "compressedSize": 4192,
+          "uncompressedSize": 11316,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Graphic.xml": {
+          "compressedSize": 1184,
+          "uncompressedSize": 7664,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Fonts.xml": {
+          "compressedSize": 2443,
+          "uncompressedSize": 6616,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Styles.xml": {
+          "compressedSize": 5922,
+          "uncompressedSize": 41932,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Resources/Preferences.xml": {
+          "compressedSize": 10104,
+          "uncompressedSize": 61622,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "XML/Tags.xml": {
+          "compressedSize": 220,
+          "uncompressedSize": 303,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "MasterSpreads/MasterSpread_ud5.xml": {
+          "compressedSize": 739,
+          "uncompressedSize": 2480,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "Spreads/Spread_uce.xml": {
+          "compressedSize": 12173,
+          "uncompressedSize": 19543,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        },
+        "XML/BackingStory.xml": {
+          "compressedSize": 362,
+          "uncompressedSize": 647,
+          "compressionMethod": 8,
+          "isDirectory": false,
+          "extension": ".xml"
+        }
+      },
+      "suspiciousFiles": [],
+      "largeBinaryFiles": []
+    },
+    "spreadAnalysis": {
+      "spreadsAnalyzed": 1,
+      "imageReferences": [
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "path": "Spread.Spread.Rectangle.Image.@_ImageTypeName",
+          "value": "$ID/JPEG"
+        }
+      ],
+      "linkReferences": [
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "path": "Spread.Spread.Rectangle.Image.Link",
+          "value": "{\"@_Self\":\"ue9\",\"@_AssetURL\":\"$ID/\",\"@_AssetID\":\"$ID/\",\"@_RenditionData\":\"Actual\",\"@_LinkResourceURI\":\"file:C:/Users/hp/Downloads/panda.jpg\",\"@_LinkResourceFormat\":\"$ID/JPEG\",\"@_StoredState\":\"Embedded"
+        }
+      ],
+      "placedContentDetails": [
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageConversionType",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_ImageConversionType",
+          "details": "JPEG"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageExportResolution",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_ImageExportResolution",
+          "details": "Ppi300"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageAlignment",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_ImageAlignment",
+          "details": "AlignLeft"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceBefore",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_ImageSpaceBefore",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageSpaceAfter",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_ImageSpaceAfter",
+          "details": 0
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseImagePageBreak",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_UseImagePageBreak",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImagePageBreak",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_ImagePageBreak",
+          "details": "PageBreakBefore"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_CustomImageAlignment",
+          "path": "Spread.Spread.Rectangle.ObjectExportOption.@_CustomImageAlignment",
+          "details": false
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "Image",
+          "path": "Spread.Spread.Rectangle.Image",
+          "details": {
+            "Properties": {
+              "Profile": {
+                "#text": "$ID/None",
+                "@_type": "string"
+              },
+              "Contents": "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\n",
+              "GraphicBounds": {
+                "@_Left": 0,
+                "@_Top": 0,
+                "@_Right": 265,
+                "@_Bottom": 148
+              }
+            },
+            "TextWrapPreference": {
+              "Properties": {
+                "TextWrapOffset": {
+                  "@_Top": 0,
+                  "@_Left": 0,
+                  "@_Bottom": 0,
+                  "@_Right": 0
+                }
+              },
+              "ContourOption": {
+                "@_ContourType": "SameAsClipping",
+                "@_IncludeInsideEdges": false,
+                "@_ContourPathName": "$ID/"
+              },
+              "@_Inverse": false,
+              "@_ApplyToMasterPageOnly": false,
+              "@_TextWrapSide": "BothSides",
+              "@_TextWrapMode": "None"
+            },
+            "Link": {
+              "@_Self": "ue9",
+              "@_AssetURL": "$ID/",
+              "@_AssetID": "$ID/",
+              "@_RenditionData": "Actual",
+              "@_LinkResourceURI": "file:C:/Users/hp/Downloads/panda.jpg",
+              "@_LinkResourceFormat": "$ID/JPEG",
+              "@_StoredState": "Embedded",
+              "@_LinkClassID": 35906,
+              "@_LinkClientID": 257,
+              "@_LinkResourceModified": false,
+              "@_LinkObjectModified": false,
+              "@_ShowInUI": true,
+              "@_CanEmbed": true,
+              "@_CanUnembed": true,
+              "@_CanPackage": true,
+              "@_ImportPolicy": "NoAutoImport",
+              "@_ExportPolicy": "NoAutoExport",
+              "@_LinkImportStamp": "file 133976480672091756 9347",
+              "@_LinkImportModificationTime": "2025-07-22T13:54:27",
+              "@_LinkImportTime": "2025-07-22T13:59:14",
+              "@_LinkResourceSize": "0~2483"
+            },
+            "ClippingPathSettings": {
+              "@_ClippingType": "None",
+              "@_InvertPath": false,
+              "@_IncludeInsideEdges": false,
+              "@_RestrictToFrame": false,
+              "@_UseHighResolutionImage": true,
+              "@_Threshold": 25,
+              "@_Tolerance": 2,
+              "@_InsetFrame": 0,
+              "@_AppliedPathName": "$ID/",
+              "@_Index": -1
+            },
+            "ImageIOPreference": {
+              "@_ApplyPhotoshopClippingPath": true,
+              "@_AllowAutoEmbedding": true,
+              "@_AlphaChannelName": "$ID/"
+            },
+            "@_Self": "ue6",
+            "@_Space": "$ID/#Links_RGB",
+            "@_ActualPpi": "72 72",
+            "@_EffectivePpi": "72 72",
+            "@_ImageRenderingIntent": "UseColorSettings",
+            "@_OverriddenPageItemProps": "",
+            "@_LocalDisplaySetting": "Default",
+            "@_ImageTypeName": "$ID/JPEG",
+            "@_AppliedObjectStyle": "ObjectStyle/$ID/[None]",
+            "@_ItemTransform": "1 0 0 1 -132.5 -74",
+            "@_ParentInterfaceChangeCount": "",
+            "@_TargetInterfaceChangeCount": "",
+            "@_LastUpdatedInterfaceChangeCount": "",
+            "@_HorizontalLayoutConstraints": "FlexibleDimension FixedDimension FlexibleDimension",
+            "@_VerticalLayoutConstraints": "FlexibleDimension FixedDimension FlexibleDimension",
+            "@_GradientFillStart": "0 0",
+            "@_GradientFillLength": 0,
+            "@_GradientFillAngle": 0,
+            "@_GradientFillHiliteLength": 0,
+            "@_GradientFillHiliteAngle": 0,
+            "@_Visible": true,
+            "@_Name": "$ID/"
+          }
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_UseHighResolutionImage",
+          "path": "Spread.Spread.Rectangle.Image.ClippingPathSettings.@_UseHighResolutionImage",
+          "details": true
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "ImageIOPreference",
+          "path": "Spread.Spread.Rectangle.Image.ImageIOPreference",
+          "details": {
+            "@_ApplyPhotoshopClippingPath": true,
+            "@_AllowAutoEmbedding": true,
+            "@_AlphaChannelName": "$ID/"
+          }
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageRenderingIntent",
+          "path": "Spread.Spread.Rectangle.Image.@_ImageRenderingIntent",
+          "details": "UseColorSettings"
+        },
+        {
+          "file": "Spreads/Spread_uce.xml",
+          "elementType": "@_ImageTypeName",
+          "path": "Spread.Spread.Rectangle.Image.@_ImageTypeName",
+          "details": "$ID/JPEG"
+        }
+      ]
+    },
+    "suspiciousFileSamples": []
+  },
+  "packageUpload": {
+    "totalUploadedFiles": 3,
+    "uploadedFiles": [
+      {
+        "name": "catpackage.idml",
+        "size": 42433,
+        "mimetype": "application/octet-stream"
+      },
+      {
+        "name": "catpackage.indd",
+        "size": 1024000,
+        "mimetype": "application/octet-stream"
+      },
+      {
+        "name": "catpackage.pdf",
+        "size": 22310,
+        "mimetype": "application/pdf"
+      }
+    ],
+    "isPackageUpload": true
+  },
+  "processingResults": {
+    "elementsFound": 1,
+    "storiesFound": 0,
+    "contentFrames": [
+      {
+        "id": "uea",
+        "type": "Rectangle",
+        "name": "$ID/",
+        "position": {
+          "x": 130,
+          "y": 0,
+          "width": 265,
+          "height": 148,
+          "rotation": 0
+        },
+        "fill": "Color/None",
+        "stroke": "Color/None",
+        "strokeWeight": 0,
+        "parentStory": null,
+        "linkedImage": {
+          "fileName": "panda.jpg",
+          "url": "/api/image/1753273396881/ExtractedImages/panda.jpg",
+          "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753273396881\\ExtractedImages\\panda.jpg",
+          "isEmbedded": "true",
+          "framePosition": {
+            "x": 130,
+            "y": 0,
+            "width": 265,
+            "height": 148,
+            "rotation": 0
+          },
+          "imagePosition": {
+            "x": -265,
+            "y": -148,
+            "width": 265,
+            "height": 148,
+            "scaleX": 1,
+            "scaleY": 1
+          }
+        },
+        "visible": true,
+        "locked": false,
+        "isContentFrame": true,
+        "hasPlacedContent": true,
+        "contentType": "Image",
+        "imagePosition": {
+          "x": -265,
+          "y": -148,
+          "width": 265,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "placedContent": {
+          "type": "Image",
+          "href": "panda.jpg",
+          "isEmbedded": true,
+          "bounds": null,
+          "transform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -132.5,
+            "ty": -74
+          },
+          "actualPpi": "72 72",
+          "effectivePpi": "72 72",
+          "imageTypeName": "$ID/JPEG",
+          "space": "$ID/#Links_RGB"
+        }
+      }
+    ],
+    "embeddedImages": [
+      {
+        "id": "uea",
+        "type": "Rectangle",
+        "name": "$ID/",
+        "position": {
+          "x": 130,
+          "y": 0,
+          "width": 265,
+          "height": 148,
+          "rotation": 0
+        },
+        "fill": "Color/None",
+        "stroke": "Color/None",
+        "strokeWeight": 0,
+        "parentStory": null,
+        "linkedImage": {
+          "fileName": "panda.jpg",
+          "url": "/api/image/1753273396881/ExtractedImages/panda.jpg",
+          "originalPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753273396881\\ExtractedImages\\panda.jpg",
+          "isEmbedded": "true",
+          "framePosition": {
+            "x": 130,
+            "y": 0,
+            "width": 265,
+            "height": 148,
+            "rotation": 0
+          },
+          "imagePosition": {
+            "x": -265,
+            "y": -148,
+            "width": 265,
+            "height": 148,
+            "scaleX": 1,
+            "scaleY": 1
+          }
+        },
+        "visible": true,
+        "locked": false,
+        "isContentFrame": true,
+        "hasPlacedContent": true,
+        "contentType": "Image",
+        "imagePosition": {
+          "x": -265,
+          "y": -148,
+          "width": 265,
+          "height": 148,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "placedContent": {
+          "type": "Image",
+          "href": "panda.jpg",
+          "isEmbedded": true,
+          "bounds": null,
+          "transform": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "tx": -132.5,
+            "ty": -74
+          },
+          "actualPpi": "72 72",
+          "effectivePpi": "72 72",
+          "imageTypeName": "$ID/JPEG",
+          "space": "$ID/#Links_RGB"
+        }
+      }
+    ],
+    "placeholders": []
+  },
+  "imageExtraction": {
+    "totalFound": 1,
+    "totalExtracted": 1,
+    "extractedImages": [
+      {
+        "originalPath": "Spread.Spread.Rectangle.Image",
+        "extractedPath": "C:\\Users\\hp\\Desktop\\indesign repo\\idml-parser\\uploads\\1753273396881\\ExtractedImages\\panda.jpg",
+        "fileName": "panda.jpg",
+        "size": 9347,
+        "base64Length": 12628,
+        "linkInfo": {
+          "@_Self": "ue9",
+          "@_AssetURL": "$ID/",
+          "@_AssetID": "$ID/",
+          "@_RenditionData": "Actual",
+          "@_LinkResourceURI": "file:C:/Users/hp/Downloads/panda.jpg",
+          "@_LinkResourceFormat": "$ID/JPEG",
+          "@_StoredState": "Embedded",
+          "@_LinkClassID": 35906,
+          "@_LinkClientID": 257,
+          "@_LinkResourceModified": false,
+          "@_LinkObjectModified": false,
+          "@_ShowInUI": true,
+          "@_CanEmbed": true,
+          "@_CanUnembed": true,
+          "@_CanPackage": true,
+          "@_ImportPolicy": "NoAutoImport",
+          "@_ExportPolicy": "NoAutoExport",
+          "@_LinkImportStamp": "file 133976480672091756 9347",
+          "@_LinkImportModificationTime": "2025-07-22T13:54:27",
+          "@_LinkImportTime": "2025-07-22T13:59:14",
+          "@_LinkResourceSize": "0~2483"
+        },
+        "isExtracted": true
+      }
+    ],
+    "extractionSuccess": true,
+    "method": "spread_xml_base64"
+  }
+}
