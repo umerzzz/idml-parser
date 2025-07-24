@@ -10,6 +10,11 @@ yarn-error.log*
 dev-debug.log
 # Dependency directories
 node_modules/
+*.cursor
+*.next
+.next/
+uploads
+uploads/
 
 # Environment variables
 .env

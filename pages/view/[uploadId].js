@@ -2231,153 +2231,48 @@ export default function Viewer() {
                 )}
 
                 {/* Enhanced Image Rendering for both embedded and external images */}
-                {((hasPlacedContent &&
-                  element.placedContent?.type === "Image") ||
-                  element.linkedImage) && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      width: "100%",
-                      height: "100%",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {element.linkedImage?.isEmbedded &&
-                    element.linkedImage?.isExtracted ? (
-                      // Handle extracted embedded images
-                      <img
-                        src={element.linkedImage.url}
-                        alt="Extracted embedded content"
-                        style={{
-                          position: "absolute",
-                          left: "0px",
-                          top: "0px",
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                          transformOrigin: "center center",
-                        }}
-                        onError={(e) => {
-                          console.error("Error loading extracted image:", e);
-                          e.target.style.display = "none";
-                          e.target.nextSibling.style.display = "flex";
-                        }}
-                      />
-                    ) : element.linkedImage?.isEmbedded ? (
-                      // Handle embedded placeholder when no extracted image
-                      <div
-                        style={{
-                          position: "absolute",
-                          left:
-                            element.placedContent?.transform?.tx + "px" ||
-                            "0px",
-                          top:
-                            element.placedContent?.transform?.ty + "px" ||
-                            "0px",
-                          transform: `scale(${
-                            element.placedContent?.transform?.a || 1
-                          }, ${element.placedContent?.transform?.d || 1})`,
-                          transformOrigin: "top left",
-                          width: "200px",
-                          height: "200px",
-                          backgroundColor: "#f0f0f0",
-                          border: "2px solid #007bff",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: "12px",
-                          color: "#007bff",
-                          flexDirection: "column",
-                        }}
-                      >
-                        🖼️ Embedded Image
-                        <br />
-                        <span style={{ fontSize: "10px" }}>
-                          {element.linkedImage?.embeddedType}
-                        </span>
-                        <br />
-                        <span style={{ fontSize: "10px" }}>
-                          PPI: {element.placedContent?.actualPpi}
-                        </span>
-                      </div>
-                    ) : element.linkedImage?.url ? (
-                      // Handle external images
-                      <img
-                        src={element.linkedImage.url}
-                        alt="External linked content"
-                        style={{
-                          position: "absolute",
-                          left:
-                            element.placedContent?.transform?.tx + "px" ||
-                            "0px",
-                          top:
-                            element.placedContent?.transform?.ty + "px" ||
-                            "0px",
-                          transform: `scale(${
-                            element.placedContent?.transform?.a || 1
-                          }, ${element.placedContent?.transform?.d || 1})`,
-                          transformOrigin: "top left",
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                        }}
-                      />
-                    ) : (
-                      // Fallback placeholder
-                      <div
-                        style={{
-                          position: "absolute",
-                          left: element.placedContent?.transform?.tx + "px",
-                          top: element.placedContent?.transform?.ty + "px",
-                          transform: `scale(${
-                            element.placedContent?.transform?.a || 1
-                          }, ${element.placedContent?.transform?.d || 1})`,
-                          transformOrigin: "top left",
-                          width: "200px",
-                          height: "200px",
-                          backgroundColor: "#f0f0f0",
-                          border: "1px solid #ccc",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: "10px",
-                          color: "#666",
-                        }}
-                      >
-                        📷 {element.placedContent?.imageTypeName}
-                        <br />
-                        {element.placedContent?.actualPpi}
-                      </div>
-                    )}
-
-                    {/* Error fallback div */}
+                {element.linkedImage &&
+                  (element.linkedImage.url ? (
+                    <img
+                      src={element.linkedImage.url}
+                      alt="Frame content"
+                      style={{
+                        position: "absolute",
+                        left: "0px",
+                        top: "0px",
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        transformOrigin: "center center",
+                      }}
+                      onError={(e) => {
+                        console.error("Error loading image:", e);
+                        e.target.style.display = "none";
+                      }}
+                    />
+                  ) : element.linkedImage.isEmbedded ? (
                     <div
                       style={{
                         position: "absolute",
-                        left:
-                          element.placedContent?.transform?.tx + "px" || "0px",
-                        top:
-                          element.placedContent?.transform?.ty + "px" || "0px",
-                        transform: `scale(${
-                          element.placedContent?.transform?.a || 1
-                        }, ${element.placedContent?.transform?.d || 1})`,
-                        transformOrigin: "top left",
-                        width: "200px",
-                        height: "200px",
-                        backgroundColor: "#ffeeee",
-                        border: "2px solid #ff6b6b",
-                        display: "none",
+                        left: "0px",
+                        top: "0px",
+                        width: "100%",
+                        height: "100%",
+                        backgroundColor: "#f0f0f0",
+                        border: "2px solid #007bff",
+                        display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         fontSize: "12px",
-                        color: "#ff6b6b",
+                        color: "#007bff",
                         flexDirection: "column",
                       }}
                     >
-                      ❌ Image Load Error
+                      🖼️ Embedded Image
+                      <br />
+                      No image data
                     </div>
-                  </div>
-                )}
+                  ) : null)}
 
                 {/* PIXEL-PERFECT Text Rendering with Advanced Fitting Strategies */}
                 {element.type === "TextFrame" &&
