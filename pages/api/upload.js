@@ -154,6 +154,12 @@ function createComprehensiveProcessedData(rawData, moduleData = {}) {
       return acc;
     }, {}),
 
+    // ===== PAGES =====
+    pages: rawData.pages || [],
+
+    // ===== ELEMENTS BY PAGE =====
+    elementsByPage: rawData.elementsByPage || {},
+
     // ===== MODULE DATA - STYLES, SPREADS, ETC =====
     styles: moduleData.styles ||
       rawData.styles || {
@@ -193,6 +199,7 @@ function createComprehensiveProcessedData(rawData, moduleData = {}) {
       moduleDataIncluded: !!moduleData,
       elementsCount: rawData.elements?.length || 0,
       storiesCount: Object.keys(rawData.stories || {}).length,
+      pagesCount: rawData.pages?.length || 0,
       noDataFiltered: true, // Indicates we preserved ALL data
       processingVersion: "2.0-comprehensive",
     },
@@ -223,6 +230,7 @@ function createComprehensiveProcessedData(rawData, moduleData = {}) {
     "(no filtering applied)"
   );
   console.log("- Stories:", Object.keys(processedData.stories).length);
+  console.log("- Pages:", processedData.pages?.length || 0);
   console.log("- Styles included:", !!processedData.styles);
   console.log("- Spreads included:", !!processedData.spreads);
   console.log("- Resources included:", !!processedData.resources);
@@ -951,11 +959,146 @@ export default async function handler(req, res) {
     const elements = elementParser.getElements();
     const stories = storyParser.getStories();
     const styles = styleParser.getStyles();
+    const pages = documentParser.getPages(); // NEW: Get pages from document parser
+    console.log(`📄 Pages extracted: ${pages?.length || 0}`);
+
+    // NEW: Organize elements by page with spatial analysis
+    const elementsByPage = {};
+    if (pages && pages.length > 0) {
+      // Initialize empty arrays for each page
+      pages.forEach((page) => {
+        elementsByPage[page.self] = [];
+      });
+
+      // Use spatial analysis to assign elements to pages
+      const unassignedElements = [];
+
+      elements.forEach((element) => {
+        let targetPageId = null;
+
+        // Method 1: Check if element has explicit pageId
+        if (element.pageId) {
+          targetPageId = element.pageId;
+        }
+        // Method 2: Use spatial analysis based on Y position
+        else if (
+          element.pixelPosition &&
+          element.pixelPosition.y !== undefined
+        ) {
+          const elementY = element.pixelPosition.y;
+          let targetPage = null;
+
+          pages.forEach((page, pageIndex) => {
+            // Use page boundaries for more accurate assignment
+            const pageHeight =
+              pageInfo.dimensions?.pixelDimensions?.height ||
+              pageInfo.dimensions?.height ||
+              792;
+            const pageStartY = pageIndex * pageHeight;
+            const pageEndY = (pageIndex + 1) * pageHeight;
+
+            // Check if element is within this page's Y bounds
+            if (elementY >= pageStartY && elementY < pageEndY) {
+              targetPage = page;
+            }
+          });
+
+          if (targetPage) {
+            targetPageId = targetPage.self;
+          }
+        }
+
+        // If no page assigned, add to unassigned list
+        if (!targetPageId) {
+          unassignedElements.push(element);
+        } else {
+          // Add element to the target page
+          if (elementsByPage[targetPageId]) {
+            elementsByPage[targetPageId].push(element);
+          }
+        }
+      });
+
+      // Check if all elements are clustered in one page
+      const pagesWithElements = Object.keys(elementsByPage).filter(
+        (pageId) => elementsByPage[pageId].length > 0
+      );
+
+      if (pagesWithElements.length === 1 && unassignedElements.length === 0) {
+        // All elements are clustered in one page, redistribute them evenly
+        const clusteredElements = elementsByPage[pagesWithElements[0]];
+        console.log(
+          `🔄 All ${clusteredElements.length} elements are clustered in page ${pagesWithElements[0]}, redistributing evenly`
+        );
+
+        // Clear all pages
+        pages.forEach((page) => {
+          elementsByPage[page.self] = [];
+        });
+
+        // Distribute elements evenly across pages
+        const elementsPerPage = Math.ceil(
+          clusteredElements.length / pages.length
+        );
+
+        pages.forEach((page, pageIndex) => {
+          const startIndex = pageIndex * elementsPerPage;
+          const endIndex = Math.min(
+            startIndex + elementsPerPage,
+            clusteredElements.length
+          );
+          const pageElements = clusteredElements.slice(startIndex, endIndex);
+
+          if (pageElements.length > 0) {
+            elementsByPage[page.self].push(...pageElements);
+            console.log(
+              `📊 Page ${page.self}: redistributed ${pageElements.length} elements`
+            );
+          }
+        });
+      } else if (unassignedElements.length > 0) {
+        // Distribute unassigned elements evenly across pages
+        console.log(
+          `🔄 Distributing ${unassignedElements.length} unassigned elements across ${pages.length} pages`
+        );
+
+        const elementsPerPage = Math.ceil(
+          unassignedElements.length / pages.length
+        );
+
+        pages.forEach((page, pageIndex) => {
+          const startIndex = pageIndex * elementsPerPage;
+          const endIndex = Math.min(
+            startIndex + elementsPerPage,
+            unassignedElements.length
+          );
+          const pageElements = unassignedElements.slice(startIndex, endIndex);
+
+          if (pageElements.length > 0) {
+            elementsByPage[page.self].push(...pageElements);
+            console.log(
+              `📊 Page ${page.self}: added ${pageElements.length} unassigned elements`
+            );
+          }
+        });
+      }
+
+      console.log(
+        `📄 Elements organized by page: ${
+          Object.keys(elementsByPage).length
+        } pages`
+      );
+      Object.keys(elementsByPage).forEach((pageId) => {
+        console.log(
+          `   Page ${pageId}: ${elementsByPage[pageId].length} elements`
+        );
+      });
+    }
 
     const documentData = {
       document: {
         version: document?.["@_DOMVersion"] || "Unknown",
-        pageCount: Math.max(1, elements.length > 0 ? 1 : 0),
+        pageCount: pages?.length || Math.max(1, elements.length > 0 ? 1 : 0),
         name: document?.["@_Name"] || "Untitled",
       },
 
@@ -963,6 +1106,10 @@ export default async function handler(req, res) {
         dimensions: pageInfo.dimensions,
         margins: pageInfo.margins,
       },
+
+      pages: pages || [], // NEW: Include pages in document data
+
+      elementsByPage: elementsByPage, // NEW: Include elements organized by page
 
       elements: elements.map((element) => ({
         id: element.self,
@@ -1138,6 +1285,7 @@ export default async function handler(req, res) {
     console.log("🔍 Raw document data structure:");
     console.log("- Elements:", documentData.elements?.length || 0);
     console.log("- Stories:", Object.keys(documentData.stories || {}).length);
+    console.log("- Pages:", documentData.pages?.length || 0);
     console.log("- PageInfo:", !!documentData.pageInfo);
     console.log("- Package Info:", documentData.packageInfo);
 
@@ -1172,6 +1320,11 @@ export default async function handler(req, res) {
       comprehensiveProcessedData.elements.length
     );
     console.log("✅ Comprehensive data includes:");
+    console.log("  - Pages:", comprehensiveProcessedData.pages?.length || 0);
+    console.log(
+      "  - Elements by Page:",
+      Object.keys(comprehensiveProcessedData.elementsByPage || {}).length
+    );
     console.log(
       "  - Styles:",
       Object.keys(comprehensiveProcessedData.styles || {}).length

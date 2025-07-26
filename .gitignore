@@ -12,9 +12,12 @@ dev-debug.log
 node_modules/
 *.cursor
 *.next
+*.claude
+*.claude/
 .next/
 uploads
 uploads/
+CLAUDE.md
 
 # Environment variables
 .env
