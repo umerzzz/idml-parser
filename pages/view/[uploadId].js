@@ -3,19 +3,70 @@ import { useRouter } from "next/router";
 import React from "react"; // Added missing import for React.Fragment
 import { ColorUtils, InDesignTextMetrics } from "../../lib/index.js";
 
+// Import extracted modules
+import {
+  // Utils
+  safeToPixels,
+  getUnitConverter,
+  isAlreadyInPixels,
+  convertColor as importedConvertColor,
+  getDocumentBackgroundColor as importedGetDocumentBackgroundColor,
+  getPageBackgroundColor as importedGetPageBackgroundColor,
+  getFontWeight,
+  getFontStyle,
+  extractTextDecorations,
+  getTextAlign,
+
+  // Text processing
+  measureTextAccurately,
+  calculateTextMetrics,
+  TEXT_FITTING_STRATEGIES,
+  getOptimalTextStyles,
+  renderFormattedText,
+  getStoryStyles,
+  getInDesignAccurateFormatting,
+
+  // Rendering
+  getPagesArray,
+  renderPageTabs,
+
+  // Debug
+  PageDebugPanel,
+
+  // Hooks
+  useViewerState,
+  useDocumentLoader,
+} from "../../lib/viewer/index.js";
+
 export default function Viewer() {
   const router = useRouter();
   const { uploadId } = router.query;
-  const [documentData, setDocumentData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [selectedElement, setSelectedElement] = useState(null);
-  const [showMargins, setShowMargins] = useState(true);
-  const [showDebugInfo, setShowDebugInfo] = useState(false);
-  // NEW: Multi-page state management
-  const [currentPageIndex, setCurrentPageIndex] = useState(0);
-  const [pages, setPages] = useState([]);
-  const [elementsForCurrentPage, setElementsForCurrentPage] = useState([]);
-  const [showPageDebugPanel, setShowPageDebugPanel] = useState(false);
+
+  // Use custom hook for state management
+  const {
+    documentData,
+    setDocumentData,
+    loading,
+    setLoading,
+    selectedElement,
+    setSelectedElement,
+    showMargins,
+    setShowMargins,
+    showDebugInfo,
+    setShowDebugInfo,
+    currentPageIndex,
+    setCurrentPageIndex,
+    pages,
+    setPages,
+    elementsForCurrentPage,
+    setElementsForCurrentPage,
+    showPageDebugPanel,
+    setShowPageDebugPanel,
+    backgroundConfig,
+    setBackgroundConfig,
+    textFittingStrategy,
+    setTextFittingStrategy,
+  } = useViewerState();
 
   // Add debug log to verify ColorUtils is imported correctly - NEW
   console.log("ColorUtils imported:", !!ColorUtils, typeof ColorUtils);
@@ -28,14 +79,8 @@ export default function Viewer() {
       : "Not available"
   );
 
-  // CONFIGURATION OPTIONS - Make background detection flexible
-  const [backgroundConfig, setBackgroundConfig] = useState({
-    mode: "auto", // 'auto', 'white', 'custom', 'transparent'
-    customColor: "#ffffff",
-    allowColorAnalysis: true,
-    preferPaperColor: true,
-    fallbackToWhite: true,
-  });
+  // Use custom hook for document loading
+  const loadDocument = useDocumentLoader(uploadId, setDocumentData, setLoading);
 
   // Background color override controls
   const backgroundModes = [
@@ -45,9 +90,14 @@ export default function Viewer() {
     { value: "custom", label: "Custom Color" },
   ];
 
-  const mmToPx = (mm) => {
-    if (typeof mm !== "number") return 0;
-    return (mm * 96) / 25.4;
+  // Create utility object for imported functions
+  const utils = {
+    convertColor: (colorRef) =>
+      importedConvertColor(colorRef, documentData, ColorUtils),
+    getFontWeight,
+    getFontStyle,
+    getTextAlign,
+    extractTextDecorations,
   };
 
   // Centralized function to get elements for a specific page
@@ -323,1341 +373,6 @@ export default function Viewer() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [documentData]);
 
-  const loadDocument = async () => {
-    try {
-      const response = await fetch(`/api/document/${uploadId}`);
-      const data = await response.json();
-      console.log("📄 Document data:", data);
-
-      // DEBUG: Check element positioning data in detail
-      console.log("🔍 DEBUG DATA STRUCTURE:");
-      console.log("DATA EXISTS:", !!data);
-      console.log("DATA.ELEMENTS EXISTS:", !!data?.elements);
-      console.log("DATA.ELEMENTS LENGTH:", data?.elements?.length);
-      console.log("DATA KEYS:", data ? Object.keys(data) : "no data");
-      console.log("FULL DATA OBJECT:", data);
-
-      if (data && data.elements && data.elements.length > 0) {
-        console.log("🔍 ELEMENT POSITIONING ANALYSIS:");
-        console.log("RAW ELEMENTS ARRAY:", data.elements);
-
-        data.elements.forEach((element, index) => {
-          console.log(`\n=== ELEMENT ${index} ===`);
-          console.log("ELEMENT ID:", element.id);
-          console.log("ELEMENT NAME:", element.name);
-          console.log("ELEMENT TYPE:", element.type);
-          console.log("ORIGINAL POSITION:", element.position);
-          console.log("PIXEL POSITION:", element.pixelPosition);
-
-          // Check for Y=0 issues
-          if (element.position?.y === 0) {
-            console.log("🚨 ORIGINAL POSITION Y IS ZERO!");
-          }
-          if (element.pixelPosition?.y === 0) {
-            console.log("🚨 PIXEL POSITION Y IS ZERO!");
-          }
-
-          // Show what coordinates we're actually using for positioning
-          const finalPosition = element.pixelPosition || element.position;
-          console.log("FINAL POSITION FOR RENDERING:", finalPosition);
-
-          // Show each coordinate explicitly
-          console.log("FINAL X:", finalPosition?.x);
-          console.log("FINAL Y:", finalPosition?.y);
-          console.log("FINAL WIDTH:", finalPosition?.width);
-          console.log("FINAL HEIGHT:", finalPosition?.height);
-        });
-      } else {
-        console.log("🚨 NO ELEMENTS FOUND! This is the problem.");
-      }
-      setDocumentData(data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error loading document:", error);
-      setLoading(false);
-    }
-  };
-
-  // Use ColorUtils for color conversion - ENHANCED with safety checks
-  const convertColor = (colorRef) => {
-    console.log("Converting color:", colorRef);
-
-    // First, check if we have color definitions in the document data
-    if (
-      documentData?.colorDefinitions &&
-      documentData.colorDefinitions[colorRef]
-    ) {
-      const colorDef = documentData.colorDefinitions[colorRef];
-      console.log("Found color definition:", colorDef);
-
-      // If we have RGB values, use them
-      if (
-        colorDef.hasDirectRGB &&
-        colorDef.red !== undefined &&
-        colorDef.green !== undefined &&
-        colorDef.blue !== undefined
-      ) {
-        return `rgb(${colorDef.red}, ${colorDef.green}, ${colorDef.blue})`;
-      }
-
-      // If we have CMYK values, convert them to RGB
-      if (
-        colorDef.hasDirectCMYK &&
-        colorDef.cyan !== undefined &&
-        colorDef.magenta !== undefined &&
-        colorDef.yellow !== undefined &&
-        colorDef.black !== undefined
-      ) {
-        if (ColorUtils && ColorUtils.cmykToRgbString) {
-          return ColorUtils.cmykToRgbString(
-            colorDef.cyan,
-            colorDef.magenta,
-            colorDef.yellow,
-            colorDef.black
-          );
-        }
-      }
-    }
-
-    // Safety check - if ColorUtils is not available
-    if (!ColorUtils || typeof ColorUtils.convertIdmlColorToRgb !== "function") {
-      console.error(
-        "ColorUtils not available or missing convertIdmlColorToRgb method"
-      );
-      // Fallback conversion
-      if (colorRef === "Color/None") return "transparent";
-      if (colorRef === "Color/Black") return "rgb(0, 0, 0)";
-      if (colorRef === "Color/White" || colorRef === "Color/Paper")
-        return "rgb(255, 255, 255)";
-      return "rgb(200, 200, 200)"; // Default gray
-    }
-
-    try {
-      // If colorRef is a string and matches a color in resources, use the color object
-      if (
-        typeof colorRef === "string" &&
-        documentData?.resources?.colors &&
-        documentData.resources.colors[colorRef]
-      ) {
-        return ColorUtils.convertIdmlColorToRgb(
-          documentData.resources.colors[colorRef]
-        );
-      }
-      // Otherwise, pass through (handles objects or fallback)
-      return ColorUtils.convertIdmlColorToRgb(colorRef);
-    } catch (error) {
-      console.error("Error converting color:", error);
-      // Fallback conversion
-      if (colorRef === "Color/None") return "transparent";
-      if (colorRef === "Color/Black") return "rgb(0, 0, 0)";
-      if (colorRef === "Color/White" || colorRef === "Color/Paper")
-        return "rgb(255, 255, 255)";
-      return "rgb(200, 200, 200)"; // Default gray
-    }
-  };
-
-  const getDocumentBackgroundColor = (documentData) => {
-    console.log("🔍 Starting improved background color detection...", {
-      config: backgroundConfig,
-    });
-
-    // Handle different background modes - ENHANCED
-    if (backgroundConfig.mode === "white") {
-      return "white";
-    } else if (backgroundConfig.mode === "transparent") {
-      return "transparent";
-    } else if (backgroundConfig.mode === "custom") {
-      return backgroundConfig.customColor;
-    }
-
-    // Auto detection mode - PRESERVED all original logic
-    // 1. Look for a full-page rectangle with a fill (prefer this over swatch analysis)
-    if (documentData.elements) {
-      const pageWidth =
-        documentData.pageInfo?.dimensions?.pixelDimensions?.width || 612;
-      const pageHeight =
-        documentData.pageInfo?.dimensions?.pixelDimensions?.height || 792;
-
-      // Find the largest rectangle with a non-None fill
-      const fullPageRects = documentData.elements.filter(
-        (el) =>
-          el.type === "Rectangle" &&
-          el.pixelPosition &&
-          el.pixelPosition.x <= 5 &&
-          el.pixelPosition.y <= 5 &&
-          el.pixelPosition.width >= pageWidth * 0.95 &&
-          el.pixelPosition.height >= pageHeight * 0.95 &&
-          el.fill &&
-          el.fill !== "Color/None"
-      );
-      if (fullPageRects.length > 0) {
-        // Use the largest by area
-        const bgRect = fullPageRects.reduce((a, b) =>
-          a.pixelPosition.width * a.pixelPosition.height >
-          b.pixelPosition.width * b.pixelPosition.height
-            ? a
-            : b
-        );
-        console.log("🎨 Using full-page rectangle as background:", bgRect.fill);
-        return convertColor(bgRect.fill);
-      }
-    }
-
-    // Strategy 1: Look for Paper color in resources (InDesign's default) - ENHANCED
-    if (backgroundConfig.preferPaperColor && documentData.colorDefinitions) {
-      const paperColor = Object.entries(documentData.colorDefinitions).find(
-        ([key, color]) => color.name === "Paper" || key === "Color/Paper"
-      );
-
-      if (paperColor) {
-        console.log(
-          "📄 Found Paper color in colorDefinitions - using as background"
-        );
-        return convertColor(paperColor[0]);
-      }
-    }
-
-    // PRESERVED: All original background detection strategies
-    // Strategy 2: Look for page background color in pageInfo
-    if (
-      documentData.pageInfo?.backgroundColor &&
-      documentData.pageInfo.backgroundColor !== "Color/None"
-    ) {
-      console.log(
-        "📄 Found page background in pageInfo:",
-        documentData.pageInfo.backgroundColor
-      );
-      return convertColor(documentData.pageInfo.backgroundColor);
-    }
-
-    // Strategy 3: Look for document background in document properties
-    if (
-      documentData.document?.backgroundColor &&
-      documentData.document.backgroundColor !== "Color/None"
-    ) {
-      console.log(
-        "📄 Found document background in document:",
-        documentData.document.backgroundColor
-      );
-      return convertColor(documentData.document.backgroundColor);
-    }
-
-    // Strategy 4: Look for spreads background color
-    if (documentData.spreads) {
-      for (const [spreadId, spread] of Object.entries(documentData.spreads)) {
-        if (spread.backgroundColor && spread.backgroundColor !== "Color/None") {
-          console.log(
-            "📄 Found spread background color:",
-            spread.backgroundColor
-          );
-          return convertColor(spread.backgroundColor);
-        }
-      }
-    }
-
-    // PRESERVED: All original advanced background detection logic
-    // (keeping the rest of the original complex background detection logic)
-
-    // Fallback: Use configured fallback
-    if (backgroundConfig.fallbackToWhite) {
-      console.log("📄 ✅ No background color detected - using white fallback");
-      return "white";
-    } else {
-      console.log(
-        "📄 ✅ No background color detected - using transparent fallback"
-      );
-      return "transparent";
-    }
-  };
-
-  // NEW: Add a function to get background color for a specific page
-  const getPageBackgroundColor = (page, documentData) => {
-    console.log(`🎨 BACKGROUND COLOR FUNCTION CALLED!`);
-    console.log(
-      `🔍 Getting background color for page ${page.self} (${page.name})`
-    );
-    console.log(`🔍 Page data:`, page);
-    console.log(`🔍 Document data keys:`, Object.keys(documentData));
-
-    // First check if the page itself has a background color
-    if (page.backgroundColor && page.backgroundColor !== "Color/None") {
-      console.log(
-        `📄 Page has explicit background color: ${page.backgroundColor}`
-      );
-      return convertColor(page.backgroundColor);
-    }
-
-    // Then look for a full-page rectangle on this specific page
-    if (documentData.elementsByPage && page.self) {
-      const pageElements = documentData.elementsByPage[page.self] || [];
-      console.log(
-        `🔍 Found ${pageElements.length} elements for page ${page.self}`
-      );
-      console.log(`🔍 Page elements:`, pageElements);
-
-      const pageWidth =
-        page.geometricBounds?.width ||
-        documentData.pageInfo?.dimensions?.pixelDimensions?.width ||
-        612;
-      const pageHeight =
-        page.geometricBounds?.height ||
-        documentData.pageInfo?.dimensions?.pixelDimensions?.height ||
-        792;
-
-      console.log(`📐 Page dimensions: ${pageWidth}x${pageHeight}`);
-
-      // Find background rectangles for this page - ENHANCED DETECTION
-      const backgroundRects = pageElements.filter((element) => {
-        // Check if it's a rectangle with a background-like name
-        const isBackgroundElement =
-          element.type === "Rectangle" &&
-          element.name &&
-          (element.name.includes("Background") ||
-            element.name.includes("BG") ||
-            element.name.includes("bg"));
-
-        // Check if it has a fill color
-        const hasFillColor = element.fill && element.fill !== "Color/None";
-
-        // Check if it's positioned at the top-left (background position)
-        const position =
-          element.geometricBounds || element.pixelPosition || element.position;
-        const isBackgroundPosition =
-          position && position.left <= 5 && position.top <= 5;
-
-        // Check if it's large enough to be a background
-        const isLargeEnough =
-          position &&
-          position.width >= pageWidth * 0.9 &&
-          position.height >= pageHeight * 0.9;
-
-        console.log(`🔍 Element ${element.self} (${element.name}):`, {
-          isBackgroundElement,
-          hasFillColor,
-          isBackgroundPosition,
-          isLargeEnough,
-          fill: element.fill,
-          position: position,
-        });
-
-        return (
-          isBackgroundElement &&
-          hasFillColor &&
-          isBackgroundPosition &&
-          isLargeEnough
-        );
-      });
-
-      console.log(
-        `🎨 Found ${backgroundRects.length} background rectangles for page ${page.self}`
-      );
-
-      if (backgroundRects.length > 0) {
-        // Get the largest one
-        const bgRect = backgroundRects.reduce((largest, current) => {
-          const largestPosition =
-            largest.geometricBounds ||
-            largest.pixelPosition ||
-            largest.position;
-          const currentPosition =
-            current.geometricBounds ||
-            current.pixelPosition ||
-            current.position;
-
-          const largestArea = largestPosition.width * largestPosition.height;
-          const currentArea = currentPosition.width * currentPosition.height;
-
-          return currentArea > largestArea ? current : largest;
-        });
-
-        console.log(
-          `🎨 Using background rectangle: ${bgRect.name} with fill: ${bgRect.fill}`
-        );
-        return convertColor(bgRect.fill);
-      }
-    }
-
-    // Fall back to document background color
-    console.log(
-      `📄 No page-specific background found, using document background`
-    );
-    return getDocumentBackgroundColor(documentData);
-  };
-
-  // PRESERVED: All original text processing functions
-  const getFontWeight = (fontStyle) => {
-    if (!fontStyle) return "400";
-
-    const style = fontStyle.toLowerCase();
-
-    // Handle complex styles like "Bold Italic", "Semibold Condensed", etc.
-    if (style.includes("thin")) return "100";
-    if (style.includes("extralight") || style.includes("ultra light"))
-      return "200";
-    if (style.includes("light")) return "300";
-    if (style.includes("medium")) return "500";
-    if (style.includes("demibold") || style.includes("semibold")) return "600";
-    if (style.includes("bold")) return "700";
-    if (style.includes("extrabold") || style.includes("ultra bold"))
-      return "800";
-    if (style.includes("black") || style.includes("heavy")) return "900";
-
-    return "400"; // Regular/Normal
-  };
-
-  const getFontStyle = (fontStyle) => {
-    if (
-      !fontStyle ||
-      fontStyle === "" ||
-      fontStyle === "Regular" ||
-      fontStyle === "normal"
-    ) {
-      return "normal";
-    }
-
-    const style = fontStyle.toLowerCase().trim();
-
-    // FIXED: More precise italic detection - only exact matches or explicit italic styles
-    const willBeItalic =
-      style === "italic" ||
-      style === "oblique" ||
-      style.endsWith(" italic") ||
-      style.startsWith("italic ") ||
-      style === "it" ||
-      style.includes(" italic ") ||
-      style.endsWith("-italic") ||
-      style.startsWith("italic-");
-
-    // DEBUG: Log when italic is being applied
-    if (willBeItalic) {
-      console.log("🎨 Font style applying ITALIC:", {
-        input: fontStyle,
-        inputType: typeof fontStyle,
-        normalizedInput: style,
-        reason: "Matched italic pattern",
-      });
-    }
-
-    if (willBeItalic) {
-      return "italic";
-    }
-
-    // Default to normal for everything else (including Regular, Medium, Bold, etc.)
-    return "normal";
-  };
-
-  const extractTextDecorations = (formatting) => {
-    const decorations = [];
-
-    // Check for underline
-    if (
-      formatting.underline ||
-      (formatting.characterStyle &&
-        formatting.characterStyle.toLowerCase().includes("underline"))
-    ) {
-      decorations.push("underline");
-    }
-
-    // Check for strikethrough
-    if (
-      formatting.strikethrough ||
-      formatting.strikeThrough ||
-      (formatting.characterStyle &&
-        formatting.characterStyle.toLowerCase().includes("strikethrough"))
-    ) {
-      decorations.push("line-through");
-    }
-
-    // Check for overline
-    if (
-      formatting.overline ||
-      (formatting.characterStyle &&
-        formatting.characterStyle.toLowerCase().includes("overline"))
-    ) {
-      decorations.push("overline");
-    }
-
-    return decorations.length > 0 ? decorations.join(" ") : "none";
-  };
-
-  const getTextAlign = (alignment) => {
-    const alignments = {
-      LeftAlign: "left",
-      RightAlign: "right",
-      CenterAlign: "center",
-      LeftJustified: "justify",
-      RightJustified: "justify",
-      CenterJustified: "center",
-      FullyJustified: "justify",
-    };
-    return alignments[alignment] || "left";
-  };
-
-  // PRESERVED: All original text measurement and fitting functions
-  const measureTextAccurately = (
-    text,
-    fontSize,
-    fontFamily,
-    fontWeight,
-    fontStyle
-  ) => {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
-    const metrics = ctx.measureText(text);
-    const width = metrics.width;
-    const height = fontSize * 1.2;
-
-    return {
-      width,
-      height,
-      actualBounds:
-        metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent,
-    };
-  };
-
-  const calculateTextMetrics = (
-    text,
-    fontSize,
-    lineHeight,
-    containerWidth,
-    containerHeight,
-    fontFamily = "Arial",
-    fontWeight = "normal",
-    fontStyle = "normal"
-  ) => {
-    if (!text)
-      return { willOverflow: false, estimatedLines: 0, estimatedTextHeight: 0 };
-
-    const canvasMetrics = measureTextAccurately(
-      text,
-      fontSize,
-      fontFamily,
-      fontWeight,
-      fontStyle
-    );
-
-    let lineHeightPx;
-    if (typeof lineHeight === "string" && lineHeight.includes("px")) {
-      lineHeightPx = parseFloat(lineHeight);
-    } else if (typeof lineHeight === "number") {
-      lineHeightPx = lineHeight * fontSize;
-    } else {
-      const numericLineHeight = parseFloat(lineHeight) || 1.2;
-      lineHeightPx = numericLineHeight * fontSize;
-    }
-
-    const effectiveWidth = containerWidth - 4;
-    const words = text.split(/\s+/).filter((word) => word.length > 0);
-    const lines = [];
-    let currentLine = "";
-    let currentLineWidth = 0;
-
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
-
-    for (let i = 0; i < words.length; i++) {
-      const word = words[i];
-      const wordWidth = ctx.measureText(word).width;
-      const spaceWidth = ctx.measureText(" ").width;
-      const wordWithSpaceWidth = currentLine
-        ? wordWidth + spaceWidth
-        : wordWidth;
-
-      if (
-        currentLine &&
-        currentLineWidth + wordWithSpaceWidth > effectiveWidth
-      ) {
-        lines.push(currentLine);
-        currentLine = word;
-        currentLineWidth = wordWidth;
-      } else {
-        if (currentLine) {
-          currentLine += " " + word;
-          currentLineWidth += wordWithSpaceWidth;
-        } else {
-          currentLine = word;
-          currentLineWidth = wordWidth;
-        }
-      }
-    }
-
-    if (currentLine) {
-      lines.push(currentLine);
-    }
-
-    const estimatedLines = Math.max(1, lines.length);
-    const estimatedTextHeight = estimatedLines * lineHeightPx;
-    const availableHeight = containerHeight - 4;
-
-    return {
-      estimatedLines,
-      estimatedTextHeight,
-      lineHeightPx,
-      availableHeight,
-      actualLines: lines,
-      willOverflow: estimatedTextHeight > availableHeight,
-      overfillRatio: estimatedTextHeight / availableHeight,
-      overflowSeverity:
-        estimatedTextHeight > availableHeight * 1.5
-          ? "severe"
-          : estimatedTextHeight > availableHeight * 1.2
-          ? "moderate"
-          : "minor",
-    };
-  };
-
-  // PRESERVED: All text fitting strategies
-  const TEXT_FITTING_STRATEGIES = {
-    AUTO_SCALE: "auto_scale",
-    TRUNCATE: "truncate",
-    ALLOW_OVERFLOW: "allow_overflow",
-    PRECISE_FIT: "precise_fit",
-    COMPRESS_LINES: "compress_lines",
-  };
-
-  const [textFittingStrategy, setTextFittingStrategy] = useState(
-    TEXT_FITTING_STRATEGIES.PRECISE_FIT
-  );
-
-  const getOptimalTextStyles = (
-    baseStyles,
-    textMetrics,
-    containerWidth,
-    containerHeight,
-    strategy = textFittingStrategy
-  ) => {
-    if (!textMetrics.willOverflow) {
-      return {
-        styles: baseStyles,
-        wasAdjusted: false,
-        adjustmentDetails: null,
-      };
-    }
-
-    const fontSize = parseFloat(baseStyles.fontSize);
-    const lineHeight = parseFloat(baseStyles.lineHeight);
-
-    switch (strategy) {
-      case TEXT_FITTING_STRATEGIES.AUTO_SCALE: {
-        const maxReduction =
-          textMetrics.overflowSeverity === "severe"
-            ? 0.7
-            : textMetrics.overflowSeverity === "moderate"
-            ? 0.8
-            : 0.9;
-        const scaleFactor = Math.max(
-          maxReduction,
-          1 / textMetrics.overfillRatio
-        );
-
-        return {
-          styles: {
-            ...baseStyles,
-            fontSize: `${Math.max(8, fontSize * scaleFactor)}px`,
-            lineHeight: Math.max(0.9, lineHeight * scaleFactor),
-            overflow: "hidden",
-          },
-          wasAdjusted: true,
-          adjustmentDetails: {
-            type: "font_scaled",
-            scaleFactor: scaleFactor,
-            originalSize: fontSize,
-            newSize: fontSize * scaleFactor,
-          },
-        };
-      }
-
-      case TEXT_FITTING_STRATEGIES.TRUNCATE: {
-        const availableLines = Math.floor(
-          textMetrics.availableHeight / textMetrics.lineHeightPx
-        );
-        const truncateAtLine = Math.max(1, availableLines);
-
-        return {
-          styles: {
-            ...baseStyles,
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            display: "-webkit-box",
-            WebkitLineClamp: truncateAtLine,
-            WebkitBoxOrient: "vertical",
-            lineHeight: baseStyles.lineHeight,
-          },
-          wasAdjusted: true,
-          adjustmentDetails: {
-            type: "text_truncated",
-            visibleLines: truncateAtLine,
-            totalLines: textMetrics.estimatedLines,
-          },
-        };
-      }
-
-      case TEXT_FITTING_STRATEGIES.COMPRESS_LINES: {
-        const targetHeight = textMetrics.availableHeight;
-        const currentHeight = textMetrics.estimatedTextHeight;
-        const compressionRatio = targetHeight / currentHeight;
-
-        if (compressionRatio > 0.8) {
-          return {
-            styles: {
-              ...baseStyles,
-              lineHeight: Math.max(0.8, lineHeight * compressionRatio),
-              overflow: "hidden",
-            },
-            wasAdjusted: true,
-            adjustmentDetails: {
-              type: "line_height_compressed",
-              originalLineHeight: lineHeight,
-              newLineHeight: lineHeight * compressionRatio,
-            },
-          };
-        } else {
-          const fontReduction = Math.max(0.8, compressionRatio);
-          return {
-            styles: {
-              ...baseStyles,
-              fontSize: `${fontSize * fontReduction}px`,
-              lineHeight: Math.max(0.8, lineHeight * compressionRatio),
-              overflow: "hidden",
-            },
-            wasAdjusted: true,
-            adjustmentDetails: {
-              type: "full_compression",
-              fontReduction: fontReduction,
-              lineHeightReduction: compressionRatio,
-            },
-          };
-        }
-      }
-
-      case TEXT_FITTING_STRATEGIES.PRECISE_FIT: {
-        const compressionNeeded =
-          textMetrics.availableHeight / textMetrics.estimatedTextHeight;
-
-        if (compressionNeeded >= 0.95) {
-          return {
-            styles: {
-              ...baseStyles,
-              overflow: "hidden",
-            },
-            wasAdjusted: false,
-            adjustmentDetails: { type: "no_adjustment_needed" },
-          };
-        } else if (compressionNeeded > 0.85) {
-          const lineHeightReduction = Math.max(0.9, compressionNeeded * 1.05);
-
-          return {
-            styles: {
-              ...baseStyles,
-              lineHeight: Math.max(
-                0.9,
-                parseFloat(baseStyles.lineHeight) * lineHeightReduction
-              ),
-              overflow: "hidden",
-            },
-            wasAdjusted: true,
-            adjustmentDetails: {
-              type: "minor_line_height_adjustment",
-              lineHeightReduction,
-              originalLineHeight: baseStyles.lineHeight,
-            },
-          };
-        } else if (compressionNeeded > 0.7) {
-          const fontScale = Math.max(0.9, Math.sqrt(compressionNeeded));
-          const lineScale = Math.max(0.85, compressionNeeded / fontScale);
-
-          return {
-            styles: {
-              ...baseStyles,
-              fontSize: `${fontSize * fontScale}px`,
-              lineHeight: Math.max(
-                0.85,
-                parseFloat(baseStyles.lineHeight) * lineScale
-              ),
-              overflow: "hidden",
-            },
-            wasAdjusted: true,
-            adjustmentDetails: {
-              type: "moderate_dual_adjustment",
-              fontScale,
-              lineScale,
-              compressionNeeded,
-            },
-          };
-        } else {
-          const maxFontScale = 0.85;
-          const maxLineScale = 0.8;
-
-          return {
-            styles: {
-              ...baseStyles,
-              fontSize: `${fontSize * maxFontScale}px`,
-              lineHeight: Math.max(
-                0.8,
-                parseFloat(baseStyles.lineHeight) * maxLineScale
-              ),
-              overflow: "hidden",
-              maxHeight: `${textMetrics.availableHeight}px`,
-            },
-            wasAdjusted: true,
-            adjustmentDetails: {
-              type: "major_adjustment_with_overflow",
-              fontScale: maxFontScale,
-              lineScale: maxLineScale,
-              allowedOverflow: true,
-            },
-          };
-        }
-      }
-
-      case TEXT_FITTING_STRATEGIES.ALLOW_OVERFLOW:
-      default: {
-        return {
-          styles: {
-            ...baseStyles,
-            overflow: "visible",
-          },
-          wasAdjusted: false,
-          adjustmentDetails: { type: "overflow_allowed" },
-        };
-      }
-    }
-  };
-
-  const renderFormattedText = (
-    story,
-    containerHeight = null,
-    adjustedFontSize = null
-  ) => {
-    if (!story.formattedContent || !Array.isArray(story.formattedContent)) {
-      console.log("Text value:", story.text);
-      if (typeof story.text === "string") {
-        return (
-          <span
-            style={{
-              whiteSpace: "pre-line",
-              display: "block",
-            }}
-          >
-            {story.text}
-          </span>
-        );
-      }
-      return <span>{story.text}</span>;
-    }
-
-    const lineBreakCount = story.formattedContent.filter(
-      (item) => item.formatting?.isBreak
-    ).length;
-    const consecutiveBreaks = [];
-    let currentBreakGroup = [];
-
-    story.formattedContent.forEach((item, index) => {
-      if (item.formatting?.isBreak) {
-        currentBreakGroup.push({
-          index,
-          source: item.formatting.source,
-          breakType: item.formatting.breakType,
-        });
-      } else if (currentBreakGroup.length > 0) {
-        if (currentBreakGroup.length > 1) {
-          consecutiveBreaks.push(currentBreakGroup);
-        }
-        currentBreakGroup = [];
-      }
-    });
-
-    if (currentBreakGroup.length > 1) {
-      consecutiveBreaks.push(currentBreakGroup);
-    }
-
-    console.log(
-      `🎨 Rendering formatted text with ${lineBreakCount} total line breaks`
-    );
-    if (consecutiveBreaks.length > 0) {
-      console.log(
-        `🎨 Found ${consecutiveBreaks.length} groups of consecutive line breaks:`,
-        consecutiveBreaks
-      );
-    }
-
-    return story.formattedContent
-      .map((content, index) => {
-        if (content.formatting?.isBreak) {
-          console.log(
-            `🎨 Rendering line break ${index}: source=${content.formatting.source}, type=${content.formatting.breakType}`
-          );
-          return <br key={index} />;
-        }
-
-        const formatting = content.formatting || {};
-        const originalFontSize =
-          formatting.fontSize || story.styling?.fontSize || 12;
-        const fontSize = adjustedFontSize || originalFontSize;
-
-        const hasFormatting =
-          formatting.fontStyle ||
-          formatting.characterStyle ||
-          formatting.paragraphStyle;
-        const finalFontStyle = getFontStyle(formatting.fontStyle);
-        const finalFontWeight = getFontWeight(formatting.fontStyle);
-
-        if (
-          hasFormatting ||
-          finalFontStyle === "italic" ||
-          finalFontWeight !== "400"
-        ) {
-          console.log(
-            "🎨 Style resolution for text:",
-            JSON.stringify(content.text?.substring(0, 20) + "..."),
-            {
-              rawFormatting: formatting,
-              fontStyle: formatting.fontStyle,
-              storyDefaultStyle: story.styling?.fontStyle,
-              finalFontStyle: finalFontStyle,
-              finalFontWeight: finalFontWeight,
-              characterStyle: formatting.characterStyle,
-              paragraphStyle: formatting.paragraphStyle,
-            }
-          );
-        }
-        if (
-          finalFontStyle === "italic" &&
-          (!formatting.fontStyle || formatting.fontStyle === "Regular")
-        ) {
-          console.warn(
-            "⚠️  UNEXPECTED ITALIC: Text is being styled as italic but fontStyle is:",
-            formatting.fontStyle
-          );
-        }
-
-        let lineHeight = "inherit";
-
-        if (formatting.effectiveLineHeight) {
-          lineHeight = formatting.effectiveLineHeight;
-        } else if (formatting.leading !== undefined) {
-          if (formatting.leading === "auto") {
-            lineHeight = "inherit";
-          } else if (typeof formatting.leading === "number") {
-            const ratio = formatting.leading / fontSize;
-            lineHeight = Math.max(1.1, Math.min(2.5, ratio));
-          }
-        }
-
-        const completeStyles = formatting.completeStyles || {};
-
-        const style = {
-          fontSize: `${fontSize}px`,
-          fontFamily:
-            formatting.fontFamily ||
-            story.styling?.fontFamily ||
-            "Arial, sans-serif",
-
-          fontWeight:
-            completeStyles.fontWeight ||
-            getFontWeight(formatting.fontStyle) ||
-            "400",
-          fontStyle:
-            completeStyles.fontStyle ||
-            getFontStyle(formatting.fontStyle) ||
-            "normal",
-
-          color: convertColor(formatting.fillColor) || "black",
-          textAlign: getTextAlign(formatting.alignment),
-          lineHeight: lineHeight,
-          letterSpacing: formatting.tracking
-            ? `${formatting.tracking / 1000}em`
-            : "normal",
-
-          textDecoration:
-            completeStyles.textDecoration || extractTextDecorations(formatting),
-
-          textTransform: completeStyles.textTransform || "none",
-          textShadow: completeStyles.textShadow || "none",
-
-          margin: 0,
-          padding: 0,
-
-          ...(formatting.leftIndent && {
-            marginLeft: `${formatting.leftIndent}px`,
-          }),
-          ...(formatting.rightIndent && {
-            marginRight: `${formatting.rightIndent}px`,
-          }),
-          ...(formatting.firstLineIndent && {
-            textIndent: `${formatting.firstLineIndent}px`,
-          }),
-          ...(formatting.spaceBefore && {
-            marginTop: `${formatting.spaceBefore}px`,
-          }),
-          ...(formatting.spaceAfter && {
-            marginBottom: `${formatting.spaceAfter}px`,
-          }),
-
-          ...(completeStyles.baselineShift && {
-            verticalAlign: `${completeStyles.baselineShift}px`,
-          }),
-          ...(completeStyles.horizontalScale &&
-            completeStyles.horizontalScale !== 100 && {
-              transform: `scaleX(${completeStyles.horizontalScale / 100})`,
-            }),
-        };
-
-        const currentText = content.text || "";
-        const nextContent = story.formattedContent[index + 1];
-        const needsSpaceAfter =
-          nextContent &&
-          !nextContent.formatting?.isBreak &&
-          !currentText.endsWith(" ") &&
-          !currentText.endsWith("\n") &&
-          nextContent.text &&
-          !nextContent.text.startsWith(" ") &&
-          !nextContent.text.startsWith("\n");
-
-        if (
-          (currentText.includes("pa") &&
-            nextContent?.text?.includes("voluptusda")) ||
-          (currentText.includes("voluptusda") && index > 0)
-        ) {
-          console.log(`🔧 Space insertion check [${index}]:`, {
-            currentText: JSON.stringify(currentText),
-            nextText: nextContent ? JSON.stringify(nextContent.text) : "none",
-            needsSpaceAfter,
-            currentEndsWithSpace: currentText.endsWith(" "),
-            nextStartsWithSpace: nextContent?.text?.startsWith(" "),
-          });
-        }
-
-        return (
-          <React.Fragment key={index}>
-            <span style={style}>{content.text}</span>
-            {needsSpaceAfter && " "}
-          </React.Fragment>
-        );
-      })
-      .filter(Boolean);
-  };
-  const getStoryStyles = (
-    story,
-    containerHeight = null,
-    containerWidth = null
-  ) => {
-    const styling = story.styling || {};
-    const fontSize = styling.fontSize || 12;
-    let lineHeight = "1.3";
-
-    if (styling.effectiveLineHeight) {
-      lineHeight = styling.effectiveLineHeight;
-    } else if (styling.leading !== undefined) {
-      if (styling.leading === "auto") {
-        lineHeight = "1.3";
-      } else if (typeof styling.leading === "number") {
-        const ratio = styling.leading / fontSize;
-        lineHeight = Math.max(1.1, Math.min(2.5, ratio)).toString();
-      }
-    }
-
-    return {
-      fontSize: `${fontSize}px`,
-      fontFamily: styling.fontFamily || "Arial, sans-serif",
-      fontWeight: getFontWeight(styling.fontStyle),
-      fontStyle: getFontStyle(styling.fontStyle),
-      color: convertColor(styling.fillColor) || "black",
-      textAlign: getTextAlign(styling.alignment),
-      lineHeight: lineHeight,
-      letterSpacing: styling.tracking
-        ? `${styling.tracking / 1000}em`
-        : "normal",
-
-      padding: "1px 2px",
-      margin: 0,
-
-      height: "100%",
-      width: "100%",
-      minHeight: `${fontSize * 1.4}px`,
-
-      wordWrap: "break-word",
-      overflow: "visible",
-      boxSizing: "border-box",
-
-      display: "block",
-      whiteSpace: "pre-wrap",
-      wordBreak: "break-word",
-      overflowWrap: "break-word",
-
-      textOverflow: "visible",
-      lineClamp: "none",
-    };
-  };
-  const getInDesignAccurateFormatting = (story) => {
-    const styling = story.styling || {};
-    const firstFormatted = story.formattedContent?.find(
-      (item) => item.formatting && !item.formatting.isBreak
-    );
-    const formatting = firstFormatted?.formatting || styling;
-    return {
-      fontSize: formatting.fontSize || styling.fontSize || 12,
-      fontFamily:
-        formatting.fontFamily || styling.fontFamily || "Arial, sans-serif",
-      fontWeight: getFontWeight(formatting.fontStyle || styling.fontStyle),
-      fontStyle: getFontStyle(formatting.fontStyle || styling.fontStyle),
-      color: convertColor(formatting.fillColor || styling.fillColor) || "black",
-      textAlign: getTextAlign(formatting.alignment || styling.alignment),
-
-      leading: formatting.leading || styling.leading || "auto",
-      leadingType: formatting.leadingType || styling.leadingType || "auto",
-      tracking: formatting.tracking || styling.tracking || 0,
-      baselineShift: formatting.baselineShift || 0,
-
-      firstBaselineOffset: formatting.firstBaselineOffset || "AscentOffset",
-      verticalJustification: formatting.verticalJustification || "TopAlign",
-    };
-  };
-  // NEW: Add page tabs rendering
-  const renderPageTabs = () => {
-    if (
-      !documentData ||
-      !documentData.pages ||
-      documentData.pages.length <= 1
-    ) {
-      console.log("Not rendering page tabs:", {
-        hasDocumentData: !!documentData,
-        pagesArray: documentData?.pages,
-        pageCount: documentData?.pages?.length,
-      });
-      return null;
-    }
-    console.log("Rendering page tabs for", documentData.pages.length, "pages");
-
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          marginBottom: "20px",
-          overflowX: "auto",
-          padding: "10px 0",
-        }}
-      >
-        {documentData.pages.map((page, index) => (
-          <div
-            key={page.self}
-            onClick={() => {
-              setCurrentPageIndex(index);
-              setSelectedElement(null);
-            }}
-            style={{
-              padding: "8px 16px",
-              margin: "0 4px",
-              backgroundColor:
-                currentPageIndex === index ? "#007bff" : "#f0f0f0",
-              color: currentPageIndex === index ? "white" : "black",
-              borderRadius: "4px",
-              cursor: "pointer",
-              fontWeight: currentPageIndex === index ? "bold" : "normal",
-              minWidth: "60px",
-              textAlign: "center",
-              boxShadow:
-                currentPageIndex === index
-                  ? "0 2px 4px rgba(0,0,0,0.2)"
-                  : "none",
-            }}
-          >
-            Page {index + 1}
-            {page.name && page.name !== "$ID/" && (
-              <span
-                style={{ display: "block", fontSize: "10px", marginTop: "3px" }}
-              >
-                {page.name}
-              </span>
-            )}
-          </div>
-        ))}
-      </div>
-    );
-  };
-  // NEW: Add a debug panel component
-  const PageDebugPanel = () => {
-    if (!showPageDebugPanel || !documentData) return null;
-    return (
-      <div
-        style={{
-          position: "fixed",
-          top: "20px",
-          right: "20px",
-          width: "400px",
-          maxHeight: "80vh",
-          backgroundColor: "rgba(0, 0, 0, 0.9)",
-          color: "#00ff00",
-          padding: "15px",
-          borderRadius: "8px",
-          zIndex: 9999,
-          fontFamily: "monospace",
-          fontSize: "12px",
-          overflow: "auto",
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: "10px",
-          }}
-        >
-          <h3 style={{ margin: 0, color: "#00ff00" }}>📄 Page Debug Panel</h3>
-          <button
-            onClick={() => setShowPageDebugPanel(false)}
-            style={{
-              background: "none",
-              border: "none",
-              color: "#ff0000",
-              fontSize: "16px",
-              cursor: "pointer",
-            }}
-          >
-            ✕
-          </button>
-        </div>
-
-        <div style={{ marginBottom: "15px" }}>
-          <div
-            style={{
-              fontWeight: "bold",
-              borderBottom: "1px solid #333",
-              paddingBottom: "5px",
-              marginBottom: "5px",
-            }}
-          >
-            Document Info
-          </div>
-          <div>Upload ID: {uploadId}</div>
-          <div>Page Count: {documentData.document?.pageCount || 0}</div>
-          <div>Current Page: {currentPageIndex + 1}</div>
-        </div>
-
-        <div style={{ marginBottom: "15px" }}>
-          <div
-            style={{
-              fontWeight: "bold",
-              borderBottom: "1px solid #333",
-              paddingBottom: "5px",
-              marginBottom: "5px",
-            }}
-          >
-            Pages ({documentData.pages?.length || 0})
-          </div>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr>
-                <th
-                  style={{
-                    textAlign: "left",
-                    padding: "3px",
-                    borderBottom: "1px solid #333",
-                  }}
-                >
-                  #
-                </th>
-                <th
-                  style={{
-                    textAlign: "left",
-                    padding: "3px",
-                    borderBottom: "1px solid #333",
-                  }}
-                >
-                  ID
-                </th>
-                <th
-                  style={{
-                    textAlign: "left",
-                    padding: "3px",
-                    borderBottom: "1px solid #333",
-                  }}
-                >
-                  Name
-                </th>
-                <th
-                  style={{
-                    textAlign: "left",
-                    padding: "3px",
-                    borderBottom: "1px solid #333",
-                  }}
-                >
-                  Elements
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {documentData.pages?.map((page, index) => (
-                <tr
-                  key={page.self}
-                  style={{
-                    backgroundColor:
-                      currentPageIndex === index
-                        ? "rgba(0, 123, 255, 0.2)"
-                        : "transparent",
-                  }}
-                >
-                  <td style={{ padding: "3px" }}>{index + 1}</td>
-                  <td style={{ padding: "3px" }}>
-                    {page.self.substring(0, 8)}...
-                  </td>
-                  <td style={{ padding: "3px" }}>{page.name || "Unnamed"}</td>
-                  <td style={{ padding: "3px" }}>
-                    {documentData.elementsByPage?.[page.self]?.length || 0}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div>
-          <div
-            style={{
-              fontWeight: "bold",
-              borderBottom: "1px solid #333",
-              paddingBottom: "5px",
-              marginBottom: "5px",
-            }}
-          >
-            Element Distribution
-          </div>
-          <div>Total Elements: {documentData.elements?.length || 0}</div>
-          <div>Elements on Current Page: {elementsForCurrentPage.length}</div>
-          <div>
-            Elements with Missing Page ID:{" "}
-            {(documentData.elements || []).filter((el) => !el.pageId).length}
-          </div>
-        </div>
-
-        <div style={{ marginTop: "15px" }}>
-          <button
-            onClick={() => {
-              console.log("Document Data:", documentData);
-              console.log("Pages:", documentData.pages);
-              console.log("Elements by Page:", documentData.elementsByPage);
-              console.log("Current Page Elements:", elementsForCurrentPage);
-            }}
-            style={{
-              backgroundColor: "#444",
-              color: "white",
-              border: "none",
-              padding: "5px 10px",
-              borderRadius: "4px",
-              cursor: "pointer",
-              marginRight: "10px",
-            }}
-          >
-            Log Data to Console
-          </button>
-        </div>
-      </div>
-    );
-  };
   if (loading) {
     return (
       <div style={{ padding: "20px", textAlign: "center" }}>
@@ -1920,7 +635,11 @@ export default function Viewer() {
           >
             <strong>Current:</strong>{" "}
             {documentData
-              ? getDocumentBackgroundColor(documentData)
+              ? importedGetDocumentBackgroundColor(
+                  documentData,
+                  backgroundConfig,
+                  utils.convertColor
+                )
               : "Loading..."}
           </div>
         </div>
@@ -2328,7 +1047,9 @@ export default function Viewer() {
                     Color:{" "}
                     <span
                       style={{
-                        backgroundColor: convertColor(story.styling.fillColor),
+                        backgroundColor: utils.convertColor(
+                          story.styling.fillColor
+                        ),
                         padding: "2px 4px",
                         color: "white",
                         fontSize: "10px",
@@ -2372,7 +1093,12 @@ export default function Viewer() {
         }}
       >
         {/* NEW: Page Tabs */}
-        {renderPageTabs()}
+        {renderPageTabs(
+          documentData,
+          currentPageIndex,
+          setCurrentPageIndex,
+          setSelectedElement
+        )}
 
         {/* Enhanced Canvas with Multi-page Support */}
         <div
@@ -2479,13 +1205,23 @@ export default function Viewer() {
                               ?.height ||
                               documentData.pageInfo?.dimensions?.height ||
                               792) + "px",
-                        backgroundColor: getPageBackgroundColor(
+                        backgroundColor: importedGetPageBackgroundColor(
                           page,
-                          documentData
+                          documentData,
+                          utils.convertColor,
+                          (docData) =>
+                            importedGetDocumentBackgroundColor(
+                              docData,
+                              backgroundConfig,
+                              utils.convertColor
+                            )
                         ),
                         border: "1px solid #ccc",
-                        overflow: "hidden",
+                        overflow: "hidden", // FIXED: Ensure page canvas doesn't overflow
                         borderRadius: "2px",
+                        // FIXED: Add boundary enforcement
+                        position: "relative",
+                        isolation: "isolate", // Create stacking context
                       }}
                       onClick={() => {
                         if (pageIndex !== currentPageIndex) {
@@ -2540,7 +1276,63 @@ export default function Viewer() {
                           );
                           return null;
                         }
-                        const elementPosition = element.pixelPosition;
+
+                        // FIXED: Add boundary checking to ensure elements stay within page canvas
+                        const pageWidth =
+                          page.geometricBounds?.width ||
+                          documentData.pageInfo?.dimensions?.pixelDimensions
+                            ?.width ||
+                          documentData.pageInfo?.dimensions?.width ||
+                          612;
+                        const pageHeight =
+                          page.geometricBounds?.height ||
+                          documentData.pageInfo?.dimensions?.pixelDimensions
+                            ?.height ||
+                          documentData.pageInfo?.dimensions?.height ||
+                          792;
+
+                        let elementPosition = element.pixelPosition;
+
+                        // Constrain element position to page boundaries
+                        const constrainedPosition = {
+                          x: Math.max(
+                            0,
+                            Math.min(
+                              elementPosition.x,
+                              pageWidth - elementPosition.width
+                            )
+                          ),
+                          y: Math.max(
+                            0,
+                            Math.min(
+                              elementPosition.y,
+                              pageHeight - elementPosition.height
+                            )
+                          ),
+                          width: Math.min(elementPosition.width, pageWidth),
+                          height: Math.min(elementPosition.height, pageHeight),
+                          rotation: elementPosition.rotation || 0,
+                        };
+
+                        // Check if element was constrained
+                        const wasConstrained =
+                          constrainedPosition.x !== elementPosition.x ||
+                          constrainedPosition.y !== elementPosition.y ||
+                          constrainedPosition.width !== elementPosition.width ||
+                          constrainedPosition.height !== elementPosition.height;
+
+                        if (wasConstrained) {
+                          console.warn(
+                            `⚠️ Element ${element.id} was constrained to page boundaries:`,
+                            {
+                              original: elementPosition,
+                              constrained: constrainedPosition,
+                            }
+                          );
+                        }
+
+                        elementPosition = constrainedPosition;
+
                         const isContentFrame =
                           element.isContentFrame || element.hasPlacedContent;
                         const hasPlacedContent = element.placedContent;
@@ -2582,7 +1374,7 @@ export default function Viewer() {
                               width: elementPosition.width + "px",
                               height: elementPosition.height + "px",
                               backgroundColor: element.fill
-                                ? convertColor(element.fill)
+                                ? utils.convertColor(element.fill)
                                 : "transparent",
                               border:
                                 selectedElement?.id === element.id
@@ -2593,13 +1385,16 @@ export default function Viewer() {
                                   ? "1px solid #ff6b6b"
                                   : "1px dashed rgba(0,0,0,0.3)",
                               cursor: "pointer",
-                              overflow: "visible",
+                              overflow: "hidden", // FIXED: Changed from "visible" to "hidden" to prevent overflow
                               transform: elementPosition.rotation
                                 ? `rotate(${elementPosition.rotation}deg)`
                                 : "none",
                               transformOrigin: "top left",
                               boxSizing: "border-box",
                               zIndex: element.type === "TextFrame" ? 10 : 1,
+                              // FIXED: Add boundary constraints to prevent elements from going outside canvas
+                              maxWidth: "100%",
+                              maxHeight: "100%",
                             }}
                           >
                             {/* PRESERVED: Debug position label */}
@@ -2610,7 +1405,9 @@ export default function Viewer() {
                                   top: "-20px",
                                   left: "0px",
                                   fontSize: "10px",
-                                  background: "rgba(255, 255, 0, 0.8)",
+                                  background: wasConstrained
+                                    ? "rgba(255, 0, 0, 0.8)"
+                                    : "rgba(255, 255, 0, 0.8)",
                                   padding: "2px 4px",
                                   borderRadius: "2px",
                                   pointerEvents: "none",
@@ -2619,7 +1416,8 @@ export default function Viewer() {
                                 }}
                               >
                                 {element.id}: ({Math.round(elementPosition.x)},{" "}
-                                {Math.round(elementPosition.y)})
+                                {Math.round(elementPosition.y)}){" "}
+                                {wasConstrained ? "⚠️" : ""}
                               </div>
                             )}
 
@@ -2682,7 +1480,7 @@ export default function Viewer() {
                                   );
 
                                 const storyFormatting =
-                                  getInDesignAccurateFormatting(story);
+                                  getInDesignAccurateFormatting(story, utils);
 
                                 const cleanText = (story.text || "")
                                   .replace(/\n\s*\n/g, "\n")
@@ -2698,7 +1496,8 @@ export default function Viewer() {
                                 let finalStyles = getStoryStyles(
                                   story,
                                   element.position.height,
-                                  element.position.width
+                                  element.position.width,
+                                  utils
                                 );
                                 let wasAdjusted = false;
                                 let adjustmentDetails = null;
@@ -2785,15 +1584,18 @@ export default function Viewer() {
                                       whiteSpace: "pre-wrap",
                                       wordBreak: "break-word",
                                       overflowWrap: "break-word",
-                                      overflow: "visible",
+                                      overflow: "hidden", // FIXED: Changed from "visible" to "hidden" to prevent text overflow
                                       boxSizing: "border-box",
+                                      // FIXED: Add text overflow handling
+                                      textOverflow: "ellipsis",
                                     }}
                                     title={createTooltip()}
                                   >
                                     {renderFormattedText(
                                       story,
                                       element.position.height,
-                                      adjustedFontSize
+                                      adjustedFontSize,
+                                      utils
                                     )}
 
                                     {/* Enhanced Status Indicators */}
@@ -3095,7 +1897,14 @@ export default function Viewer() {
       </div>
 
       {/* NEW: Debug Panel */}
-      <PageDebugPanel />
+      <PageDebugPanel
+        showPageDebugPanel={showPageDebugPanel}
+        documentData={documentData}
+        uploadId={uploadId}
+        currentPageIndex={currentPageIndex}
+        elementsForCurrentPage={elementsForCurrentPage}
+        setShowPageDebugPanel={setShowPageDebugPanel}
+      />
 
       {/* NEW: Element Organization Debug Panel */}
       {showDebugInfo && documentData && (
@@ -3283,13 +2092,4 @@ export default function Viewer() {
       )}
     </div>
   );
-}
-
-// Add a helper function at the top of the Viewer component
-function getPagesArray(documentData) {
-  if (!documentData || !documentData.pages) return [];
-  if (Array.isArray(documentData.pages)) return documentData.pages;
-  if (typeof documentData.pages === "object")
-    return Object.values(documentData.pages);
-  return [];
 }
