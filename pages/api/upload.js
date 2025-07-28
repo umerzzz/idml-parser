@@ -17,7 +17,7 @@ import {
 } from "../../lib/index.js";
 
 // ADDED: Import NextFontMapper for automatic font processing
-const NextFontMapper = require("../../lib/utils/NextFontMapper");
+const NextFontMapper = require("../../lib/utils/NextFontMapper").default;
 // ADDED: Import DataModularizer for modularizing processed data
 const DataModularizer = require("../../lib/utils/DataModularizer");
 
@@ -785,7 +785,7 @@ export default async function handler(req, res) {
     const fileExtractor = new FileExtractor();
 
     // FIXED: Initialize UnitConverter before using it
-    const UnitConverter = require("../../lib/utils/UnitConverter");
+    const UnitConverter = require("../../lib/utils/UnitConverter").default;
     const unitConverter = new UnitConverter(96); // Default web DPI
 
     const styleParser = new StyleParser(unitConverter); // ADDED: Pass UnitConverter
