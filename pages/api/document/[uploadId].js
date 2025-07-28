@@ -2,6 +2,8 @@
 import { IDMLProcessor } from "../../../lib";
 import path from "path";
 import fs from "fs";
+// ADDED: Import DataModularizer for modularized data access
+const DataModularizer = require("../../../lib/utils/DataModularizer");
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -31,46 +33,36 @@ export default async function handler(req, res) {
       });
     }
 
-    // Define data file paths
-    const processedDataFile = path.join(uploadDir, "processed_data.json");
-    const rawDataFile = path.join(uploadDir, "raw_data.json");
+    // MODULARIZED ONLY: Define modularized data paths
+    const modulesDir = path.join(uploadDir, "modules");
+    const indexFile = path.join(modulesDir, "index.json");
 
-    // Try to use existing processed data first
-    let dataFile = processedDataFile;
-    let usingProcessedData = true;
+    // MODULARIZED ONLY: Check for modularized data
+    let modularizer = null;
 
-    if (!fs.existsSync(processedDataFile)) {
-      console.log("Processed data not found, checking for raw data...");
-      if (fs.existsSync(rawDataFile)) {
-        console.log("Raw data found, using existing raw data");
-        dataFile = rawDataFile;
-        usingProcessedData = false;
-      } else {
-        console.log("No existing data found, processing IDML file...");
-        // Need to process the IDML file
-        await processIdmlFile(uploadDir, uploadId);
-
-        // After processing, use the newly created processed data
-        if (fs.existsSync(processedDataFile)) {
-          dataFile = processedDataFile;
-          usingProcessedData = true;
-        } else {
-          throw new Error("Failed to create processed data file");
-        }
-      }
+    if (fs.existsSync(indexFile)) {
+      console.log("Modularized data found, using modularized structure");
+      modularizer = new DataModularizer(uploadDir);
     } else {
-      console.log("Using existing processed data");
+      console.log("No modularized data found, processing IDML file...");
+      // Need to process the IDML file
+      await processIdmlFile(uploadDir, uploadId);
+
+      // After processing, check for modularized data
+      if (fs.existsSync(indexFile)) {
+        console.log("Modularized data created, using modularized structure");
+        modularizer = new DataModularizer(uploadDir);
+      } else {
+        throw new Error("Failed to create modularized data");
+      }
     }
 
-    console.log("Loading data from:", dataFile);
-
-    // Read and return the data
-    const data = JSON.parse(fs.readFileSync(dataFile, "utf8"));
+    // MODULARIZED ONLY: Load modularized data
+    console.log("Loading modularized data...");
+    const data = modularizer.loadAllModules();
 
     console.log(
-      `Document loaded successfully for uploadId: ${uploadId} (using ${
-        usingProcessedData ? "processed" : "raw"
-      } data)`
+      `Document loaded successfully for uploadId: ${uploadId} (using modularized data)`
     );
 
     // DEBUG: Check if pages field exists in the data
@@ -87,10 +79,10 @@ export default async function handler(req, res) {
     const responseData = {
       ...data,
       _metadata: {
-        dataSource: usingProcessedData ? "processed" : "raw",
+        dataSource: "modularized",
         loadedAt: new Date().toISOString(),
         uploadId: uploadId,
-        freshlyProcessed: !fs.existsSync(processedDataFile), // NEW: Indicate if this was just processed
+        modularized: true,
       },
     };
 

@@ -18,6 +18,8 @@ import {
 
 // ADDED: Import NextFontMapper for automatic font processing
 const NextFontMapper = require("../../lib/utils/NextFontMapper");
+// ADDED: Import DataModularizer for modularizing processed data
+const DataModularizer = require("../../lib/utils/DataModularizer");
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -1274,13 +1276,8 @@ export default async function handler(req, res) {
       },
     };
 
-    // Save debug file with extraction results
-    fs.writeFileSync(
-      path.join(uploadDir, "debug_analysis.json"),
-      JSON.stringify(debugData, null, 2)
-    );
-
-    console.log("✅ Debug analysis saved to debug_analysis.json");
+    // MODULARIZED ONLY: Debug data is now included in modularized structure
+    console.log("✅ Debug data included in modularized structure");
 
     console.log("🔍 Raw document data structure:");
     console.log("- Elements:", documentData.elements?.length || 0);
@@ -1303,16 +1300,23 @@ export default async function handler(req, res) {
       moduleData
     );
 
-    // Save comprehensive processed data (this will be the primary data source)
-    fs.writeFileSync(
-      path.join(uploadDir, "processed_data.json"),
-      JSON.stringify(comprehensiveProcessedData, null, 2)
+    // MODULARIZE: Create modularized data structure
+    console.log("🔧 Starting data modularization...");
+    const modularizer = new DataModularizer(uploadDir);
+    const modularizationIndex = modularizer.modularize(
+      comprehensiveProcessedData
     );
 
-    // Also save raw data for debugging/fallback purposes only
-    fs.writeFileSync(
-      path.join(uploadDir, "raw_data.json"),
-      JSON.stringify(documentData, null, 2)
+    // MODULARIZED ONLY: Remove legacy processed_data.json if it exists
+    const legacyProcessedDataPath = path.join(uploadDir, "processed_data.json");
+    if (fs.existsSync(legacyProcessedDataPath)) {
+      fs.unlinkSync(legacyProcessedDataPath);
+      console.log("🗑️ Removed legacy processed_data.json file");
+    }
+
+    // MODULARIZED ONLY: No longer saving raw_data.json or debug_analysis.json
+    console.log(
+      "✅ Modularized data structure complete - no legacy files created"
     );
 
     console.log(
@@ -1342,10 +1346,12 @@ export default async function handler(req, res) {
       success: true,
       uploadId,
       data: comprehensiveProcessedData,
+      modularized: true,
+      modularizationIndex: modularizationIndex,
       debugAvailable: true,
       uploadType: isPackageUpload ? "package" : "single",
       filesProcessed: req.files.length,
-      processingVersion: "2.0-comprehensive",
+      processingVersion: "2.0-comprehensive-modularized",
     });
   } catch (error) {
     console.error("❌ Upload error:", error);
