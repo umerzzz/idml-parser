@@ -38,6 +38,53 @@ import {
   useDocumentLoader,
 } from "../../lib/viewer/index.js";
 
+// Helper function to render gradient background
+const renderGradientBackground = (gradientRef, documentData, utils) => {
+  if (
+    !gradientRef ||
+    !documentData.resources ||
+    !documentData.resources.gradients
+  ) {
+    return null;
+  }
+
+  const gradient = documentData.resources.gradients[gradientRef];
+  if (
+    !gradient ||
+    !gradient.gradientStops ||
+    gradient.gradientStops.length < 2
+  ) {
+    return null;
+  }
+
+  // Convert gradient stops to CSS gradient
+  const stops = gradient.gradientStops
+    .map((stop) => {
+      const color = utils.convertColor(stop.stopColor);
+      const location = stop.location;
+      return `${color} ${location}%`;
+    })
+    .join(", ");
+
+  // Use actual gradient type from document
+  const gradientType = gradient.type;
+
+  // Determine gradient direction based on actual type from document
+  let cssGradient;
+  if (gradientType === "Radial") {
+    cssGradient = `radial-gradient(circle, ${stops})`;
+  } else if (gradientType === "Linear") {
+    // For linear gradients, use the actual direction from document if available
+    // For now, use a default direction since the document doesn't specify angle
+    cssGradient = `linear-gradient(to right, ${stops})`;
+  } else {
+    // Fallback for unknown gradient types
+    cssGradient = `linear-gradient(to right, ${stops})`;
+  }
+
+  return cssGradient;
+};
+
 // Helper function to extract list formatting from document data
 const getListFormatting = (element, documentData) => {
   // Check if element has list-related properties
@@ -1486,9 +1533,16 @@ export default function Viewer() {
                           top: elementPosition.y + "px",
                           width: elementPosition.width + "px",
                           height: elementPosition.height + "px",
-                          backgroundColor: element.fill
-                            ? utils.convertColor(element.fill)
-                            : "transparent",
+                          background:
+                            element.fill && element.fill.startsWith("Gradient/")
+                              ? renderGradientBackground(
+                                  element.fill,
+                                  documentData,
+                                  utils
+                                )
+                              : element.fill
+                              ? utils.convertColor(element.fill)
+                              : "transparent",
                           border:
                             selectedElement?.id === element.id
                               ? "2px solid #007bff"
