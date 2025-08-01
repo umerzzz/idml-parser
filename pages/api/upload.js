@@ -1300,6 +1300,12 @@ export default async function handler(req, res) {
       moduleData
     );
 
+    // ADD extracted images to the processed data so frontend can access them
+    comprehensiveProcessedData.extractedImages = extractedImages;
+    console.log(
+      `📸 Added ${extractedImages.length} extracted images to processed data`
+    );
+
     // MODULARIZE: Create modularized data structure
     console.log("🔧 Starting data modularization...");
     const modularizer = new DataModularizer(uploadDir);

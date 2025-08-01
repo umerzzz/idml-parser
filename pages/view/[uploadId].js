@@ -269,17 +269,94 @@ export default function Viewer() {
   const getElementsForPage = useCallback((pageId, documentData) => {
     if (!documentData || !pageId) return [];
 
+    // Only log when called from thumbnail rendering to reduce noise
+    const callerContext = new Error().stack?.split("\n")[2] || "unknown";
+    if (callerContext.includes("renderPagePreview")) {
+      console.log(`🔍 getElementsForPage called for thumbnail: ${pageId}`);
+    }
+
     // First try to use existing pageElementIds if available
     if (documentData.pageElementIds && documentData.pageElementIds[pageId]) {
       const elementIds = documentData.pageElementIds[pageId];
-      return elementIds
+      const elements = elementIds
         .map((id) => documentData.elementMap?.[id])
         .filter(Boolean);
+      console.log(`📊 Found ${elements.length} elements via pageElementIds`);
+      return elements;
     }
 
     // Fallback to elementsByPage if available (this should now be correct from backend)
     if (documentData.elementsByPage && documentData.elementsByPage[pageId]) {
-      return documentData.elementsByPage[pageId];
+      const elements = documentData.elementsByPage[pageId];
+      console.log(`📊 Found ${elements.length} elements via elementsByPage`);
+
+      // First, ensure elements have proper IDs by matching with main elements
+      const elementsWithIds = elements.map((element) => {
+        // Find the corresponding element in the main elements array by name
+        const mainElement = documentData.elements?.find(
+          (el) => el.name === element.name
+        );
+
+        if (mainElement) {
+          console.log(
+            `🆔 Assigning ID ${mainElement.id} to element "${element.name}"`
+          );
+          return {
+            ...element,
+            id: mainElement.id || mainElement.self,
+          };
+        }
+
+        return element;
+      });
+
+      // Then merge linked image data from main elements
+      const elementsWithLinkedImages = elementsWithIds.map((element) => {
+        // Find the corresponding element in the main elements array
+        const mainElement = documentData.elements?.find(
+          (el) =>
+            el.id === element.id ||
+            el.self === element.id ||
+            el.name === element.name
+        );
+
+        if (mainElement && mainElement.linkedImage) {
+          console.log(
+            `🔗 Merging linked image for element ${
+              element.id || element.name
+            }:`,
+            mainElement.linkedImage
+          );
+          return {
+            ...element,
+            linkedImage: mainElement.linkedImage,
+          };
+        }
+
+        return element;
+      });
+
+      console.log(
+        `📊 Elements with merged linked images:`,
+        elementsWithLinkedImages.map((el) => ({
+          id: el.id,
+          name: el.name,
+          hasLinkedImage: !!el.linkedImage,
+        }))
+      );
+
+      // Debug: Only log when called from thumbnail rendering
+      const callerContext = new Error().stack?.split("\n")[2] || "unknown";
+      if (callerContext.includes("renderPagePreview")) {
+        const elementsWithImages = elementsWithLinkedImages.filter(
+          (el) => el.linkedImage && el.linkedImage.url
+        );
+        console.log(
+          `📊 Found ${elementsWithImages.length} elements with linked images for thumbnail: ${pageId}`
+        );
+      }
+
+      return elementsWithLinkedImages;
     }
 
     // If neither exists, use intelligent distribution
@@ -295,6 +372,10 @@ export default function Viewer() {
         // Get all elements without pageId
         const unassignedElements = allElements.filter(
           (element) => !element.pageId
+        );
+
+        console.log(
+          `📊 Total elements: ${allElements.length}, unassigned: ${unassignedElements.length}`
         );
 
         if (unassignedElements.length > 0) {
@@ -314,11 +395,30 @@ export default function Viewer() {
             `📊 Distributed ${pageElements.length} elements to page ${pageId} (${startIndex}-${endIndex} of ${unassignedElements.length})`
           );
 
-          return pageElements;
+          // Ensure elements have proper IDs
+          const elementsWithIds = pageElements.map((element) => ({
+            ...element,
+            id:
+              element.id ||
+              element.self ||
+              `element_${Math.random().toString(36).substr(2, 9)}`,
+          }));
+
+          console.log(
+            `📊 Elements with IDs:`,
+            elementsWithIds.map((el) => ({
+              id: el.id,
+              name: el.name,
+              hasLinkedImage: !!el.linkedImage,
+            }))
+          );
+
+          return elementsWithIds;
         }
       }
     }
 
+    console.log(`❌ No elements found for page ${pageId}`);
     return [];
   }, []);
 
@@ -1272,22 +1372,24 @@ export default function Viewer() {
           {/* NEW: Render only the current page */}
           {(() => {
             const pagesArray = getPagesArray(documentData);
-            console.log(`🎨 PAGES ARRAY DEBUG:`, {
-              pagesArray,
-              length: pagesArray.length,
-              documentDataPages: documentData.pages,
-              documentDataKeys: Object.keys(documentData),
-              currentPageIndex,
+            const currentPage = pagesArray[currentPageIndex];
+            const pageElements = getElementsForPage(
+              currentPage.id,
+              documentData
+            );
+
+            // DEBUG: Check for extracted images and image linking
+            console.log("🔍 Document data check:", {
+              hasElements: !!documentData.elements,
+              elementsCount: documentData.elements?.length || 0,
+              hasExtractedImages: !!documentData.extractedImages,
+              extractedImagesCount: documentData.extractedImages?.length || 0,
+              currentPageId: currentPage?.id,
+              pageElementsCount: pageElements?.length || 0,
             });
 
-            if (pagesArray.length === 0) {
-              return <div>No pages found in document</div>;
-            }
-
-            // Get only the current page
-            const currentPage = pagesArray[currentPageIndex];
             if (!currentPage) {
-              return <div>Page not found</div>;
+              return <div>No page data available</div>;
             }
 
             console.log(
@@ -1297,15 +1399,83 @@ export default function Viewer() {
             );
 
             // Get elements for the current page using centralized function
-            const pageElements = getElementsForPage(
+            const pageElementsForRendering = getElementsForPage(
               currentPage.self,
               documentData
             );
+
+            // DEBUG: Check if page elements have linked images
+            if (
+              pageElementsForRendering &&
+              pageElementsForRendering.length > 0
+            ) {
+              const pageElementsWithLinkedImages =
+                pageElementsForRendering.filter((el) => el.linkedImage);
+              console.log(
+                `🔍 Page elements with linked images: ${pageElementsWithLinkedImages.length}/${pageElementsForRendering.length}`
+              );
+
+              if (pageElementsWithLinkedImages.length > 0) {
+                console.log(
+                  "✅ Page elements with linked images:",
+                  pageElementsWithLinkedImages.map((el) => ({
+                    id: el.id,
+                    name: el.name,
+                    linkedImage: el.linkedImage,
+                  }))
+                );
+              } else {
+                console.log("❌ No page elements have linkedImage properties");
+                // Check if page elements have the same IDs as document elements with linked images
+                const documentElementsWithLinkedImages =
+                  documentData.elements?.filter((el) => el.linkedImage) || [];
+                const pageElementIds = pageElementsForRendering.map(
+                  (el) => el.id
+                );
+                const linkedElementIds = documentElementsWithLinkedImages.map(
+                  (el) => el.id
+                );
+
+                console.log("🔍 Page element IDs:", pageElementIds);
+                console.log("🔍 Linked element IDs:", linkedElementIds);
+
+                // Check for ID mismatches
+                const missingIds = linkedElementIds.filter(
+                  (id) => !pageElementIds.includes(id)
+                );
+                if (missingIds.length > 0) {
+                  console.log(
+                    "❌ Missing linked elements from page:",
+                    missingIds
+                  );
+                }
+
+                // Show detailed comparison
+                console.log("🔍 Detailed comparison:");
+                console.log(
+                  "Page elements:",
+                  pageElementsForRendering.map((el) => ({
+                    id: el.id,
+                    name: el.name,
+                    hasLinkedImage: !!el.linkedImage,
+                  }))
+                );
+                console.log(
+                  "Document elements with linked images:",
+                  documentElementsWithLinkedImages.map((el) => ({
+                    id: el.id,
+                    name: el.name,
+                    linkedImage: el.linkedImage,
+                  }))
+                );
+              }
+            }
+
             console.log(
               `🎨 RENDERING CURRENT PAGE ${currentPageIndex + 1} (${
                 currentPage.self
-              }) with ${pageElements.length} elements:`,
-              pageElements.map((el) => ({
+              }) with ${pageElementsForRendering.length} elements:`,
+              pageElementsForRendering.map((el) => ({
                 id: el.id,
                 type: el.type,
                 pageId: el.pageId,
@@ -1421,17 +1591,32 @@ export default function Viewer() {
                     })()}
 
                   {/* PRESERVED: Element Rendering for Current Page */}
-                  {pageElements.map((element, index) => {
-                    // DEBUG: Log all elements being processed
-                    console.log("🔍 Processing element:", {
-                      id: element.id,
-                      type: element.type,
-                      name: element.name,
-                      isContentFrame: element.isContentFrame,
-                      hasPlacedContent: element.hasPlacedContent,
-                      parentStory: element.parentStory,
-                      pixelPosition: element.pixelPosition,
-                    });
+                  {pageElementsForRendering.map((element, index) => {
+                    // DEBUG: Only log elements with linked images to reduce noise
+                    if (element.linkedImage && element.linkedImage.url) {
+                      console.log(`🧱 Processing element with image:`, {
+                        id: element.id,
+                        type: element.type,
+                        name: element.name,
+                        linkedImageUrl: element.linkedImage.url,
+                      });
+                    }
+
+                    // DEBUG: Only log missing images to reduce noise
+                    if (
+                      element.isContentFrame &&
+                      element.hasPlacedContent &&
+                      !element.linkedImage
+                    ) {
+                      console.warn(
+                        `⚠️ Element should have linked image but doesn't:`,
+                        {
+                          id: element.id,
+                          name: element.name,
+                          href: element.placedContent?.href,
+                        }
+                      );
+                    }
 
                     if (!element.pixelPosition) {
                       console.warn(
@@ -1612,8 +1797,16 @@ export default function Viewer() {
                                 transformOrigin: "center center",
                               }}
                               onError={(e) => {
-                                console.error("Error loading image:", e);
+                                console.error(
+                                  `❌ Main viewer image failed to load: ${element.linkedImage.url}`,
+                                  e
+                                );
                                 e.target.style.display = "none";
+                              }}
+                              onLoad={() => {
+                                console.log(
+                                  `✅ Main viewer image loaded successfully: ${element.linkedImage.url}`
+                                );
                               }}
                             />
                           ) : element.linkedImage.isEmbedded ? (
@@ -1864,10 +2057,63 @@ export default function Viewer() {
                             );
                           })()}
 
-                        {/* PRESERVED: Content frame placeholder */}
+                        {/* Image Rendering */}
+                        {element.linkedImage && element.linkedImage.url && (
+                          <>
+                            {/* Debug info */}
+                            {showDebugInfo && (
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  top: "2px",
+                                  left: "2px",
+                                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                                  color: "white",
+                                  fontSize: "8px",
+                                  padding: "2px",
+                                  zIndex: 1001,
+                                  fontFamily: "monospace",
+                                }}
+                              >
+                                🖼️ {element.linkedImage.fileName}
+                                <br />
+                                {element.linkedImage.url}
+                              </div>
+                            )}
+                            <img
+                              src={element.linkedImage.url}
+                              alt={element.name || "Frame content"}
+                              style={{
+                                position: "absolute",
+                                left: "0px",
+                                top: "0px",
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                                transformOrigin: "center center",
+                              }}
+                              onError={(e) => {
+                                console.error(
+                                  "Error loading image:",
+                                  element.linkedImage.url,
+                                  e
+                                );
+                                e.target.style.display = "none";
+                              }}
+                              onLoad={() => {
+                                console.log(
+                                  "✅ Image loaded successfully:",
+                                  element.linkedImage.url
+                                );
+                              }}
+                            />
+                          </>
+                        )}
+
+                        {/* Content frame placeholder - only show if no image */}
                         {isContentFrame &&
                           !hasPlacedContent &&
-                          !element.linkedImage?.isEmbedded && (
+                          !element.linkedImage?.url && (
                             <div
                               style={{
                                 display: "flex",
