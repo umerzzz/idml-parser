@@ -36,3 +36,4 @@ idml-text-formatting-*.json
 # Task files
 # tasks.json
 # tasks/ 
+*.rar

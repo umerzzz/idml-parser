@@ -38,6 +38,124 @@ import {
   useDocumentLoader,
 } from "../../lib/viewer/index.js";
 
+// Helper function to extract list formatting from document data
+const getListFormatting = (element, documentData) => {
+  // Check if element has list-related properties
+  if (element.name === "Bulleted List" || element.name === "Numbered List") {
+    // Look for list formatting in styles
+    if (documentData.styles && documentData.styles.paragraph) {
+      const defaultStyle =
+        documentData.styles.paragraph[
+          "ParagraphStyle/$ID/[No paragraph style]"
+        ];
+      if (
+        defaultStyle &&
+        defaultStyle.rawStyle &&
+        defaultStyle.rawStyle.Properties
+      ) {
+        const props = defaultStyle.rawStyle.Properties;
+
+        if (element.name === "Bulleted List" && props.BulletChar) {
+          return {
+            type: "bullet",
+            character: props.BulletChar["@_BulletCharacterValue"],
+            characterStyle: props.BulletsCharacterStyle,
+            // Get bullet spacing and other properties from document
+            bulletSpacing: props.BulletChar["@_BulletSpacing"] || 1,
+            bulletIndent: props.BulletChar["@_BulletIndent"] || 0,
+          };
+        } else if (element.name === "Numbered List" && props.NumberingFormat) {
+          return {
+            type: "numbered",
+            format: props.NumberingFormat["#text"],
+            characterStyle: props.NumberingCharacterStyle,
+            // Get numbering properties from document
+            numberingSpacing: props.NumberingFormat["@_NumberingSpacing"] || 1,
+            numberingIndent: props.NumberingFormat["@_NumberingIndent"] || 0,
+          };
+        }
+      }
+    }
+  }
+  return null;
+};
+
+// Helper function to apply list formatting to text
+const applyListFormatting = (text, formatting) => {
+  if (!text || !formatting) return text;
+
+  const lines = text.split("\n");
+
+  if (formatting.type === "bullet") {
+    const bulletChar = String.fromCharCode(formatting.character);
+    const spacing = formatting.bulletSpacing || 1;
+    const indent = formatting.bulletIndent || 0;
+
+    // Use actual bullet formatting from document
+    return lines
+      .map((line) => {
+        if (line.trim()) {
+          // Use the actual bullet character and spacing from document
+          const indentSpace = " ".repeat(indent);
+          const bulletSpace = " ".repeat(spacing);
+          return `${indentSpace}${bulletChar}${bulletSpace}${line.trim()}`;
+        }
+        return line;
+      })
+      .join("\n");
+  } else if (formatting.type === "numbered") {
+    let counter = 1;
+    const formatPattern = formatting.format;
+    const spacing = formatting.numberingSpacing || 1;
+    const indent = formatting.numberingIndent || 0;
+
+    // Filter out empty lines and only process non-empty content
+    const nonEmptyLines = lines.filter((line) => line.trim());
+
+    return nonEmptyLines
+      .map((line) => {
+        // Parse the actual numbering format from document dynamically
+        const indentSpace = " ".repeat(indent);
+        const numberSpace = " ".repeat(spacing);
+
+        // Extract the first item from the format pattern to understand the format
+        const formatItems = formatPattern
+          ? formatPattern.split(",").map((item) => item.trim())
+          : [];
+        const firstFormat = formatItems[0] || "1";
+
+        let numberText;
+        if (firstFormat.match(/^\d+$/)) {
+          // Numeric format (1, 2, 3)
+          numberText = counter.toString();
+        } else if (firstFormat.match(/^[a-z]$/)) {
+          // Lowercase letter format (a, b, c)
+          numberText = String.fromCharCode(96 + counter);
+        } else if (firstFormat.match(/^[A-Z]$/)) {
+          // Uppercase letter format (A, B, C)
+          numberText = String.fromCharCode(64 + counter);
+        } else if (firstFormat.match(/^[ivxlcdm]+$/i)) {
+          // Roman numeral format (i, ii, iii or I, II, III)
+          const isUpperCase = firstFormat === firstFormat.toUpperCase();
+          const romanNumerals = isUpperCase
+            ? ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+            : ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x"];
+          numberText = romanNumerals[counter - 1] || counter.toString();
+        } else {
+          // Use the format pattern as-is
+          numberText = firstFormat;
+        }
+
+        const formatted = `${indentSpace}${numberText}.${numberSpace}${line.trim()}`;
+        counter++;
+        return formatted;
+      })
+      .join("\n");
+  }
+
+  return text;
+};
+
 export default function Viewer() {
   const router = useRouter();
   const { uploadId } = router.query;
@@ -1257,6 +1375,17 @@ export default function Viewer() {
 
                   {/* PRESERVED: Element Rendering for Current Page */}
                   {pageElements.map((element, index) => {
+                    // DEBUG: Log all elements being processed
+                    console.log("🔍 Processing element:", {
+                      id: element.id,
+                      type: element.type,
+                      name: element.name,
+                      isContentFrame: element.isContentFrame,
+                      hasPlacedContent: element.hasPlacedContent,
+                      parentStory: element.parentStory,
+                      pixelPosition: element.pixelPosition,
+                    });
+
                     if (!element.pixelPosition) {
                       console.warn(
                         `⚠️ Skipping element ${element.id} because pixelPosition is missing!`
@@ -1365,6 +1494,10 @@ export default function Viewer() {
                               ? "2px solid #007bff"
                               : isContentFrame
                               ? "2px solid #00aaff"
+                              : element.name === "Bulleted List"
+                              ? "2px solid #d63384"
+                              : element.name === "Numbered List"
+                              ? "2px solid #0d6efd"
                               : element.type === "TextFrame"
                               ? "1px solid #ff6b6b"
                               : "1px dashed rgba(0,0,0,0.3)",
@@ -1375,7 +1508,12 @@ export default function Viewer() {
                             : "none",
                           transformOrigin: "top left",
                           boxSizing: "border-box",
-                          zIndex: element.type === "TextFrame" ? 10 : 1,
+                          zIndex:
+                            element.type === "TextFrame" ||
+                            element.name === "Bulleted List" ||
+                            element.name === "Numbered List"
+                              ? 10
+                              : 1,
                           maxWidth: "100%",
                           maxHeight: "100%",
                         }}
@@ -1465,9 +1603,22 @@ export default function Viewer() {
                             const storyFormatting =
                               getInDesignAccurateFormatting(story, utils);
 
-                            const cleanText = (story.text || "")
+                            let cleanText = (story.text || "")
                               .replace(/\n\s*\n/g, "\n")
                               .trim();
+
+                            // Check for list formatting in the document data
+                            const listFormatting = getListFormatting(
+                              element,
+                              documentData
+                            );
+
+                            if (listFormatting) {
+                              cleanText = applyListFormatting(
+                                cleanText,
+                                listFormatting
+                              );
+                            }
 
                             const textMeasurement =
                               InDesignTextMetrics.measureTextPrecisely(
@@ -1482,6 +1633,7 @@ export default function Viewer() {
                               element.position.width,
                               utils
                             );
+
                             let wasAdjusted = false;
                             let adjustmentDetails = null;
 
@@ -1573,12 +1725,39 @@ export default function Viewer() {
                                 }}
                                 title={createTooltip()}
                               >
-                                {renderFormattedText(
-                                  story,
-                                  element.position.height,
-                                  adjustedFontSize,
-                                  utils
-                                )}
+                                {(() => {
+                                  // Check for list formatting in the document data
+                                  const listFormatting = getListFormatting(
+                                    element,
+                                    documentData
+                                  );
+
+                                  if (listFormatting) {
+                                    // For list elements, render with list formatting
+                                    const formattedText = applyListFormatting(
+                                      story.text || "",
+                                      listFormatting
+                                    );
+                                    return (
+                                      <span
+                                        style={{
+                                          whiteSpace: "pre-line",
+                                          display: "block",
+                                        }}
+                                      >
+                                        {formattedText}
+                                      </span>
+                                    );
+                                  } else {
+                                    // For regular elements, use the normal formatted text rendering
+                                    return renderFormattedText(
+                                      story,
+                                      element.position.height,
+                                      adjustedFontSize,
+                                      utils
+                                    );
+                                  }
+                                })()}
 
                                 {/* Enhanced Status Indicators */}
                                 {wasAdjusted && (
@@ -1670,7 +1849,9 @@ export default function Viewer() {
                         {/* PRESERVED: Other elements */}
                         {!hasPlacedContent &&
                           element.type !== "TextFrame" &&
-                          !isContentFrame && (
+                          !isContentFrame &&
+                          element.name !== "Bulleted List" &&
+                          element.name !== "Numbered List" && (
                             <div
                               style={{
                                 padding: "4px",
