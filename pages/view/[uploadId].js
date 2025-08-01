@@ -1092,15 +1092,7 @@ export default function Viewer() {
           height: "100%",
         }}
       >
-        {/* NEW: Page Tabs */}
-        {renderPageTabs(
-          documentData,
-          currentPageIndex,
-          setCurrentPageIndex,
-          setSelectedElement
-        )}
-
-        {/* Enhanced Canvas with Multi-page Support */}
+        {/* Enhanced Canvas with Single Page Display */}
         <div
           style={{
             display: "flex",
@@ -1112,7 +1104,7 @@ export default function Viewer() {
             backgroundColor: "#e9ecef",
           }}
         >
-          {/* NEW: Render all pages with proper spacing between them */}
+          {/* NEW: Render only the current page */}
           {(() => {
             const pagesArray = getPagesArray(documentData);
             console.log(`🎨 PAGES ARRAY DEBUG:`, {
@@ -1120,604 +1112,603 @@ export default function Viewer() {
               length: pagesArray.length,
               documentDataPages: documentData.pages,
               documentDataKeys: Object.keys(documentData),
+              currentPageIndex,
             });
-            return pagesArray.length > 0 ? (
-              pagesArray.map((page, pageIndex) => {
-                console.log(
-                  `🎨 RENDERING PAGE ${pageIndex + 1}: ${page.self} (${
-                    page.name
-                  })`
-                );
 
-                // Get elements for this specific page using centralized function
-                const pageElements = getElementsForPage(
-                  page.self,
-                  documentData
-                );
-                console.log(
-                  `🎨 RENDERING PAGE ${pageIndex + 1} (${page.self}) with ${
-                    pageElements.length
-                  } elements:`,
-                  pageElements.map((el) => ({
-                    id: el.id,
-                    type: el.type,
-                    pageId: el.pageId,
-                    position: el.pixelPosition
-                      ? {
-                          x: Math.round(el.pixelPosition.x),
-                          y: Math.round(el.pixelPosition.y),
-                          width: Math.round(el.pixelPosition.width),
-                          height: Math.round(el.pixelPosition.height),
+            if (pagesArray.length === 0) {
+              return <div>No pages found in document</div>;
+            }
+
+            // Get only the current page
+            const currentPage = pagesArray[currentPageIndex];
+            if (!currentPage) {
+              return <div>Page not found</div>;
+            }
+
+            console.log(
+              `🎨 RENDERING CURRENT PAGE ${currentPageIndex + 1}: ${
+                currentPage.self
+              } (${currentPage.name})`
+            );
+
+            // Get elements for the current page using centralized function
+            const pageElements = getElementsForPage(
+              currentPage.self,
+              documentData
+            );
+            console.log(
+              `🎨 RENDERING CURRENT PAGE ${currentPageIndex + 1} (${
+                currentPage.self
+              }) with ${pageElements.length} elements:`,
+              pageElements.map((el) => ({
+                id: el.id,
+                type: el.type,
+                pageId: el.pageId,
+                position: el.pixelPosition
+                  ? {
+                      x: Math.round(el.pixelPosition.x),
+                      y: Math.round(el.pixelPosition.y),
+                      width: Math.round(el.pixelPosition.width),
+                      height: Math.round(el.pixelPosition.height),
+                    }
+                  : "No position",
+              }))
+            );
+
+            return (
+              <div
+                key={currentPage.self}
+                id={`page-${currentPageIndex + 1}`}
+                style={{
+                  position: "relative",
+                  width: currentPage.geometricBounds
+                    ? `${currentPage.geometricBounds.width}px`
+                    : (documentData.pageInfo?.dimensions?.pixelDimensions
+                        ?.width ||
+                        documentData.pageInfo?.dimensions?.width ||
+                        612) + "px",
+                  boxShadow: "0 0 0 2px #007bff, 0 5px 15px rgba(0,0,0,0.2)",
+                }}
+              >
+                {/* Page number indicator */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "-25px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    backgroundColor: "#007bff",
+                    color: "white",
+                    padding: "2px 10px",
+                    borderRadius: "12px",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                    zIndex: 10,
+                  }}
+                >
+                  Page {currentPageIndex + 1} of {pagesArray.length}
+                </div>
+
+                {/* Page Canvas */}
+                <div
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    height: currentPage.geometricBounds
+                      ? `${currentPage.geometricBounds.height}px`
+                      : (documentData.pageInfo?.dimensions?.pixelDimensions
+                          ?.height ||
+                          documentData.pageInfo?.dimensions?.height ||
+                          792) + "px",
+                    backgroundColor: importedGetPageBackgroundColor(
+                      currentPage,
+                      documentData,
+                      utils.convertColor,
+                      (docData) =>
+                        importedGetDocumentBackgroundColor(
+                          docData,
+                          backgroundConfig,
+                          utils.convertColor
+                        )
+                    ),
+                    border: "1px solid #ccc",
+                    overflow: "hidden",
+                    borderRadius: "2px",
+                    position: "relative",
+                    isolation: "isolate",
+                  }}
+                >
+                  {/* PRESERVED: Margins Visualization */}
+                  {showMargins &&
+                    documentData.pageInfo?.margins &&
+                    (() => {
+                      const visualMarginTop =
+                        documentData.pageInfo.margins.pixelMargins?.top ||
+                        documentData.pageInfo.margins.top ||
+                        0;
+                      const visualMarginLeft =
+                        documentData.pageInfo.margins.pixelMargins?.left ||
+                        documentData.pageInfo.margins.left ||
+                        0;
+                      const visualMarginRight =
+                        documentData.pageInfo.margins.pixelMargins?.right ||
+                        documentData.pageInfo.margins.right ||
+                        0;
+                      const visualMarginBottom =
+                        documentData.pageInfo.margins.pixelMargins?.bottom ||
+                        documentData.pageInfo.margins.bottom ||
+                        0;
+
+                      return (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: visualMarginTop + "px",
+                            left: visualMarginLeft + "px",
+                            right: visualMarginRight + "px",
+                            bottom: visualMarginBottom + "px",
+                            border: "3px dashed rgba(255, 0, 0, 0.4)",
+                            pointerEvents: "none",
+                            zIndex: 100,
+                          }}
+                        />
+                      );
+                    })()}
+
+                  {/* PRESERVED: Element Rendering for Current Page */}
+                  {pageElements.map((element, index) => {
+                    if (!element.pixelPosition) {
+                      console.warn(
+                        `⚠️ Skipping element ${element.id} because pixelPosition is missing!`
+                      );
+                      return null;
+                    }
+
+                    // FIXED: Add boundary checking to ensure elements stay within page canvas
+                    const pageWidth =
+                      currentPage.geometricBounds?.width ||
+                      documentData.pageInfo?.dimensions?.pixelDimensions
+                        ?.width ||
+                      documentData.pageInfo?.dimensions?.width ||
+                      612;
+                    const pageHeight =
+                      currentPage.geometricBounds?.height ||
+                      documentData.pageInfo?.dimensions?.pixelDimensions
+                        ?.height ||
+                      documentData.pageInfo?.dimensions?.height ||
+                      792;
+
+                    let elementPosition = element.pixelPosition;
+
+                    // Constrain element position to page boundaries
+                    const constrainedPosition = {
+                      x: Math.max(
+                        0,
+                        Math.min(
+                          elementPosition.x,
+                          pageWidth - elementPosition.width
+                        )
+                      ),
+                      y: Math.max(
+                        0,
+                        Math.min(
+                          elementPosition.y,
+                          pageHeight - elementPosition.height
+                        )
+                      ),
+                      width: Math.min(elementPosition.width, pageWidth),
+                      height: Math.min(elementPosition.height, pageHeight),
+                      rotation: elementPosition.rotation || 0,
+                    };
+
+                    // Check if element was constrained
+                    const wasConstrained =
+                      constrainedPosition.x !== elementPosition.x ||
+                      constrainedPosition.y !== elementPosition.y ||
+                      constrainedPosition.width !== elementPosition.width ||
+                      constrainedPosition.height !== elementPosition.height;
+
+                    if (wasConstrained) {
+                      console.warn(
+                        `⚠️ Element ${element.id} was constrained to page boundaries:`,
+                        {
+                          original: elementPosition,
+                          constrained: constrainedPosition,
                         }
-                      : "No position",
-                  }))
-                );
+                      );
+                    }
 
-                // Determine if this is the currently selected page
-                const isCurrentPage = pageIndex === currentPageIndex;
+                    elementPosition = constrainedPosition;
 
-                return (
-                  <div
-                    key={page.self}
-                    id={`page-${pageIndex + 1}`}
-                    style={{
-                      position: "relative",
-                      marginBottom: "40px",
-                      width: page.geometricBounds
-                        ? `${page.geometricBounds.width}px`
-                        : (documentData.pageInfo?.dimensions?.pixelDimensions
-                            ?.width ||
-                            documentData.pageInfo?.dimensions?.width ||
-                            612) + "px",
-                      // Add a highlight effect for the current page
-                      boxShadow: isCurrentPage
-                        ? "0 0 0 2px #007bff, 0 5px 15px rgba(0,0,0,0.2)"
-                        : "0 5px 15px rgba(0,0,0,0.1)",
-                    }}
-                  >
-                    {/* Page number indicator */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "-25px",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        backgroundColor: isCurrentPage ? "#007bff" : "#6c757d",
-                        color: "white",
-                        padding: "2px 10px",
-                        borderRadius: "12px",
-                        fontSize: "12px",
-                        fontWeight: "bold",
-                        zIndex: 10,
-                      }}
-                    >
-                      Page {pageIndex + 1}
-                    </div>
+                    const isContentFrame =
+                      element.isContentFrame || element.hasPlacedContent;
+                    const hasPlacedContent = element.placedContent;
 
-                    {/* Page Canvas */}
-                    <div
-                      style={{
-                        position: "relative",
-                        width: "100%",
-                        height: page.geometricBounds
-                          ? `${page.geometricBounds.height}px`
-                          : (documentData.pageInfo?.dimensions?.pixelDimensions
-                              ?.height ||
-                              documentData.pageInfo?.dimensions?.height ||
-                              792) + "px",
-                        backgroundColor: importedGetPageBackgroundColor(
-                          page,
-                          documentData,
-                          utils.convertColor,
-                          (docData) =>
-                            importedGetDocumentBackgroundColor(
-                              docData,
-                              backgroundConfig,
-                              utils.convertColor
-                            )
-                        ),
-                        border: "1px solid #ccc",
-                        overflow: "hidden", // FIXED: Ensure page canvas doesn't overflow
-                        borderRadius: "2px",
-                        // FIXED: Add boundary enforcement
-                        position: "relative",
-                        isolation: "isolate", // Create stacking context
-                      }}
-                      onClick={() => {
-                        if (pageIndex !== currentPageIndex) {
-                          setCurrentPageIndex(pageIndex);
-                          setSelectedElement(null);
-                        }
-                      }}
-                    >
-                      {/* PRESERVED: Margins Visualization */}
-                      {showMargins &&
-                        documentData.pageInfo?.margins &&
-                        (() => {
-                          const visualMarginTop =
-                            documentData.pageInfo.margins.pixelMargins?.top ||
-                            documentData.pageInfo.margins.top ||
-                            0;
-                          const visualMarginLeft =
-                            documentData.pageInfo.margins.pixelMargins?.left ||
-                            documentData.pageInfo.margins.left ||
-                            0;
-                          const visualMarginRight =
-                            documentData.pageInfo.margins.pixelMargins?.right ||
-                            documentData.pageInfo.margins.right ||
-                            0;
-                          const visualMarginBottom =
-                            documentData.pageInfo.margins.pixelMargins
-                              ?.bottom ||
-                            documentData.pageInfo.margins.bottom ||
-                            0;
+                    if (showDebugInfo) {
+                      console.log(
+                        "🧱 Element positioning:",
+                        element.id,
+                        "Type:",
+                        element.type,
+                        "Position source:",
+                        element.pixelPosition ? "pixelPosition" : "position",
+                        "Final coords:",
+                        {
+                          x: elementPosition.x,
+                          y: elementPosition.y,
+                          width: elementPosition.width,
+                          height: elementPosition.height,
+                        },
+                        "Conversion info:",
+                        element.position?._conversionInfo
+                      );
+                    }
 
-                          return (
+                    return (
+                      <div
+                        key={element.id}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedElement(element);
+                        }}
+                        style={{
+                          position: "absolute",
+                          left: elementPosition.x + "px",
+                          top: elementPosition.y + "px",
+                          width: elementPosition.width + "px",
+                          height: elementPosition.height + "px",
+                          backgroundColor: element.fill
+                            ? utils.convertColor(element.fill)
+                            : "transparent",
+                          border:
+                            selectedElement?.id === element.id
+                              ? "2px solid #007bff"
+                              : isContentFrame
+                              ? "2px solid #00aaff"
+                              : element.type === "TextFrame"
+                              ? "1px solid #ff6b6b"
+                              : "1px dashed rgba(0,0,0,0.3)",
+                          cursor: "pointer",
+                          overflow: "hidden",
+                          transform: elementPosition.rotation
+                            ? `rotate(${elementPosition.rotation}deg)`
+                            : "none",
+                          transformOrigin: "top left",
+                          boxSizing: "border-box",
+                          zIndex: element.type === "TextFrame" ? 10 : 1,
+                          maxWidth: "100%",
+                          maxHeight: "100%",
+                        }}
+                      >
+                        {/* PRESERVED: Debug position label */}
+                        {showDebugInfo && (
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: "-20px",
+                              left: "0px",
+                              fontSize: "10px",
+                              background: wasConstrained
+                                ? "rgba(255, 0, 0, 0.8)"
+                                : "rgba(255, 255, 0, 0.8)",
+                              padding: "2px 4px",
+                              borderRadius: "2px",
+                              pointerEvents: "none",
+                              zIndex: 1000,
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {element.id}: ({Math.round(elementPosition.x)},{" "}
+                            {Math.round(elementPosition.y)}){" "}
+                            {wasConstrained ? "⚠️" : ""}
+                          </div>
+                        )}
+
+                        {/* PRESERVED: Enhanced Image Rendering */}
+                        {element.linkedImage &&
+                          (element.linkedImage.url ? (
+                            <img
+                              src={element.linkedImage.url}
+                              alt="Frame content"
+                              style={{
+                                position: "absolute",
+                                left: "0px",
+                                top: "0px",
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                                transformOrigin: "center center",
+                              }}
+                              onError={(e) => {
+                                console.error("Error loading image:", e);
+                                e.target.style.display = "none";
+                              }}
+                            />
+                          ) : element.linkedImage.isEmbedded ? (
                             <div
                               style={{
                                 position: "absolute",
-                                top: visualMarginTop + "px",
-                                left: visualMarginLeft + "px",
-                                right: visualMarginRight + "px",
-                                bottom: visualMarginBottom + "px",
-                                border: "3px dashed rgba(255, 0, 0, 0.4)",
-                                pointerEvents: "none",
-                                zIndex: 100,
+                                left: "0px",
+                                top: "0px",
+                                width: "100%",
+                                height: "100%",
+                                backgroundColor: "#f0f0f0",
+                                border: "2px solid #007bff",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: "12px",
+                                color: "#007bff",
+                                flexDirection: "column",
                               }}
-                            />
-                          );
-                        })()}
+                            >
+                              🖼️ Embedded Image
+                              <br />
+                              No image data
+                            </div>
+                          ) : null)}
 
-                      {/* PRESERVED: Element Rendering with Multi-page Support */}
-                      {pageElements.map((element, index) => {
-                        if (!element.pixelPosition) {
-                          console.warn(
-                            `⚠️ Skipping element ${element.id} because pixelPosition is missing!`
-                          );
-                          return null;
-                        }
+                        {/* PRESERVED: PIXEL-PERFECT Text Rendering */}
+                        {element.type === "TextFrame" &&
+                          element.parentStory &&
+                          documentData.stories[element.parentStory] &&
+                          (() => {
+                            const story =
+                              documentData.stories[element.parentStory];
 
-                        // FIXED: Add boundary checking to ensure elements stay within page canvas
-                        const pageWidth =
-                          page.geometricBounds?.width ||
-                          documentData.pageInfo?.dimensions?.pixelDimensions
-                            ?.width ||
-                          documentData.pageInfo?.dimensions?.width ||
-                          612;
-                        const pageHeight =
-                          page.geometricBounds?.height ||
-                          documentData.pageInfo?.dimensions?.pixelDimensions
-                            ?.height ||
-                          documentData.pageInfo?.dimensions?.height ||
-                          792;
+                            const frameMetrics =
+                              InDesignTextMetrics.calculateTextFrameInsets(
+                                element,
+                                element.textFramePreferences
+                              );
 
-                        let elementPosition = element.pixelPosition;
+                            const storyFormatting =
+                              getInDesignAccurateFormatting(story, utils);
 
-                        // Constrain element position to page boundaries
-                        const constrainedPosition = {
-                          x: Math.max(
-                            0,
-                            Math.min(
-                              elementPosition.x,
-                              pageWidth - elementPosition.width
-                            )
-                          ),
-                          y: Math.max(
-                            0,
-                            Math.min(
-                              elementPosition.y,
-                              pageHeight - elementPosition.height
-                            )
-                          ),
-                          width: Math.min(elementPosition.width, pageWidth),
-                          height: Math.min(elementPosition.height, pageHeight),
-                          rotation: elementPosition.rotation || 0,
-                        };
+                            const cleanText = (story.text || "")
+                              .replace(/\n\s*\n/g, "\n")
+                              .trim();
 
-                        // Check if element was constrained
-                        const wasConstrained =
-                          constrainedPosition.x !== elementPosition.x ||
-                          constrainedPosition.y !== elementPosition.y ||
-                          constrainedPosition.width !== elementPosition.width ||
-                          constrainedPosition.height !== elementPosition.height;
+                            const textMeasurement =
+                              InDesignTextMetrics.measureTextPrecisely(
+                                cleanText,
+                                storyFormatting,
+                                frameMetrics
+                              );
 
-                        if (wasConstrained) {
-                          console.warn(
-                            `⚠️ Element ${element.id} was constrained to page boundaries:`,
-                            {
-                              original: elementPosition,
-                              constrained: constrainedPosition,
+                            let finalStyles = getStoryStyles(
+                              story,
+                              element.position.height,
+                              element.position.width,
+                              utils
+                            );
+                            let wasAdjusted = false;
+                            let adjustmentDetails = null;
+
+                            const containerWidth = elementPosition.width;
+                            const containerHeight = elementPosition.height;
+
+                            if (false && textMeasurement.willOverflow) {
+                              console.log(
+                                `📏 Text overflow detected in story ${element.parentStory}:`,
+                                {
+                                  textHeight: textMeasurement.textHeight,
+                                  availableHeight:
+                                    textMeasurement.availableHeight,
+                                  overflowAmount:
+                                    textMeasurement.overflowAmount,
+                                  lineCount: textMeasurement.lineCount,
+                                }
+                              );
+
+                              const adjustment =
+                                InDesignTextMetrics.calculateOptimalFontSize(
+                                  textMeasurement,
+                                  storyFormatting,
+                                  0.25
+                                );
+
+                              if (adjustment) {
+                                finalStyles = {
+                                  ...finalStyles,
+                                  ...adjustment.adjustedStyles,
+                                };
+                                wasAdjusted = true;
+                                adjustmentDetails = adjustment;
+                              }
                             }
-                          );
-                        }
 
-                        elementPosition = constrainedPosition;
+                            const adjustedFontSize =
+                              wasAdjusted && adjustmentDetails
+                                ? adjustmentDetails.newFontSize
+                                : null;
 
-                        const isContentFrame =
-                          element.isContentFrame || element.hasPlacedContent;
-                        const hasPlacedContent = element.placedContent;
+                            const createTooltip = () => {
+                              const baseInfo = `Story: ${element.parentStory}\nFrame: ${element.position.width}×${element.position.height}px\nContent: ${frameMetrics.contentArea.width}×${frameMetrics.contentArea.height}px`;
 
-                        if (showDebugInfo) {
-                          console.log(
-                            "🧱 Element positioning:",
-                            element.id,
-                            "Type:",
-                            element.type,
-                            "Position source:",
-                            element.pixelPosition
-                              ? "pixelPosition"
-                              : "position",
-                            "Final coords:",
-                            {
-                              x: elementPosition.x,
-                              y: elementPosition.y,
-                              width: elementPosition.width,
-                              height: elementPosition.height,
-                            },
-                            "Conversion info:",
-                            element.position?._conversionInfo
-                          );
-                        }
+                              if (!wasAdjusted) {
+                                return `${baseInfo}\nText fits perfectly! ✅`;
+                              }
 
-                        return (
-                          <div
-                            key={element.id}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedElement(element);
-                              setCurrentPageIndex(pageIndex);
-                            }}
-                            style={{
-                              position: "absolute",
-                              left: elementPosition.x + "px",
-                              top: elementPosition.y + "px",
-                              width: elementPosition.width + "px",
-                              height: elementPosition.height + "px",
-                              backgroundColor: element.fill
-                                ? utils.convertColor(element.fill)
-                                : "transparent",
-                              border:
-                                selectedElement?.id === element.id
-                                  ? "2px solid #007bff"
-                                  : isContentFrame
-                                  ? "2px solid #00aaff"
-                                  : element.type === "TextFrame"
-                                  ? "1px solid #ff6b6b"
-                                  : "1px dashed rgba(0,0,0,0.3)",
-                              cursor: "pointer",
-                              overflow: "hidden", // FIXED: Changed from "visible" to "hidden" to prevent overflow
-                              transform: elementPosition.rotation
-                                ? `rotate(${elementPosition.rotation}deg)`
-                                : "none",
-                              transformOrigin: "top left",
-                              boxSizing: "border-box",
-                              zIndex: element.type === "TextFrame" ? 10 : 1,
-                              // FIXED: Add boundary constraints to prevent elements from going outside canvas
-                              maxWidth: "100%",
-                              maxHeight: "100%",
-                            }}
-                          >
-                            {/* PRESERVED: Debug position label */}
-                            {showDebugInfo && (
+                              return `${baseInfo}\nAdjusted: ${
+                                adjustmentDetails.adjustmentType
+                              }\nFont: ${
+                                adjustmentDetails.originalFontSize
+                              }px → ${
+                                adjustmentDetails.newFontSize
+                              }px\nScale: ${(
+                                adjustmentDetails.scaleFactor * 100
+                              ).toFixed(1)}%`;
+                            };
+
+                            return (
                               <div
                                 style={{
                                   position: "absolute",
-                                  top: "-20px",
+                                  top: "0px",
                                   left: "0px",
-                                  fontSize: "10px",
-                                  background: wasConstrained
-                                    ? "rgba(255, 0, 0, 0.8)"
-                                    : "rgba(255, 255, 0, 0.8)",
-                                  padding: "2px 4px",
-                                  borderRadius: "2px",
-                                  pointerEvents: "none",
-                                  zIndex: 1000,
-                                  whiteSpace: "nowrap",
+                                  width: `${elementPosition.width}px`,
+                                  height: `${elementPosition.height}px`,
+
+                                  padding: `${frameMetrics.insets.top}px ${frameMetrics.insets.right}px ${frameMetrics.insets.bottom}px ${frameMetrics.insets.left}px`,
+
+                                  fontSize: `${finalStyles.fontSize}`,
+                                  fontFamily: finalStyles.fontFamily,
+                                  fontWeight: finalStyles.fontWeight,
+                                  fontStyle: finalStyles.fontStyle,
+                                  color: finalStyles.color,
+                                  textAlign: finalStyles.textAlign,
+                                  lineHeight: finalStyles.lineHeight,
+                                  letterSpacing: finalStyles.letterSpacing,
+
+                                  margin: 0,
+
+                                  display: "block",
+                                  whiteSpace: "pre-wrap",
+                                  wordBreak: "break-word",
+                                  overflowWrap: "break-word",
+                                  overflow: "hidden",
+                                  boxSizing: "border-box",
+                                  textOverflow: "ellipsis",
                                 }}
+                                title={createTooltip()}
                               >
-                                {element.id}: ({Math.round(elementPosition.x)},{" "}
-                                {Math.round(elementPosition.y)}){" "}
-                                {wasConstrained ? "⚠️" : ""}
-                              </div>
-                            )}
-
-                            {/* PRESERVED: Enhanced Image Rendering */}
-                            {element.linkedImage &&
-                              (element.linkedImage.url ? (
-                                <img
-                                  src={element.linkedImage.url}
-                                  alt="Frame content"
-                                  style={{
-                                    position: "absolute",
-                                    left: "0px",
-                                    top: "0px",
-                                    width: "100%",
-                                    height: "100%",
-                                    objectFit: "cover",
-                                    transformOrigin: "center center",
-                                  }}
-                                  onError={(e) => {
-                                    console.error("Error loading image:", e);
-                                    e.target.style.display = "none";
-                                  }}
-                                />
-                              ) : element.linkedImage.isEmbedded ? (
-                                <div
-                                  style={{
-                                    position: "absolute",
-                                    left: "0px",
-                                    top: "0px",
-                                    width: "100%",
-                                    height: "100%",
-                                    backgroundColor: "#f0f0f0",
-                                    border: "2px solid #007bff",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    fontSize: "12px",
-                                    color: "#007bff",
-                                    flexDirection: "column",
-                                  }}
-                                >
-                                  🖼️ Embedded Image
-                                  <br />
-                                  No image data
-                                </div>
-                              ) : null)}
-
-                            {/* PRESERVED: PIXEL-PERFECT Text Rendering */}
-                            {element.type === "TextFrame" &&
-                              element.parentStory &&
-                              documentData.stories[element.parentStory] &&
-                              (() => {
-                                const story =
-                                  documentData.stories[element.parentStory];
-
-                                const frameMetrics =
-                                  InDesignTextMetrics.calculateTextFrameInsets(
-                                    element,
-                                    element.textFramePreferences
-                                  );
-
-                                const storyFormatting =
-                                  getInDesignAccurateFormatting(story, utils);
-
-                                const cleanText = (story.text || "")
-                                  .replace(/\n\s*\n/g, "\n")
-                                  .trim();
-
-                                const textMeasurement =
-                                  InDesignTextMetrics.measureTextPrecisely(
-                                    cleanText,
-                                    storyFormatting,
-                                    frameMetrics
-                                  );
-
-                                let finalStyles = getStoryStyles(
+                                {renderFormattedText(
                                   story,
                                   element.position.height,
-                                  element.position.width,
+                                  adjustedFontSize,
                                   utils
-                                );
-                                let wasAdjusted = false;
-                                let adjustmentDetails = null;
+                                )}
 
-                                const containerWidth = elementPosition.width;
-                                const containerHeight = elementPosition.height;
-
-                                if (false && textMeasurement.willOverflow) {
-                                  console.log(
-                                    `📏 Text overflow detected in story ${element.parentStory}:`,
-                                    {
-                                      textHeight: textMeasurement.textHeight,
-                                      availableHeight:
-                                        textMeasurement.availableHeight,
-                                      overflowAmount:
-                                        textMeasurement.overflowAmount,
-                                      lineCount: textMeasurement.lineCount,
-                                    }
-                                  );
-
-                                  const adjustment =
-                                    InDesignTextMetrics.calculateOptimalFontSize(
-                                      textMeasurement,
-                                      storyFormatting,
-                                      0.25
-                                    );
-
-                                  if (adjustment) {
-                                    finalStyles = {
-                                      ...finalStyles,
-                                      ...adjustment.adjustedStyles,
-                                    };
-                                    wasAdjusted = true;
-                                    adjustmentDetails = adjustment;
-                                  }
-                                }
-
-                                const adjustedFontSize =
-                                  wasAdjusted && adjustmentDetails
-                                    ? adjustmentDetails.newFontSize
-                                    : null;
-
-                                const createTooltip = () => {
-                                  const baseInfo = `Story: ${element.parentStory}\nFrame: ${element.position.width}×${element.position.height}px\nContent: ${frameMetrics.contentArea.width}×${frameMetrics.contentArea.height}px`;
-
-                                  if (!wasAdjusted) {
-                                    return `${baseInfo}\nText fits perfectly! ✅`;
-                                  }
-
-                                  return `${baseInfo}\nAdjusted: ${
-                                    adjustmentDetails.adjustmentType
-                                  }\nFont: ${
-                                    adjustmentDetails.originalFontSize
-                                  }px → ${
-                                    adjustmentDetails.newFontSize
-                                  }px\nScale: ${(
-                                    adjustmentDetails.scaleFactor * 100
-                                  ).toFixed(1)}%`;
-                                };
-
-                                return (
+                                {/* Enhanced Status Indicators */}
+                                {wasAdjusted && (
                                   <div
                                     style={{
                                       position: "absolute",
-                                      top: "0px",
-                                      left: "0px",
-                                      width: `${elementPosition.width}px`,
-                                      height: `${elementPosition.height}px`,
-
-                                      padding: `${frameMetrics.insets.top}px ${frameMetrics.insets.right}px ${frameMetrics.insets.bottom}px ${frameMetrics.insets.left}px`,
-
-                                      fontSize: `${finalStyles.fontSize}`,
-                                      fontFamily: finalStyles.fontFamily,
-                                      fontWeight: finalStyles.fontWeight,
-                                      fontStyle: finalStyles.fontStyle,
-                                      color: finalStyles.color,
-                                      textAlign: finalStyles.textAlign,
-                                      lineHeight: finalStyles.lineHeight,
-                                      letterSpacing: finalStyles.letterSpacing,
-
-                                      margin: 0,
-
-                                      display: "block",
-                                      whiteSpace: "pre-wrap",
-                                      wordBreak: "break-word",
-                                      overflowWrap: "break-word",
-                                      overflow: "hidden", // FIXED: Changed from "visible" to "hidden" to prevent text overflow
-                                      boxSizing: "border-box",
-                                      // FIXED: Add text overflow handling
-                                      textOverflow: "ellipsis",
+                                      top: "-2px",
+                                      left: "-2px",
+                                      backgroundColor:
+                                        adjustmentDetails?.stillOverflows
+                                          ? "#ff5722"
+                                          : "#4caf50",
+                                      color: "white",
+                                      fontSize: "8px",
+                                      padding: "1px 3px",
+                                      borderRadius: "2px",
+                                      zIndex: 1000,
+                                      pointerEvents: "none",
+                                      fontFamily: "monospace",
                                     }}
-                                    title={createTooltip()}
                                   >
-                                    {renderFormattedText(
-                                      story,
-                                      element.position.height,
-                                      adjustedFontSize,
-                                      utils
-                                    )}
-
-                                    {/* Enhanced Status Indicators */}
-                                    {wasAdjusted && (
-                                      <div
-                                        style={{
-                                          position: "absolute",
-                                          top: "-2px",
-                                          left: "-2px",
-                                          backgroundColor:
-                                            adjustmentDetails?.stillOverflows
-                                              ? "#ff5722"
-                                              : "#4caf50",
-                                          color: "white",
-                                          fontSize: "8px",
-                                          padding: "1px 3px",
-                                          borderRadius: "2px",
-                                          zIndex: 1000,
-                                          pointerEvents: "none",
-                                          fontFamily: "monospace",
-                                        }}
-                                      >
-                                        {adjustmentDetails?.stillOverflows
-                                          ? "⚠️"
-                                          : "🎯"}
-                                      </div>
-                                    )}
-
-                                    {/* Perfect fit indicator */}
-                                    {!wasAdjusted &&
-                                      !textMeasurement.willOverflow && (
-                                        <div
-                                          style={{
-                                            position: "absolute",
-                                            top: "-2px",
-                                            right: "-2px",
-                                            backgroundColor: "#2e7d32",
-                                            color: "white",
-                                            fontSize: "8px",
-                                            padding: "1px 3px",
-                                            borderRadius: "2px",
-                                            zIndex: 1000,
-                                            pointerEvents: "none",
-                                            fontFamily: "monospace",
-                                          }}
-                                        >
-                                          ✅
-                                        </div>
-                                      )}
+                                    {adjustmentDetails?.stillOverflows
+                                      ? "⚠️"
+                                      : "🎯"}
                                   </div>
-                                );
-                              })()}
+                                )}
 
-                            {/* PRESERVED: Content frame placeholder */}
-                            {isContentFrame &&
-                              !hasPlacedContent &&
-                              !element.linkedImage?.isEmbedded && (
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    height: "100%",
-                                    fontSize: "12px",
-                                    color: "#666",
-                                    backgroundColor: "rgba(0, 170, 255, 0.1)",
-                                    flexDirection: "column",
-                                  }}
-                                >
-                                  🖼️ Content Frame
-                                  <br />
-                                  {Math.round(elementPosition.width)}×
-                                  {Math.round(elementPosition.height)}px
-                                  {element.name && element.name !== "$ID/" && (
-                                    <>
-                                      <br />
-                                      <span
-                                        style={{
-                                          fontSize: "10px",
-                                          fontStyle: "italic",
-                                        }}
-                                      >
-                                        {element.name}
-                                      </span>
-                                    </>
+                                {/* Perfect fit indicator */}
+                                {!wasAdjusted &&
+                                  !textMeasurement.willOverflow && (
+                                    <div
+                                      style={{
+                                        position: "absolute",
+                                        top: "-2px",
+                                        right: "-2px",
+                                        backgroundColor: "#2e7d32",
+                                        color: "white",
+                                        fontSize: "8px",
+                                        padding: "1px 3px",
+                                        borderRadius: "2px",
+                                        zIndex: 1000,
+                                        pointerEvents: "none",
+                                        fontFamily: "monospace",
+                                      }}
+                                    >
+                                      ✅
+                                    </div>
                                   )}
-                                </div>
-                              )}
+                              </div>
+                            );
+                          })()}
 
-                            {/* PRESERVED: Other elements */}
-                            {!hasPlacedContent &&
-                              element.type !== "TextFrame" &&
-                              !isContentFrame && (
-                                <div
-                                  style={{
-                                    padding: "4px",
-                                    fontSize: "10px",
-                                    color: "#999",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    height: "100%",
-                                    textAlign: "center",
-                                  }}
-                                >
-                                  {element.type}
+                        {/* PRESERVED: Content frame placeholder */}
+                        {isContentFrame &&
+                          !hasPlacedContent &&
+                          !element.linkedImage?.isEmbedded && (
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                height: "100%",
+                                fontSize: "12px",
+                                color: "#666",
+                                backgroundColor: "rgba(0, 170, 255, 0.1)",
+                                flexDirection: "column",
+                              }}
+                            >
+                              🖼️ Content Frame
+                              <br />
+                              {Math.round(elementPosition.width)}×
+                              {Math.round(elementPosition.height)}px
+                              {element.name && element.name !== "$ID/" && (
+                                <>
                                   <br />
-                                  {Math.round(elementPosition.width)}×
-                                  {Math.round(elementPosition.height)}px
-                                </div>
+                                  <span
+                                    style={{
+                                      fontSize: "10px",
+                                      fontStyle: "italic",
+                                    }}
+                                  >
+                                    {element.name}
+                                  </span>
+                                </>
                               )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div>No pages found in document</div>
+                            </div>
+                          )}
+
+                        {/* PRESERVED: Other elements */}
+                        {!hasPlacedContent &&
+                          element.type !== "TextFrame" &&
+                          !isContentFrame && (
+                            <div
+                              style={{
+                                padding: "4px",
+                                fontSize: "10px",
+                                color: "#999",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                height: "100%",
+                                textAlign: "center",
+                              }}
+                            >
+                              {element.type}
+                              <br />
+                              {Math.round(elementPosition.width)}×
+                              {Math.round(elementPosition.height)}px
+                            </div>
+                          )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             );
           })()}
+
+          {/* NEW: Page Tabs - Moved below the document */}
+          {renderPageTabs(
+            documentData,
+            currentPageIndex,
+            setCurrentPageIndex,
+            setSelectedElement,
+            getElementsForPage,
+            utils,
+            backgroundConfig,
+            importedGetPageBackgroundColor,
+            importedGetDocumentBackgroundColor
+          )}
 
           {/* PRESERVED: Enhanced Selection Info Panel */}
           {selectedElement && (

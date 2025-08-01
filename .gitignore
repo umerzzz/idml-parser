@@ -32,7 +32,7 @@ CLAUDE.md
 *.sw?
 # OS specific
 .DS_Store
-
+idml-text-formatting-*.json
 # Task files
 # tasks.json
 # tasks/ 
