@@ -263,6 +263,8 @@ export default function Viewer() {
     getFontStyle,
     getTextAlign,
     extractTextDecorations,
+    ensureTextContrast: (textColor, backgroundColor) =>
+      ColorUtils.ensureTextContrast(textColor, backgroundColor),
   };
 
   // Centralized function to get elements for a specific page
@@ -359,42 +361,51 @@ export default function Viewer() {
       return elementsWithLinkedImages;
     }
 
-    // If neither exists, use intelligent distribution
+    // NEW: Use comprehensive mapping system for accurate page assignment
     if (documentData.elements && documentData.pages) {
       const allElements = documentData.elements;
       const pageIndex = documentData.pages.findIndex((p) => p.self === pageId);
 
       if (pageIndex >= 0) {
         console.log(
-          `🔍 Using intelligent distribution for page ${pageId} (index ${pageIndex})`
+          `🔍 Using comprehensive mapping for page ${pageId} (index ${pageIndex})`
         );
 
-        // Get all elements without pageId
-        const unassignedElements = allElements.filter(
-          (element) => !element.pageId
+        // First try to use the comprehensive mapping data if available
+        if (documentData.elementToPageMap && documentData.pageToElementsMap) {
+          const elementIdsForPage =
+            documentData.pageToElementsMap[pageId] || [];
+          const pageElements = allElements.filter((element) =>
+            elementIdsForPage.includes(element.self || element.id)
+          );
+
+          console.log(
+            `📊 Page ${pageId}: ${pageElements.length} elements from comprehensive mapping data`
+          );
+
+          if (pageElements.length > 0) {
+            const elementsWithIds = pageElements.map((element) => ({
+              ...element,
+              id:
+                element.id ||
+                element.self ||
+                `element_${Math.random().toString(36).substr(2, 9)}`,
+            }));
+
+            return elementsWithIds;
+          }
+        }
+
+        // Fallback: Get elements that belong to this specific page based on their pageId
+        const pageElements = allElements.filter(
+          (element) => element.pageId === pageId
         );
 
         console.log(
-          `📊 Total elements: ${allElements.length}, unassigned: ${unassignedElements.length}`
+          `📊 Page ${pageId}: ${pageElements.length} elements assigned via pageId fallback`
         );
 
-        if (unassignedElements.length > 0) {
-          // Distribute elements evenly across pages
-          const elementsPerPage = Math.ceil(
-            unassignedElements.length / documentData.pages.length
-          );
-          const startIndex = pageIndex * elementsPerPage;
-          const endIndex = Math.min(
-            startIndex + elementsPerPage,
-            unassignedElements.length
-          );
-
-          const pageElements = unassignedElements.slice(startIndex, endIndex);
-
-          console.log(
-            `📊 Distributed ${pageElements.length} elements to page ${pageId} (${startIndex}-${endIndex} of ${unassignedElements.length})`
-          );
-
+        if (pageElements.length > 0) {
           // Ensure elements have proper IDs
           const elementsWithIds = pageElements.map((element) => ({
             ...element,
@@ -409,11 +420,16 @@ export default function Viewer() {
             elementsWithIds.map((el) => ({
               id: el.id,
               name: el.name,
+              type: el.type,
               hasLinkedImage: !!el.linkedImage,
             }))
           );
 
           return elementsWithIds;
+        } else {
+          console.log(
+            `📄 No elements found for page ${pageId} in comprehensive mapping`
+          );
         }
       }
     }
@@ -1544,7 +1560,8 @@ export default function Viewer() {
                           docData,
                           backgroundConfig,
                           utils.convertColor
-                        )
+                        ),
+                      backgroundConfig
                     ),
                     border: "1px solid #ccc",
                     overflow: "hidden",
@@ -1878,7 +1895,19 @@ export default function Viewer() {
                               story,
                               element.position.height,
                               element.position.width,
-                              utils
+                              utils,
+                              importedGetPageBackgroundColor(
+                                currentPage,
+                                documentData,
+                                utils.convertColor,
+                                (docData) =>
+                                  importedGetDocumentBackgroundColor(
+                                    docData,
+                                    backgroundConfig,
+                                    utils.convertColor
+                                  ),
+                                backgroundConfig
+                              )
                             );
 
                             let wasAdjusted = false;
@@ -2001,7 +2030,19 @@ export default function Viewer() {
                                       story,
                                       element.position.height,
                                       adjustedFontSize,
-                                      utils
+                                      utils,
+                                      importedGetPageBackgroundColor(
+                                        currentPage,
+                                        documentData,
+                                        utils.convertColor,
+                                        (docData) =>
+                                          importedGetDocumentBackgroundColor(
+                                            docData,
+                                            backgroundConfig,
+                                            utils.convertColor
+                                          ),
+                                        backgroundConfig
+                                      )
                                     );
                                   }
                                 })()}

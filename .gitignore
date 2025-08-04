@@ -33,6 +33,7 @@ CLAUDE.md
 # OS specific
 .DS_Store
 idml-text-formatting-*.json
+page-debug-*.json
 # Task files
 # tasks.json
 # tasks/ 

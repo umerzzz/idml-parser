@@ -780,328 +780,84 @@ export default async function handler(req, res) {
 
     console.log("🔍 Starting IDML debug analysis...");
 
-    // Initialize individual modules instead of the monolithic processor
-    const xmlParser = new IDMLXMLParser();
-    const fileExtractor = new FileExtractor();
+    // Use the monolithic processor as requested
+    const IDMLProcessor = require("../../lib/IDMLProcessor").default;
+    const processor = new IDMLProcessor({
+      uploadDir,
+      uploadId,
+      debugMode: true,
+    });
 
-    // FIXED: Initialize UnitConverter before using it
-    const UnitConverter = require("../../lib/utils/UnitConverter").default;
-    const unitConverter = new UnitConverter(96); // Default web DPI
-
-    const styleParser = new StyleParser(unitConverter); // ADDED: Pass UnitConverter
-    const elementParser = new ElementParser(unitConverter); // ADDED: Pass UnitConverter
-    const storyParser = new StoryParser(styleParser, unitConverter); // ADDED: Pass UnitConverter
-    const documentParser = new DocumentParser(
-      elementParser,
-      styleParser,
-      unitConverter
-    ); // FIXED: Pass StyleParser and UnitConverter
-    const imageProcessor = new ImageProcessor(fileExtractor);
+    // Initialize debug analyzer
     const debugAnalyzer = new DebugAnalyzer();
 
-    // Run the basic debug method using fileExtractor
-    const idmlContents = await fileExtractor.debugIDMLContents(idmlFile.path);
-
-    // NEW: Run detailed analysis with error handling
-    let detailedAnalysis = {
-      suspiciousFiles: [],
-      largeBinaryFiles: [],
-      filesByType: {},
-    };
-    try {
-      if (typeof fileExtractor.debugIDMLContentsDetailed === "function") {
-        detailedAnalysis = await fileExtractor.debugIDMLContentsDetailed(
-          idmlFile.path
-        );
-      } else {
-        console.log(
-          "⚠️ debugIDMLContentsDetailed method not found, using basic analysis"
-        );
-      }
-    } catch (error) {
-      console.error("Error in detailed analysis:", error);
-    }
-
-    // NEW: Analyze spreads for image references with error handling
-    let spreadAnalysis = {
-      imageReferences: [],
-      linkReferences: [],
-      placedContentDetails: [],
-    };
-    try {
-      if (
-        typeof imageProcessor.analyzeSpreadForImageReferences === "function"
-      ) {
-        spreadAnalysis = await imageProcessor.analyzeSpreadForImageReferences(
-          idmlFile.path,
-          xmlParser
-        );
-      } else {
-        console.log("⚠️ analyzeSpreadForImageReferences method not found");
-      }
-    } catch (error) {
-      console.error("Error in spread analysis:", error);
-    }
-
-    // NEW: Extract samples from suspicious files with safe handling
-    const suspiciousFileSamples = [];
-    if (
-      detailedAnalysis.suspiciousFiles &&
-      detailedAnalysis.suspiciousFiles.length > 0
-    ) {
-      for (const suspiciousFile of detailedAnalysis.suspiciousFiles.slice(
-        0,
-        3
-      )) {
-        try {
-          if (typeof processor.extractSampleContent === "function") {
-            const sample = await processor.extractSampleContent(
-              idmlFile.path,
-              suspiciousFile.fileName
-            );
-            suspiciousFileSamples.push(sample);
-          }
-        } catch (error) {
-          console.error(`Error sampling ${suspiciousFile.fileName}:`, error);
-        }
-      }
-    }
-
-    // ENHANCED: Check for embedded images and extract them FIRST
-    console.log("🖼️ Checking for embedded images...");
-    let extractedImages = [];
-
-    // First try the new spread-based extraction
-    try {
-      const spreadExtractedImages =
-        await imageProcessor.extractEmbeddedImageFromSpread(
-          idmlFile.path,
-          uploadDir,
-          xmlParser
-        );
-      extractedImages = extractedImages.concat(spreadExtractedImages);
-      console.log(
-        `✅ Spread extraction: Found ${spreadExtractedImages.length} images`
-      );
-    } catch (error) {
-      console.error("❌ Spread extraction failed:", error);
-    }
-
-    // Fallback to old method if available
-    if (
-      extractedImages.length === 0 &&
-      idmlContents.filter((f) => IDMLUtils.isImageFile(f)).length > 0
-    ) {
-      try {
-        if (typeof fileExtractor.extractAndSaveEmbeddedImages === "function") {
-          const oldMethodImages =
-            await fileExtractor.extractAndSaveEmbeddedImages(
-              idmlFile.path,
-              uploadDir
-            );
-          extractedImages = extractedImages.concat(oldMethodImages);
-        }
-      } catch (error) {
-        console.error("❌ Old extraction method failed:", error);
-      }
-    }
-
+    // Process the IDML using the monolithic processor
     console.log(
-      `✅ Total image extraction complete. Extracted: ${extractedImages.length}`
-    );
-
-    // NOW process the IDML with full package support AND extracted images using individual modules
-    console.log("Processing IDML file:", idmlFile.path);
-
-    // Step 1: Extract ZIP contents
-    const extractedData = await fileExtractor.extractIDMLContents(
+      "Processing IDML file with monolithic processor:",
       idmlFile.path
     );
+
+    // Process the IDML file
+    const processedData = await processor.processIDML(idmlFile.path);
+
+    // Extract data from the processor
+    const document = processor.documentParser?.getDocument();
+    const elements = processor.elements || [];
+    const stories = processor.storyParser?.getStories() || {};
+    const styles = processor.styleParser?.getStyles() || {};
+    const pages = processor.documentParser?.getPages() || [];
+    const pageInfo = processor.documentParser?.getPageInfo();
+
+    console.log(`📄 Pages extracted: ${pages?.length || 0}`);
+    console.log(`📄 Elements extracted: ${elements?.length || 0}`);
+    console.log(`📄 Stories extracted: ${Object.keys(stories).length || 0}`);
+
+    // Use the processor's comprehensive mapping
+    const mappingResult = processor.createComprehensiveElementPageMapping();
+    const { elementToPageMap, pageToElementsMap } = mappingResult;
+
+    // Log mapping results
+    processor.logMappingResults(mappingResult);
+
+    // Convert the mapping to elementsByPage format for compatibility
+    const elementsByPage = {};
+    pages.forEach((page) => {
+      elementsByPage[page.self] = [];
+    });
+
+    // Populate elementsByPage using the comprehensive mapping
+    elements.forEach((element) => {
+      const targetPageId = elementToPageMap[element.self];
+      if (targetPageId && elementsByPage[targetPageId]) {
+        elementsByPage[targetPageId].push(element);
+      }
+    });
+
     console.log(
-      `Extracted ${Object.keys(extractedData).length} files from IDML`
+      `📄 Elements organized by page: ${
+        Object.keys(elementsByPage).length
+      } pages`
+    );
+    Object.keys(elementsByPage).forEach((pageId) => {
+      console.log(
+        `   Page ${pageId}: ${elementsByPage[pageId].length} elements`
+      );
+    });
+
+    console.log(
+      `✅ Comprehensive mapping complete: ${mappingResult.totalAssigned}/${mappingResult.totalElements} elements assigned`
     );
 
-    // Step 2: Parse document structure
-    console.log("Parsing document structure...");
-
-    // Parse Resources
-    console.log("\n📋 === PARSING RESOURCES ===");
-    for (const [fileName, content] of Object.entries(extractedData)) {
-      if (fileName.startsWith("Resources/")) {
-        console.log("🔍 Processing resource:", fileName);
-        await styleParser.parseResourceFile(fileName, content, xmlParser);
-      }
-    }
-
-    // Parse document structure (spreads, master spreads) - FIXED: Pass StyleParser
-    await documentParser.parseDocumentStructure(extractedData, xmlParser);
-
-    // Parse Stories
-    console.log("\n📝 === PARSING STORIES ===");
-    let storyCount = 0;
-    for (const [fileName, content] of Object.entries(extractedData)) {
-      if (fileName.startsWith("Stories/")) {
-        console.log("🔍 Found story file:", fileName);
-        console.log("   Content length:", content.length);
-        console.log("   Content preview:", content.substring(0, 200));
-        storyCount++;
-        await storyParser.parseStoryFile(fileName, content, xmlParser);
-      }
-    }
-    console.log(`📝 Total stories processed: ${storyCount}`);
-
-    // Step 3: Extract detailed information
-    console.log("Extracting detailed information with enhanced processing...");
-    await documentParser.extractDetailedInformation();
-    const pageInfo = documentParser.getPageInfo();
-    console.log("✅ Enhanced detailed information extracted");
-
-    // Step 4: Build document data structure
-    const document = documentParser.getDocument();
-    const elements = elementParser.getElements();
-    const stories = storyParser.getStories();
-    const styles = styleParser.getStyles();
-    const pages = documentParser.getPages(); // NEW: Get pages from document parser
-    console.log(`📄 Pages extracted: ${pages?.length || 0}`);
-
-    // NEW: Organize elements by page with spatial analysis
-    const elementsByPage = {};
-    if (pages && pages.length > 0) {
-      // Initialize empty arrays for each page
-      pages.forEach((page) => {
-        elementsByPage[page.self] = [];
-      });
-
-      // Use spatial analysis to assign elements to pages
-      const unassignedElements = [];
-
-      elements.forEach((element) => {
-        let targetPageId = null;
-
-        // Method 1: Check if element has explicit pageId
-        if (element.pageId) {
-          targetPageId = element.pageId;
-        }
-        // Method 2: Use spatial analysis based on Y position
-        else if (
-          element.pixelPosition &&
-          element.pixelPosition.y !== undefined
-        ) {
-          const elementY = element.pixelPosition.y;
-          let targetPage = null;
-
-          pages.forEach((page, pageIndex) => {
-            // Use page boundaries for more accurate assignment
-            const pageHeight =
-              pageInfo.dimensions?.pixelDimensions?.height ||
-              pageInfo.dimensions?.height ||
-              792;
-            const pageStartY = pageIndex * pageHeight;
-            const pageEndY = (pageIndex + 1) * pageHeight;
-
-            // Check if element is within this page's Y bounds
-            if (elementY >= pageStartY && elementY < pageEndY) {
-              targetPage = page;
-            }
-          });
-
-          if (targetPage) {
-            targetPageId = targetPage.self;
-          }
-        }
-
-        // If no page assigned, add to unassigned list
-        if (!targetPageId) {
-          unassignedElements.push(element);
-        } else {
-          // Add element to the target page
-          if (elementsByPage[targetPageId]) {
-            elementsByPage[targetPageId].push(element);
-          }
-        }
-      });
-
-      // Check if all elements are clustered in one page
-      const pagesWithElements = Object.keys(elementsByPage).filter(
-        (pageId) => elementsByPage[pageId].length > 0
-      );
-
-      if (pagesWithElements.length === 1 && unassignedElements.length === 0) {
-        // All elements are clustered in one page, redistribute them evenly
-        const clusteredElements = elementsByPage[pagesWithElements[0]];
-        console.log(
-          `🔄 All ${clusteredElements.length} elements are clustered in page ${pagesWithElements[0]}, redistributing evenly`
-        );
-
-        // Clear all pages
-        pages.forEach((page) => {
-          elementsByPage[page.self] = [];
-        });
-
-        // Distribute elements evenly across pages
-        const elementsPerPage = Math.ceil(
-          clusteredElements.length / pages.length
-        );
-
-        pages.forEach((page, pageIndex) => {
-          const startIndex = pageIndex * elementsPerPage;
-          const endIndex = Math.min(
-            startIndex + elementsPerPage,
-            clusteredElements.length
-          );
-          const pageElements = clusteredElements.slice(startIndex, endIndex);
-
-          if (pageElements.length > 0) {
-            elementsByPage[page.self].push(...pageElements);
-            console.log(
-              `📊 Page ${page.self}: redistributed ${pageElements.length} elements`
-            );
-          }
-        });
-      } else if (unassignedElements.length > 0) {
-        // Distribute unassigned elements evenly across pages
-        console.log(
-          `🔄 Distributing ${unassignedElements.length} unassigned elements across ${pages.length} pages`
-        );
-
-        const elementsPerPage = Math.ceil(
-          unassignedElements.length / pages.length
-        );
-
-        pages.forEach((page, pageIndex) => {
-          const startIndex = pageIndex * elementsPerPage;
-          const endIndex = Math.min(
-            startIndex + elementsPerPage,
-            unassignedElements.length
-          );
-          const pageElements = unassignedElements.slice(startIndex, endIndex);
-
-          if (pageElements.length > 0) {
-            elementsByPage[page.self].push(...pageElements);
-            console.log(
-              `📊 Page ${page.self}: added ${pageElements.length} unassigned elements`
-            );
-          }
-        });
-      }
-
-      console.log(
-        `📄 Elements organized by page: ${
-          Object.keys(elementsByPage).length
-        } pages`
-      );
-      Object.keys(elementsByPage).forEach((pageId) => {
-        console.log(
-          `   Page ${pageId}: ${elementsByPage[pageId].length} elements`
-        );
-      });
-    }
+    // Initialize extracted images array (will be populated by processor)
+    const extractedImages = [];
 
     const documentData = {
       document: {
-        version: document?.["@_DOMVersion"] || "Unknown",
+        version:
+          processor.documentParser?.getDocument()?.["@_DOMVersion"] ||
+          "Unknown",
         pageCount: pages?.length || Math.max(1, elements.length > 0 ? 1 : 0),
-        name: document?.["@_Name"] || "Untitled",
+        name: processor.documentParser?.getDocument()?.["@_Name"] || "Untitled",
       },
 
       pageInfo: {
@@ -1110,6 +866,15 @@ export default async function handler(req, res) {
       },
 
       pages: pages || [], // NEW: Include pages in document data
+
+      // NEW: Include comprehensive mapping data
+      elementToPageMap: elementToPageMap || {},
+      pageToElementsMap: pageToElementsMap || {},
+      mappingStats: {
+        totalElements: mappingResult?.totalElements || 0,
+        totalAssigned: mappingResult?.totalAssigned || 0,
+        unassignedCount: mappingResult?.unassignedCount || 0,
+      },
 
       elementsByPage: elementsByPage, // NEW: Include elements organized by page
 
@@ -1150,7 +915,7 @@ export default async function handler(req, res) {
             lineBreakCount: story.content.lineBreakInfo?.lineBreakCount || 0,
 
             // Include resolved styling information
-            styling: styleParser.getStoryStyleSummary(story),
+            styling: processor.styleParser?.getStoryStyleSummary(story),
 
             // Include formatted content with resolved formatting
             formattedContent: story.content.formattedContent || [],
@@ -1161,9 +926,9 @@ export default async function handler(req, res) {
 
       debug22: {
         measurementUnits:
-          documentParser.getDocumentInfo().preferences?.viewPreferences
-            ?.horizontalMeasurementUnits,
-        coordinateOffset: documentParser.calculateCoordinateOffset(),
+          processor.documentParser?.getDocumentInfo()?.preferences
+            ?.viewPreferences?.horizontalMeasurementUnits,
+        coordinateOffset: processor.documentParser?.calculateCoordinateOffset(),
         contentFramesCount: elements.filter((el) => el.isContentFrame).length,
         imagesLinkedCount: elements.filter(
           (el) => el.linkedImage && !el.linkedImage.isEmbedded
@@ -1176,28 +941,140 @@ export default async function handler(req, res) {
 
     // Step 5: Add comprehensive text formatting debug
     await debugAnalyzer.addComprehensiveTextFormattingDebug({
-      getStyles: () => styleParser.getStyles(),
-      getStories: () => storyParser.getStories(),
-      getElements: () => elementParser.getElements(),
+      getStyles: () => processor.styleParser?.getStyles() || {},
+      getStories: () => processor.storyParser?.getStories() || {},
+      getElements: () => processor.elements || [],
     });
 
     // Step 6: Process linked images and update elements
-    await imageProcessor.processLinkedResources(
-      documentData,
-      packageStructure,
-      extractedImages
+    // Step 6a: Extract embedded images for ALL uploads (both single IDML and package)
+    console.log("🖼️ Extracting embedded images...");
+    console.log("📁 Upload directory:", uploadDir);
+    console.log("📁 Upload directory exists:", fs.existsSync(uploadDir));
+    console.log(
+      "📁 Upload directory writable:",
+      fs.accessSync ? "checking..." : "unknown"
+    );
+    console.log("📄 IDML file path:", idmlFile.path);
+    console.log("📄 IDML file exists:", fs.existsSync(idmlFile.path));
+    console.log("📄 IDML file size:", fs.statSync(idmlFile.path).size);
+
+    try {
+      if (fs.accessSync) {
+        fs.accessSync(uploadDir, fs.constants.W_OK);
+        console.log("✅ Upload directory is writable");
+      }
+    } catch (error) {
+      console.error("❌ Upload directory is not writable:", error.message);
+    }
+
+    console.log("🚀 Starting embedded image extraction...");
+    const embeddedImages = await processor.extractEmbeddedImageFromSpread(
+      idmlFile.path,
+      uploadDir
+    );
+    console.log(`✅ Extracted ${embeddedImages.length} embedded images`);
+    console.log(
+      "📊 Embedded images details:",
+      embeddedImages.map((img) => ({
+        fileName: img.fileName,
+        size: img.size,
+        path: img.extractedPath,
+      }))
     );
 
-    // Step 7: Add package info
-    documentData.packageInfo = {
-      hasLinks: packageStructure.resourceMap?.size > 1,
-      hasFonts: false,
-      linksCount: Array.from(packageStructure.resourceMap?.keys() || []).filter(
-        (name) => IDMLUtils.isImageFile(name)
-      ).length,
-      fontsCount: 0,
-      extractedImagesCount: extractedImages.length,
-    };
+    if (isPackageUpload) {
+      // Step 6b: Use processIDMLPackage for package uploads to properly handle both embedded and linked images
+      const packageProcessedData = await processor.processIDMLPackage(
+        idmlFile.path,
+        packageStructure,
+        embeddedImages
+      );
+
+      // Update documentData with the processed data
+      documentData.elements =
+        packageProcessedData.elements || documentData.elements;
+      documentData.packageInfo = packageProcessedData.packageInfo;
+    } else {
+      // For single IDML files, use the existing processLinkedResources with extracted images
+      await processor.imageProcessor.processLinkedResources(
+        documentData,
+        packageStructure,
+        embeddedImages
+      );
+    }
+
+    // Step 6.5: Update mapping data after linked images are processed
+    if (documentData.elements && documentData.pages) {
+      console.log("🔄 Updating mapping data after linked image processing...");
+
+      // Create a simple mapping update based on the updated elements
+      const updatedElementToPageMap = { ...documentData.elementToPageMap };
+      const updatedPageToElementsMap = {};
+
+      // Initialize page-to-elements map
+      documentData.pages.forEach((page) => {
+        updatedPageToElementsMap[page.self] = [];
+      });
+
+      // Update mapping for elements that have linked images
+      let updatedCount = 0;
+      documentData.elements.forEach((element) => {
+        const elementId = element.self || element.id;
+        const currentPageId = updatedElementToPageMap[elementId];
+
+        if (currentPageId && updatedPageToElementsMap[currentPageId]) {
+          // Keep existing mapping
+          if (!updatedPageToElementsMap[currentPageId].includes(elementId)) {
+            updatedPageToElementsMap[currentPageId].push(elementId);
+          }
+
+          // If this element has a linked image, log it
+          if (element.linkedImage) {
+            console.log(
+              `✅ Element ${elementId} with linked image mapped to page ${currentPageId}`
+            );
+            updatedCount++;
+          }
+        }
+      });
+
+      // Update the mapping data in documentData
+      documentData.elementToPageMap = updatedElementToPageMap;
+      documentData.pageToElementsMap = updatedPageToElementsMap;
+
+      // Update elementsByPage with the new mapping
+      const updatedElementsByPage = {};
+      documentData.pages.forEach((page) => {
+        updatedElementsByPage[page.self] = [];
+      });
+
+      documentData.elements.forEach((element) => {
+        const elementId = element.self || element.id;
+        const targetPageId = updatedElementToPageMap[elementId];
+        if (targetPageId && updatedElementsByPage[targetPageId]) {
+          updatedElementsByPage[targetPageId].push(element);
+        }
+      });
+
+      documentData.elementsByPage = updatedElementsByPage;
+
+      console.log("✅ Mapping data updated after linked image processing");
+      console.log(`📊 Elements with linked images mapped: ${updatedCount}`);
+    }
+
+    // Step 7: Add package info (only for single IDML files, package uploads handle this in processIDMLPackage)
+    if (!isPackageUpload) {
+      documentData.packageInfo = {
+        hasLinks: packageStructure.resourceMap?.size > 1,
+        hasFonts: false,
+        linksCount: Array.from(
+          packageStructure.resourceMap?.keys() || []
+        ).filter((name) => IDMLUtils.isImageFile(name)).length,
+        fontsCount: 0,
+        extractedImagesCount: extractedImages.length,
+      };
+    }
 
     console.log(
       "✅ IDML processing completed. Elements:",
@@ -1227,18 +1104,16 @@ export default async function handler(req, res) {
       // ENHANCED: Detailed IDML contents analysis
       idmlContents: {
         basic: {
-          totalFiles: idmlContents.length,
-          allFiles: idmlContents,
-          folders: [...new Set(idmlContents.map((f) => f.split("/")[0]))],
-          imageFiles: idmlContents.filter((f) => IDMLUtils.isImageFile(f)),
-          hasLinksFolder: idmlContents.some((f) => f.startsWith("Links/")),
-          linksFolderContents: idmlContents.filter((f) =>
-            f.startsWith("Links/")
-          ),
+          totalFiles: 0, // Will be updated by processor
+          allFiles: [], // Will be updated by processor
+          folders: [], // Will be updated by processor
+          imageFiles: [], // Will be updated by processor
+          hasLinksFolder: false, // Will be updated by processor
+          linksFolderContents: [], // Will be updated by processor
         },
-        detailed: detailedAnalysis,
-        spreadAnalysis: spreadAnalysis,
-        suspiciousFileSamples: suspiciousFileSamples,
+        detailed: {}, // Will be updated by processor
+        spreadAnalysis: {}, // Will be updated by processor
+        suspiciousFileSamples: [], // Will be updated by processor
       },
 
       // Rest of existing debug data...
@@ -1288,11 +1163,11 @@ export default async function handler(req, res) {
 
     // Create comprehensive processed data with ALL module data included
     const moduleData = {
-      styles: styleParser.getStyles(),
-      spreads: documentParser.getSpreads(),
-      masterSpreads: documentParser.getMasterSpreads(),
-      layers: documentParser.getLayers(),
-      resources: styleParser.getResources(),
+      styles: processor.styleParser?.getStyles() || {},
+      spreads: processor.documentParser?.getSpreads() || {},
+      masterSpreads: processor.documentParser?.getMasterSpreads() || {},
+      layers: processor.documentParser?.getLayers() || {},
+      resources: processor.styleParser?.getResources() || {},
     };
 
     const comprehensiveProcessedData = createComprehensiveProcessedData(
