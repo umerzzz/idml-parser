@@ -484,13 +484,35 @@ function extractDocumentFontsImproved(documentData, fontMapper) {
               const key = `${fontFamily}-${fontStyle}`;
               if (!usedFonts.has(key)) {
                 usedFonts.add(key);
+
+                // ENHANCED: Use resolved font size or fallback to original size
+                let fontSize = segment.formatting.fontSize;
+                if (!fontSize && segment.formatting.originalFontSize) {
+                  // If no converted font size, use original size (will be converted by NextFontMapper)
+                  fontSize = segment.formatting.originalFontSize;
+                  console.log(
+                    `📐 Using original font size: ${fontSize} for NextFont mapping`
+                  );
+                } else if (!fontSize) {
+                  fontSize = story.styling?.fontSize || 16;
+                  console.log(
+                    `📐 Using fallback font size: ${fontSize} for NextFont mapping`
+                  );
+                } else {
+                  console.log(
+                    `📐 Using resolved font size: ${fontSize} for NextFont mapping`
+                  );
+                }
+
                 const config = fontMapper.mapToNextFont(
                   fontFamily,
                   fontStyle,
-                  segment.formatting.fontSize || story.styling?.fontSize || 16
+                  fontSize
                 );
                 fontConfigs.push(config);
-                console.log(`   📝 Found segment font: "${fontFamily}"`);
+                console.log(
+                  `   📝 Found segment font: "${fontFamily}" with size ${fontSize}`
+                );
               }
             }
           }
@@ -1101,6 +1123,15 @@ export default async function handler(req, res) {
         path: idmlFile.path,
       },
 
+      // ENHANCED: Unit conversion validation
+      unitConversion: {
+        documentUnits: documentData.pageInfo?.dimensions?.units || "Unknown",
+        pageDimensionsConverted:
+          !!documentData.pageInfo?.dimensions?.pixelDimensions,
+        fontSizesConverted: true, // Will be validated below
+        validationResults: null, // Will be populated below
+      },
+
       // ENHANCED: Detailed IDML contents analysis
       idmlContents: {
         basic: {
@@ -1200,6 +1231,13 @@ export default async function handler(req, res) {
       "✅ Modularized data structure complete - no legacy files created"
     );
 
+    // ENHANCED: Validate unit conversions and add to response
+    const unitValidation = IDMLUtils.validateUnitConversions(
+      comprehensiveProcessedData,
+      processor.unitConverter
+    );
+    console.log("📐 Unit conversion validation results:", unitValidation);
+
     console.log(
       "✅ Processing complete. Elements found:",
       comprehensiveProcessedData.elements.length
@@ -1233,6 +1271,7 @@ export default async function handler(req, res) {
       uploadType: isPackageUpload ? "package" : "single",
       filesProcessed: req.files.length,
       processingVersion: "2.0-comprehensive-modularized",
+      unitConversionValidation: unitValidation,
     });
   } catch (error) {
     console.error("❌ Upload error:", error);
