@@ -1969,35 +1969,62 @@ export default function Viewer() {
                               ).toFixed(1)}%`;
                             };
 
+                            // Map InDesign verticalJustification to CSS justify-content
+                            let justifyContent = "flex-start";
+                            switch (
+                              element.textFramePreferences
+                                ?.verticalJustification
+                            ) {
+                              case "CenterAlign":
+                                justifyContent = "center";
+                                break;
+                              case "BottomAlign":
+                                justifyContent = "flex-end";
+                                break;
+                              case "JustifyAlign":
+                                justifyContent = "stretch";
+                                break;
+                              case "TopAlign":
+                              default:
+                                justifyContent = "flex-start";
+                                break;
+                            }
+
+                            // Always define mergedStyles for TextFrame, fallback to finalStyles otherwise
+                            let mergedStyles = finalStyles;
+                            if (element.type === "TextFrame") {
+                              const inDesignCSS =
+                                InDesignTextMetrics.generateInDesignCSS(
+                                  storyFormatting,
+                                  frameMetrics
+                                );
+                              mergedStyles = {
+                                ...finalStyles,
+                                ...inDesignCSS,
+                              };
+                            }
+
                             return (
                               <div
                                 style={{
+                                  ...mergedStyles,
                                   position: "absolute",
                                   top: "0px",
                                   left: "0px",
                                   width: `${elementPosition.width}px`,
                                   height: `${elementPosition.height}px`,
-
-                                  padding: `${frameMetrics.insets.top}px ${frameMetrics.insets.right}px ${frameMetrics.insets.bottom}px ${frameMetrics.insets.left}px`,
-
-                                  fontSize: `${finalStyles.fontSize}`,
-                                  fontFamily: finalStyles.fontFamily,
-                                  fontWeight: finalStyles.fontWeight,
-                                  fontStyle: finalStyles.fontStyle,
-                                  color: finalStyles.color,
-                                  textAlign: finalStyles.textAlign,
-                                  lineHeight: finalStyles.lineHeight,
-                                  letterSpacing: finalStyles.letterSpacing,
-
-                                  margin: 0,
-
-                                  display: "block",
-                                  whiteSpace: "pre-wrap",
-                                  wordBreak: "break-word",
-                                  overflowWrap: "break-word",
-                                  overflow: "hidden",
-                                  boxSizing: "border-box",
-                                  textOverflow: "ellipsis",
+                                  display:
+                                    element.type === "TextFrame"
+                                      ? "flex"
+                                      : undefined,
+                                  flexDirection:
+                                    element.type === "TextFrame"
+                                      ? "column"
+                                      : undefined,
+                                  justifyContent:
+                                    element.type === "TextFrame"
+                                      ? justifyContent
+                                      : undefined,
                                 }}
                                 title={createTooltip()}
                               >
