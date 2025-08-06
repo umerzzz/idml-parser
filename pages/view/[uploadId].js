@@ -2044,8 +2044,10 @@ export default function Viewer() {
                                     return (
                                       <span
                                         style={{
-                                          whiteSpace: "pre-line",
-                                          display: "block",
+                                          whiteSpace: "pre-wrap",
+                                          display: "inline",
+                                          wordBreak: "break-word",
+                                          overflowWrap: "break-word",
                                         }}
                                       >
                                         {formattedText}
@@ -2053,23 +2055,33 @@ export default function Viewer() {
                                     );
                                   } else {
                                     // For regular elements, use the normal formatted text rendering
-                                    return renderFormattedText(
-                                      story,
-                                      element.position.height,
-                                      adjustedFontSize,
-                                      utils,
-                                      importedGetPageBackgroundColor(
-                                        currentPage,
-                                        documentData,
-                                        utils.convertColor,
-                                        (docData) =>
-                                          importedGetDocumentBackgroundColor(
-                                            docData,
-                                            backgroundConfig,
-                                            utils.convertColor
-                                          ),
-                                        backgroundConfig
-                                      )
+                                    // FIXED: Wrap in span to ensure horizontal flow of text segments
+                                    return (
+                                      <span
+                                        style={{
+                                          display: "inline",
+                                          whiteSpace: "pre-wrap",
+                                        }}
+                                      >
+                                        {renderFormattedText(
+                                          story,
+                                          element.position.height,
+                                          adjustedFontSize,
+                                          utils,
+                                          importedGetPageBackgroundColor(
+                                            currentPage,
+                                            documentData,
+                                            utils.convertColor,
+                                            (docData) =>
+                                              importedGetDocumentBackgroundColor(
+                                                docData,
+                                                backgroundConfig,
+                                                utils.convertColor
+                                              ),
+                                            backgroundConfig
+                                          )
+                                        )}
+                                      </span>
                                     );
                                   }
                                 })()}
