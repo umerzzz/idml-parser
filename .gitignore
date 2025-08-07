@@ -38,3 +38,4 @@ page-debug-*.json
 # tasks.json
 # tasks/ 
 *.rar
+cleanup.py
