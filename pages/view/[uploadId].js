@@ -1109,7 +1109,7 @@ export default function Viewer() {
         </h3>
         {elementsForCurrentPage.map((element, index) => (
           <div
-            key={element.id}
+            key={`debug-${element.id}-${index}`}
             onClick={() => setSelectedElement(element)}
             style={{
               padding: "8px",
@@ -1487,7 +1487,7 @@ export default function Viewer() {
 
                     return (
                       <div
-                        key={element.id}
+                        key={`render-${element.id}-${index}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelectedElement(element);
