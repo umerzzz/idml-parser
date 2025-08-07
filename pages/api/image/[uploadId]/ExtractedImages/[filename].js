@@ -2,15 +2,7 @@ import path from "path";
 import fs from "fs";
 
 export default function handler(req, res) {
-  console.log(`🖼️ ExtractedImages API endpoint called!`);
-
   const { uploadId, filename } = req.query;
-
-  console.log(`🖼️ ExtractedImages API request:`, {
-    uploadId,
-    filename,
-    method: req.method,
-  });
 
   try {
     // Try the filename as-is first
@@ -22,12 +14,6 @@ export default function handler(req, res) {
       filename
     );
 
-    console.log(`🖼️ Checking image path:`, {
-      imagePath,
-      exists: fs.existsSync(imagePath),
-      cwd: process.cwd(),
-    });
-
     // If not found, try URL-encoded version
     if (!fs.existsSync(imagePath)) {
       const encodedFilename = encodeURIComponent(filename);
@@ -38,17 +24,9 @@ export default function handler(req, res) {
         "ExtractedImages",
         encodedFilename
       );
-
-      console.log(`🖼️ Trying URL-encoded filename:`, {
-        originalFilename: filename,
-        encodedFilename,
-        newImagePath: imagePath,
-        exists: fs.existsSync(imagePath),
-      });
     }
 
     if (!fs.existsSync(imagePath)) {
-      console.log(`❌ Image not found: ${imagePath}`);
       return res.status(404).json({ error: "Image not found" });
     }
 

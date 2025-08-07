@@ -55,10 +55,6 @@ function runMiddleware(req, res, fn) {
 }
 
 function createComprehensiveProcessedData(rawData, moduleData = {}) {
-  console.log("🔧 Creating comprehensive processed data with ALL details...");
-  console.log("Raw elements count:", rawData.elements?.length || 0);
-  console.log("Raw stories count:", Object.keys(rawData.stories || {}).length);
-
   // Build comprehensive processed data with NO filtering and ALL details preserved
   const processedData = {
     // ===== DOCUMENT INFORMATION =====
@@ -224,18 +220,6 @@ function createComprehensiveProcessedData(rawData, moduleData = {}) {
       return acc;
     }, {}),
   };
-
-  console.log("✅ Comprehensive processed data created:");
-  console.log(
-    "- Elements:",
-    processedData.elements.length,
-    "(no filtering applied)"
-  );
-  console.log("- Stories:", Object.keys(processedData.stories).length);
-  console.log("- Pages:", processedData.pages?.length || 0);
-  console.log("- Styles included:", !!processedData.styles);
-  console.log("- Spreads included:", !!processedData.spreads);
-  console.log("- Resources included:", !!processedData.resources);
 
   return processedData;
 }
@@ -447,8 +431,6 @@ function extractDocumentFontsImproved(documentData, fontMapper) {
   const usedFonts = new Set();
   const fontConfigs = [];
 
-  console.log("🔍 Extracting fonts from document data (improved)...");
-
   // Extract fonts from stories (main source)
   if (documentData.stories) {
     Object.values(documentData.stories).forEach((story) => {
@@ -465,7 +447,6 @@ function extractDocumentFontsImproved(documentData, fontMapper) {
             story.styling.fontSize || 16
           );
           fontConfigs.push(config);
-          console.log(`   📝 Found story font: "${story.styling.fontFamily}"`);
         }
       }
 
@@ -490,18 +471,8 @@ function extractDocumentFontsImproved(documentData, fontMapper) {
                 if (!fontSize && segment.formatting.originalFontSize) {
                   // If no converted font size, use original size (will be converted by NextFontMapper)
                   fontSize = segment.formatting.originalFontSize;
-                  console.log(
-                    `📐 Using original font size: ${fontSize} for NextFont mapping`
-                  );
                 } else if (!fontSize) {
                   fontSize = story.styling?.fontSize || 16;
-                  console.log(
-                    `📐 Using fallback font size: ${fontSize} for NextFont mapping`
-                  );
-                } else {
-                  console.log(
-                    `📐 Using resolved font size: ${fontSize} for NextFont mapping`
-                  );
                 }
 
                 const config = fontMapper.mapToNextFont(
@@ -510,9 +481,6 @@ function extractDocumentFontsImproved(documentData, fontMapper) {
                   fontSize
                 );
                 fontConfigs.push(config);
-                console.log(
-                  `   📝 Found segment font: "${fontFamily}" with size ${fontSize}`
-                );
               }
             }
           }
@@ -534,24 +502,10 @@ function extractDocumentFontsImproved(documentData, fontMapper) {
             16
           );
           fontConfigs.push(config);
-          console.log(`   📝 Found resource font: "${fontFamily.name}"`);
         }
       }
     });
   }
-
-  console.log(
-    `📊 Extracted ${fontConfigs.length} unique fonts from document (improved)`
-  );
-
-  // Log summary
-  fontConfigs.forEach((font, index) => {
-    console.log(
-      `   ${index + 1}. "${font.originalFamily}" → "${font.fontFamily}" (${
-        font.nextFont
-      })`
-    );
-  });
 
   return fontConfigs;
 }
@@ -563,8 +517,6 @@ function extractDocumentFontsImproved(documentData, fontMapper) {
  * @returns {Object} Next.js font configuration
  */
 function processNextFonts(documentData, fontMapper) {
-  console.log("🔤 Starting Next.js font processing...");
-
   // Clear previous cache
   fontMapper.clearCache();
 
@@ -672,16 +624,6 @@ function processNextFonts(documentData, fontMapper) {
     },
   };
 
-  console.log(`🎯 Next.js font processing summary:`);
-  console.log(`   📊 Total fonts mapped: ${mappedFonts.length}`);
-  console.log(
-    `   📦 Google Fonts: ${mappedFonts.filter((f) => f.isGoogleFont).length}`
-  );
-  console.log(
-    `   🖥️  System Fonts: ${mappedFonts.filter((f) => f.isSystemFont).length}`
-  );
-  console.log(`   🔗 Unique Next.js fonts: ${usedFontNames.length}`);
-
   return nextFontConfig;
 }
 
@@ -696,13 +638,6 @@ export default async function handler(req, res) {
     const uploadDir = req.uploadDir;
     const uploadId = req.uploadTimestamp;
 
-    console.log("🆔 Upload ID:", uploadId);
-    console.log("📁 Upload Dir:", uploadDir);
-    console.log(
-      "📄 Files uploaded:",
-      req.files.map((f) => f.filename)
-    );
-
     const idmlFile = req.files.find((file) => file.filename.endsWith(".idml"));
     if (!idmlFile) {
       return res.status(400).json({ error: "No IDML file found" });
@@ -710,10 +645,6 @@ export default async function handler(req, res) {
 
     // ENHANCED: Detect upload type and setup package structure
     const isPackageUpload = req.files.length > 1;
-
-    console.log(
-      `📦 Upload type: ${isPackageUpload ? "Package" : "Single IDML"}`
-    );
 
     // FIXED: Proper package structure setup
     const packageStructure = {
@@ -780,7 +711,6 @@ export default async function handler(req, res) {
               path.basename(file.filename),
               targetPath
             );
-            console.log(`📂 Moved ${file.filename} to Links folder`);
           } catch (error) {
             console.warn(
               `⚠️  Could not move ${file.filename} to Links folder:`,
@@ -790,17 +720,6 @@ export default async function handler(req, res) {
         }
       });
     }
-
-    console.log("📦 Package structure:", {
-      uploadDir: packageStructure.uploadDir,
-      uploadId: packageStructure.uploadId,
-      filesCount: packageStructure.resourceMap.size,
-      hasIdml: !!idmlFile,
-      isPackage: isPackageUpload,
-      linksFolder: packageStructure.linksFolder,
-    });
-
-    console.log("🔍 Starting IDML debug analysis...");
 
     // Use the monolithic processor as requested
     const IDMLProcessor = require("../../lib/IDMLProcessor").default;
@@ -813,12 +732,6 @@ export default async function handler(req, res) {
     // Initialize debug analyzer
     const debugAnalyzer = new DebugAnalyzer();
 
-    // Process the IDML using the monolithic processor
-    console.log(
-      "Processing IDML file with monolithic processor:",
-      idmlFile.path
-    );
-
     // Process the IDML file
     const processedData = await processor.processIDML(idmlFile.path);
 
@@ -829,10 +742,6 @@ export default async function handler(req, res) {
     const styles = processor.styleParser?.getStyles() || {};
     const pages = processor.documentParser?.getPages() || [];
     const pageInfo = processor.documentParser?.getPageInfo();
-
-    console.log(`📄 Pages extracted: ${pages?.length || 0}`);
-    console.log(`📄 Elements extracted: ${elements?.length || 0}`);
-    console.log(`📄 Stories extracted: ${Object.keys(stories).length || 0}`);
 
     // Use the processor's comprehensive mapping
     const mappingResult = processor.createComprehensiveElementPageMapping();
@@ -854,21 +763,6 @@ export default async function handler(req, res) {
         elementsByPage[targetPageId].push(element);
       }
     });
-
-    console.log(
-      `📄 Elements organized by page: ${
-        Object.keys(elementsByPage).length
-      } pages`
-    );
-    Object.keys(elementsByPage).forEach((pageId) => {
-      console.log(
-        `   Page ${pageId}: ${elementsByPage[pageId].length} elements`
-      );
-    });
-
-    console.log(
-      `✅ Comprehensive mapping complete: ${mappingResult.totalAssigned}/${mappingResult.totalElements} elements assigned`
-    );
 
     // Initialize extracted images array (will be populated by processor)
     const extractedImages = [];
@@ -970,39 +864,17 @@ export default async function handler(req, res) {
 
     // Step 6: Process linked images and update elements
     // Step 6a: Extract embedded images for ALL uploads (both single IDML and package)
-    console.log("🖼️ Extracting embedded images...");
-    console.log("📁 Upload directory:", uploadDir);
-    console.log("📁 Upload directory exists:", fs.existsSync(uploadDir));
-    console.log(
-      "📁 Upload directory writable:",
-      fs.accessSync ? "checking..." : "unknown"
-    );
-    console.log("📄 IDML file path:", idmlFile.path);
-    console.log("📄 IDML file exists:", fs.existsSync(idmlFile.path));
-    console.log("📄 IDML file size:", fs.statSync(idmlFile.path).size);
-
     try {
       if (fs.accessSync) {
         fs.accessSync(uploadDir, fs.constants.W_OK);
-        console.log("✅ Upload directory is writable");
       }
     } catch (error) {
       console.error("❌ Upload directory is not writable:", error.message);
     }
 
-    console.log("🚀 Starting embedded image extraction...");
     const embeddedImages = await processor.extractEmbeddedImageFromSpread(
       idmlFile.path,
       uploadDir
-    );
-    console.log(`✅ Extracted ${embeddedImages.length} embedded images`);
-    console.log(
-      "📊 Embedded images details:",
-      embeddedImages.map((img) => ({
-        fileName: img.fileName,
-        size: img.size,
-        path: img.extractedPath,
-      }))
     );
 
     if (isPackageUpload) {
@@ -1028,8 +900,6 @@ export default async function handler(req, res) {
 
     // Step 6.5: Update mapping data after linked images are processed
     if (documentData.elements && documentData.pages) {
-      console.log("🔄 Updating mapping data after linked image processing...");
-
       // Create a simple mapping update based on the updated elements
       const updatedElementToPageMap = { ...documentData.elementToPageMap };
       const updatedPageToElementsMap = {};
@@ -1051,11 +921,8 @@ export default async function handler(req, res) {
             updatedPageToElementsMap[currentPageId].push(elementId);
           }
 
-          // If this element has a linked image, log it
+          // If this element has a linked image, count it
           if (element.linkedImage) {
-            console.log(
-              `✅ Element ${elementId} with linked image mapped to page ${currentPageId}`
-            );
             updatedCount++;
           }
         }
@@ -1080,9 +947,6 @@ export default async function handler(req, res) {
       });
 
       documentData.elementsByPage = updatedElementsByPage;
-
-      console.log("✅ Mapping data updated after linked image processing");
-      console.log(`📊 Elements with linked images mapped: ${updatedCount}`);
     }
 
     // Step 7: Add package info (only for single IDML files, package uploads handle this in processIDMLPackage)
@@ -1098,18 +962,9 @@ export default async function handler(req, res) {
       };
     }
 
-    console.log(
-      "✅ IDML processing completed. Elements:",
-      documentData.elements.length
-    );
-
     // ADDED: Automatic Next.js font processing
-    console.log("🔤 Processing Next.js fonts automatically...");
     const fontMapper = new NextFontMapper();
     documentData.nextFonts = processNextFonts(documentData, fontMapper);
-    console.log(
-      `✅ Font processing completed. Mapped ${documentData.nextFonts.usedFonts.length} unique fonts`
-    );
 
     // Create ENHANCED debug JSON file
     const debugData = {
@@ -1182,16 +1037,6 @@ export default async function handler(req, res) {
       },
     };
 
-    // MODULARIZED ONLY: Debug data is now included in modularized structure
-    console.log("✅ Debug data included in modularized structure");
-
-    console.log("🔍 Raw document data structure:");
-    console.log("- Elements:", documentData.elements?.length || 0);
-    console.log("- Stories:", Object.keys(documentData.stories || {}).length);
-    console.log("- Pages:", documentData.pages?.length || 0);
-    console.log("- PageInfo:", !!documentData.pageInfo);
-    console.log("- Package Info:", documentData.packageInfo);
-
     // Create comprehensive processed data with ALL module data included
     const moduleData = {
       styles: processor.styleParser?.getStyles() || {},
@@ -1208,12 +1053,8 @@ export default async function handler(req, res) {
 
     // ADD extracted images to the processed data so frontend can access them
     comprehensiveProcessedData.extractedImages = extractedImages;
-    console.log(
-      `📸 Added ${extractedImages.length} extracted images to processed data`
-    );
 
     // MODULARIZE: Create modularized data structure
-    console.log("🔧 Starting data modularization...");
     const modularizer = new DataModularizer(uploadDir);
     const modularizationIndex = modularizer.modularize(
       comprehensiveProcessedData
@@ -1223,42 +1064,12 @@ export default async function handler(req, res) {
     const legacyProcessedDataPath = path.join(uploadDir, "processed_data.json");
     if (fs.existsSync(legacyProcessedDataPath)) {
       fs.unlinkSync(legacyProcessedDataPath);
-      console.log("🗑️ Removed legacy processed_data.json file");
     }
-
-    // MODULARIZED ONLY: No longer saving raw_data.json or debug_analysis.json
-    console.log(
-      "✅ Modularized data structure complete - no legacy files created"
-    );
 
     // ENHANCED: Validate unit conversions and add to response
     const unitValidation = IDMLUtils.validateUnitConversions(
       comprehensiveProcessedData,
       processor.unitConverter
-    );
-    console.log("📐 Unit conversion validation results:", unitValidation);
-
-    console.log(
-      "✅ Processing complete. Elements found:",
-      comprehensiveProcessedData.elements.length
-    );
-    console.log("✅ Comprehensive data includes:");
-    console.log("  - Pages:", comprehensiveProcessedData.pages?.length || 0);
-    console.log(
-      "  - Elements by Page:",
-      Object.keys(comprehensiveProcessedData.elementsByPage || {}).length
-    );
-    console.log(
-      "  - Styles:",
-      Object.keys(comprehensiveProcessedData.styles || {}).length
-    );
-    console.log(
-      "  - Spreads:",
-      Object.keys(comprehensiveProcessedData.spreads || {}).length
-    );
-    console.log(
-      "  - Resources:",
-      Object.keys(comprehensiveProcessedData.resources || {}).length
     );
 
     res.json({

@@ -17,8 +17,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    console.log(`🔍 Processing document request for upload ID: ${uploadId}`);
-
     // Get the upload directory
     const uploadDir = path.join(process.cwd(), "uploads", uploadId);
 
@@ -41,16 +39,13 @@ export default async function handler(req, res) {
     let modularizer = null;
 
     if (fs.existsSync(indexFile)) {
-      console.log("Modularized data found, using modularized structure");
       modularizer = new DataModularizer(uploadDir);
     } else {
-      console.log("No modularized data found, processing IDML file...");
       // Need to process the IDML file
       await processIdmlFile(uploadDir, uploadId);
 
       // After processing, check for modularized data
       if (fs.existsSync(indexFile)) {
-        console.log("Modularized data created, using modularized structure");
         modularizer = new DataModularizer(uploadDir);
       } else {
         throw new Error("Failed to create modularized data");
@@ -58,22 +53,7 @@ export default async function handler(req, res) {
     }
 
     // MODULARIZED ONLY: Load modularized data
-    console.log("Loading modularized data...");
     const data = modularizer.loadAllModules();
-
-    console.log(
-      `Document loaded successfully for uploadId: ${uploadId} (using modularized data)`
-    );
-
-    // DEBUG: Check if pages field exists in the data
-    console.log("🔍 DEBUG: Checking pages field in loaded data...");
-    console.log("Data keys:", Object.keys(data));
-    console.log("Pages field exists:", !!data.pages);
-    console.log("Pages field type:", typeof data.pages);
-    console.log("Pages field length:", data.pages?.length);
-    if (data.pages && data.pages.length > 0) {
-      console.log("First page:", data.pages[0]);
-    }
 
     // Add metadata about the data source
     const responseData = {
@@ -98,8 +78,6 @@ export default async function handler(req, res) {
 
 // Helper function to process IDML file
 async function processIdmlFile(uploadDir, uploadId) {
-  console.log(`Processing IDML file for upload ID: ${uploadId}`);
-
   // Find the IDML file
   const files = fs.readdirSync(uploadDir);
   const idmlFile = files.find((file) => file.endsWith(".idml"));
@@ -120,15 +98,7 @@ async function processIdmlFile(uploadDir, uploadId) {
     fontMapping: true, // NEW: Enable font mapping
   });
 
-  console.log(`Processing IDML file: ${idmlPath}`);
   const documentData = await processor.processIDML(idmlPath);
-
-  // DEBUG: Check if pages field exists before saving
-  console.log("🔍 DEBUG: Checking pages field before saving to file:");
-  console.log("Document data keys:", Object.keys(documentData));
-  console.log("Pages field exists:", !!documentData.pages);
-  console.log("Pages field type:", typeof documentData.pages);
-  console.log("Pages field length:", documentData.pages?.length);
 
   // Save processed data to file
   const processedDataFile = path.join(uploadDir, "processed_data.json");
@@ -137,7 +107,6 @@ async function processIdmlFile(uploadDir, uploadId) {
     JSON.stringify(documentData, null, 2),
     "utf8"
   );
-  console.log(`Processed data saved to: ${processedDataFile}`);
 
   // Log page debug information to a separate file
   const pageDebugPath = path.join(
@@ -165,7 +134,6 @@ async function processIdmlFile(uploadDir, uploadId) {
   };
 
   fs.writeFileSync(pageDebugPath, JSON.stringify(debugInfo, null, 2), "utf8");
-  console.log(`Page debug information saved to ${pageDebugPath}`);
 
   // Also save raw data for backward compatibility (optional)
   const rawDataFile = path.join(uploadDir, "raw_data.json");
@@ -175,7 +143,6 @@ async function processIdmlFile(uploadDir, uploadId) {
       JSON.stringify(documentData, null, 2),
       "utf8"
     );
-    console.log(`Raw data backup saved to: ${rawDataFile}`);
   }
 
   return documentData;

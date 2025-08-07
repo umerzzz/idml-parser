@@ -25,17 +25,14 @@ export default async function handler(req, res) {
 
     switch (action) {
       case "cleanup":
-        console.log("🧹 Running cleanup of legacy files...");
         result = cleanupUtility.cleanupLegacyFiles();
         break;
 
       case "convert":
-        console.log("🔄 Converting legacy uploads to modularized...");
         result = cleanupUtility.convertLegacyToModularized();
         break;
 
       case "stats":
-        console.log("📊 Getting upload statistics...");
         result = cleanupUtility.getUploadStatistics();
         break;
 

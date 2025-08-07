@@ -233,17 +233,6 @@ export default function Viewer() {
     setTextFittingStrategy,
   } = useViewerState();
 
-  // Add debug log to verify ColorUtils is imported correctly - NEW
-  console.log("ColorUtils imported:", !!ColorUtils, typeof ColorUtils);
-  console.log(
-    "ColorUtils methods:",
-    ColorUtils
-      ? Object.getOwnPropertyNames(ColorUtils).filter(
-          (name) => typeof ColorUtils[name] === "function"
-        )
-      : "Not available"
-  );
-
   // Use custom hook for document loading
   const loadDocument = useDocumentLoader(uploadId, setDocumentData, setLoading);
 
@@ -271,26 +260,18 @@ export default function Viewer() {
   const getElementsForPage = useCallback((pageId, documentData) => {
     if (!documentData || !pageId) return [];
 
-    // Only log when called from thumbnail rendering to reduce noise
-    const callerContext = new Error().stack?.split("\n")[2] || "unknown";
-    if (callerContext.includes("renderPagePreview")) {
-      console.log(`🔍 getElementsForPage called for thumbnail: ${pageId}`);
-    }
-
     // First try to use existing pageElementIds if available
     if (documentData.pageElementIds && documentData.pageElementIds[pageId]) {
       const elementIds = documentData.pageElementIds[pageId];
       const elements = elementIds
         .map((id) => documentData.elementMap?.[id])
         .filter(Boolean);
-      console.log(`📊 Found ${elements.length} elements via pageElementIds`);
       return elements;
     }
 
     // Fallback to elementsByPage if available (this should now be correct from backend)
     if (documentData.elementsByPage && documentData.elementsByPage[pageId]) {
       const elements = documentData.elementsByPage[pageId];
-      console.log(`📊 Found ${elements.length} elements via elementsByPage`);
 
       // First, ensure elements have proper IDs by matching with main elements
       const elementsWithIds = elements.map((element) => {
@@ -300,9 +281,6 @@ export default function Viewer() {
         );
 
         if (mainElement) {
-          console.log(
-            `🆔 Assigning ID ${mainElement.id} to element "${element.name}"`
-          );
           return {
             ...element,
             id: mainElement.id || mainElement.self,
@@ -323,12 +301,6 @@ export default function Viewer() {
         );
 
         if (mainElement && mainElement.linkedImage) {
-          console.log(
-            `🔗 Merging linked image for element ${
-              element.id || element.name
-            }:`,
-            mainElement.linkedImage
-          );
           return {
             ...element,
             linkedImage: mainElement.linkedImage,
@@ -337,26 +309,6 @@ export default function Viewer() {
 
         return element;
       });
-
-      console.log(
-        `📊 Elements with merged linked images:`,
-        elementsWithLinkedImages.map((el) => ({
-          id: el.id,
-          name: el.name,
-          hasLinkedImage: !!el.linkedImage,
-        }))
-      );
-
-      // Debug: Only log when called from thumbnail rendering
-      const callerContext = new Error().stack?.split("\n")[2] || "unknown";
-      if (callerContext.includes("renderPagePreview")) {
-        const elementsWithImages = elementsWithLinkedImages.filter(
-          (el) => el.linkedImage && el.linkedImage.url
-        );
-        console.log(
-          `📊 Found ${elementsWithImages.length} elements with linked images for thumbnail: ${pageId}`
-        );
-      }
 
       return elementsWithLinkedImages;
     }
@@ -367,20 +319,12 @@ export default function Viewer() {
       const pageIndex = documentData.pages.findIndex((p) => p.self === pageId);
 
       if (pageIndex >= 0) {
-        console.log(
-          `🔍 Using comprehensive mapping for page ${pageId} (index ${pageIndex})`
-        );
-
         // First try to use the comprehensive mapping data if available
         if (documentData.elementToPageMap && documentData.pageToElementsMap) {
           const elementIdsForPage =
             documentData.pageToElementsMap[pageId] || [];
           const pageElements = allElements.filter((element) =>
             elementIdsForPage.includes(element.self || element.id)
-          );
-
-          console.log(
-            `📊 Page ${pageId}: ${pageElements.length} elements from comprehensive mapping data`
           );
 
           if (pageElements.length > 0) {
@@ -401,10 +345,6 @@ export default function Viewer() {
           (element) => element.pageId === pageId
         );
 
-        console.log(
-          `📊 Page ${pageId}: ${pageElements.length} elements assigned via pageId fallback`
-        );
-
         if (pageElements.length > 0) {
           // Ensure elements have proper IDs
           const elementsWithIds = pageElements.map((element) => ({
@@ -415,26 +355,13 @@ export default function Viewer() {
               `element_${Math.random().toString(36).substr(2, 9)}`,
           }));
 
-          console.log(
-            `📊 Elements with IDs:`,
-            elementsWithIds.map((el) => ({
-              id: el.id,
-              name: el.name,
-              type: el.type,
-              hasLinkedImage: !!el.linkedImage,
-            }))
-          );
-
           return elementsWithIds;
         } else {
-          console.log(
-            `📄 No elements found for page ${pageId} in comprehensive mapping`
-          );
+          // No elements found for page in comprehensive mapping
         }
       }
     }
 
-    console.log(`❌ No elements found for page ${pageId}`);
     return [];
   }, []);
 
@@ -448,25 +375,11 @@ export default function Viewer() {
   const updateElementsForCurrentPage = useCallback(() => {
     if (!documentData) return;
 
-    console.log("🔍 updateElementsForCurrentPage called with:", {
-      hasPages: !!documentData.pages,
-      pagesLength: documentData.pages?.length,
-      hasPageElementIds: !!documentData.pageElementIds,
-      hasElementMap: !!documentData.elementMap,
-      hasElementsByPage: !!documentData.elementsByPage,
-      currentPageIndex,
-      currentPage: documentData.pages?.[currentPageIndex],
-    });
-
     // Generate missing mappings if they don't exist
     let pageElementIds = documentData.pageElementIds;
     let elementMap = documentData.elementMap;
 
     if (!pageElementIds || !elementMap) {
-      console.log(
-        "🔧 Generating missing pageElementIds and elementMap mappings..."
-      );
-
       // Create elementMap from elements array
       elementMap = {};
       if (documentData.elements && documentData.elements.length > 0) {
@@ -564,11 +477,7 @@ export default function Viewer() {
           // Log the distribution
           documentData.pages.forEach((page, pageIndex) => {
             if (page.self) {
-              console.log(
-                `📄 Page ${pageIndex + 1} (${page.self}): ${
-                  pageElementIds[page.self].length
-                } elements`
-              );
+              // Page element count logged
             }
           });
         } else {
@@ -580,11 +489,6 @@ export default function Viewer() {
           });
         }
       }
-
-      console.log("🔧 Generated mappings:", {
-        elementMapKeys: Object.keys(elementMap),
-        pageElementIdsKeys: Object.keys(pageElementIds),
-      });
     }
 
     // Use centralized function to get elements for current page
@@ -592,25 +496,13 @@ export default function Viewer() {
       const currentPage = documentData.pages[currentPageIndex];
       if (currentPage && currentPage.self) {
         const pageElements = getElementsForPage(currentPage.self, documentData);
-        console.log(
-          `Loading ${pageElements.length} elements for page ${
-            currentPageIndex + 1
-          } (ID: ${currentPage.self})`
-        );
-        console.log(
-          "Page elements found:",
-          pageElements.map((el) => ({ id: el.id, type: el.type }))
-        );
         setElementsForCurrentPage(pageElements);
       } else {
         // Fallback to all elements if page not found
-        console.log("Page not found, using all elements as fallback");
         setElementsForCurrentPage(documentData.elements || []);
       }
     } else {
       // Fallback to all elements if no pages data
-      console.log("Missing pages data, using all elements as fallback");
-      console.log("Available keys:", Object.keys(documentData || {}));
       setElementsForCurrentPage(documentData.elements || []);
     }
   }, [documentData, currentPageIndex]);
@@ -620,8 +512,6 @@ export default function Viewer() {
     if (documentData) {
       // Set up pages
       const pagesData = documentData.pages || [];
-      console.log("Pages data:", pagesData);
-      console.log("Document page count:", documentData.document?.pageCount);
       setPages(pagesData);
 
       // Update elements for the current page
@@ -1395,24 +1285,10 @@ export default function Viewer() {
             );
 
             // DEBUG: Check for extracted images and image linking
-            console.log("🔍 Document data check:", {
-              hasElements: !!documentData.elements,
-              elementsCount: documentData.elements?.length || 0,
-              hasExtractedImages: !!documentData.extractedImages,
-              extractedImagesCount: documentData.extractedImages?.length || 0,
-              currentPageId: currentPage?.id,
-              pageElementsCount: pageElements?.length || 0,
-            });
 
             if (!currentPage) {
               return <div>No page data available</div>;
             }
-
-            console.log(
-              `🎨 RENDERING CURRENT PAGE ${currentPageIndex + 1}: ${
-                currentPage.self
-              } (${currentPage.name})`
-            );
 
             // Get elements for the current page using centralized function
             const pageElementsForRendering = getElementsForPage(
@@ -1427,84 +1303,8 @@ export default function Viewer() {
             ) {
               const pageElementsWithLinkedImages =
                 pageElementsForRendering.filter((el) => el.linkedImage);
-              console.log(
-                `🔍 Page elements with linked images: ${pageElementsWithLinkedImages.length}/${pageElementsForRendering.length}`
-              );
-
-              if (pageElementsWithLinkedImages.length > 0) {
-                console.log(
-                  "✅ Page elements with linked images:",
-                  pageElementsWithLinkedImages.map((el) => ({
-                    id: el.id,
-                    name: el.name,
-                    linkedImage: el.linkedImage,
-                  }))
-                );
-              } else {
-                console.log("❌ No page elements have linkedImage properties");
-                // Check if page elements have the same IDs as document elements with linked images
-                const documentElementsWithLinkedImages =
-                  documentData.elements?.filter((el) => el.linkedImage) || [];
-                const pageElementIds = pageElementsForRendering.map(
-                  (el) => el.id
-                );
-                const linkedElementIds = documentElementsWithLinkedImages.map(
-                  (el) => el.id
-                );
-
-                console.log("🔍 Page element IDs:", pageElementIds);
-                console.log("🔍 Linked element IDs:", linkedElementIds);
-
-                // Check for ID mismatches
-                const missingIds = linkedElementIds.filter(
-                  (id) => !pageElementIds.includes(id)
-                );
-                if (missingIds.length > 0) {
-                  console.log(
-                    "❌ Missing linked elements from page:",
-                    missingIds
-                  );
-                }
-
-                // Show detailed comparison
-                console.log("🔍 Detailed comparison:");
-                console.log(
-                  "Page elements:",
-                  pageElementsForRendering.map((el) => ({
-                    id: el.id,
-                    name: el.name,
-                    hasLinkedImage: !!el.linkedImage,
-                  }))
-                );
-                console.log(
-                  "Document elements with linked images:",
-                  documentElementsWithLinkedImages.map((el) => ({
-                    id: el.id,
-                    name: el.name,
-                    linkedImage: el.linkedImage,
-                  }))
-                );
-              }
+              // Page elements with linked images analysis completed
             }
-
-            console.log(
-              `🎨 RENDERING CURRENT PAGE ${currentPageIndex + 1} (${
-                currentPage.self
-              }) with ${pageElementsForRendering.length} elements:`,
-              pageElementsForRendering.map((el) => ({
-                id: el.id,
-                type: el.type,
-                pageId: el.pageId,
-                position: el.pixelPosition
-                  ? {
-                      x: Math.round(el.pixelPosition.x),
-                      y: Math.round(el.pixelPosition.y),
-                      width: Math.round(el.pixelPosition.width),
-                      height: Math.round(el.pixelPosition.height),
-                    }
-                  : "No position",
-              }))
-            );
 
             return (
               <div
@@ -1611,12 +1411,7 @@ export default function Viewer() {
                   {pageElementsForRendering.map((element, index) => {
                     // DEBUG: Only log elements with linked images to reduce noise
                     if (element.linkedImage && element.linkedImage.url) {
-                      console.log(`🧱 Processing element with image:`, {
-                        id: element.id,
-                        type: element.type,
-                        name: element.name,
-                        linkedImageUrl: element.linkedImage.url,
-                      });
+                      // Processing element with image
                     }
 
                     // DEBUG: Only log missing images to reduce noise
@@ -1625,20 +1420,10 @@ export default function Viewer() {
                       element.hasPlacedContent &&
                       !element.linkedImage
                     ) {
-                      console.warn(
-                        `⚠️ Element should have linked image but doesn't:`,
-                        {
-                          id: element.id,
-                          name: element.name,
-                          href: element.placedContent?.href,
-                        }
-                      );
+                      // Element should have linked image but doesn't
                     }
 
                     if (!element.pixelPosition) {
-                      console.warn(
-                        `⚠️ Skipping element ${element.id} because pixelPosition is missing!`
-                      );
                       return null;
                     }
 
@@ -1687,13 +1472,7 @@ export default function Viewer() {
                       constrainedPosition.height !== elementPosition.height;
 
                     if (wasConstrained) {
-                      console.warn(
-                        `⚠️ Element ${element.id} was constrained to page boundaries:`,
-                        {
-                          original: elementPosition,
-                          constrained: constrainedPosition,
-                        }
-                      );
+                      // Element was constrained to page boundaries
                     }
 
                     elementPosition = constrainedPosition;
@@ -1703,23 +1482,7 @@ export default function Viewer() {
                     const hasPlacedContent = element.placedContent;
 
                     if (showDebugInfo) {
-                      console.log(
-                        "🧱 Element positioning:",
-                        element.id,
-                        "Type:",
-                        element.type,
-                        "Position source:",
-                        element.pixelPosition ? "pixelPosition" : "position",
-                        "Final coords:",
-                        {
-                          x: elementPosition.x,
-                          y: elementPosition.y,
-                          width: elementPosition.width,
-                          height: elementPosition.height,
-                        },
-                        "Conversion info:",
-                        element.position?._conversionInfo
-                      );
+                      // Element positioning debug info
                     }
 
                     return (
@@ -1820,11 +1583,6 @@ export default function Viewer() {
                                 );
                                 e.target.style.display = "none";
                               }}
-                              onLoad={() => {
-                                console.log(
-                                  `✅ Main viewer image loaded successfully: ${element.linkedImage.url}`
-                                );
-                              }}
                             />
                           ) : element.linkedImage.isEmbedded ? (
                             <div
@@ -1917,18 +1675,6 @@ export default function Viewer() {
                             const containerHeight = elementPosition.height;
 
                             if (false && textMeasurement.willOverflow) {
-                              console.log(
-                                `📏 Text overflow detected in story ${element.parentStory}:`,
-                                {
-                                  textHeight: textMeasurement.textHeight,
-                                  availableHeight:
-                                    textMeasurement.availableHeight,
-                                  overflowAmount:
-                                    textMeasurement.overflowAmount,
-                                  lineCount: textMeasurement.lineCount,
-                                }
-                              );
-
                               const adjustment =
                                 InDesignTextMetrics.calculateOptimalFontSize(
                                   textMeasurement,
@@ -2179,12 +1925,6 @@ export default function Viewer() {
                                   e
                                 );
                                 e.target.style.display = "none";
-                              }}
-                              onLoad={() => {
-                                console.log(
-                                  "✅ Image loaded successfully:",
-                                  element.linkedImage.url
-                                );
                               }}
                             />
                           </>
