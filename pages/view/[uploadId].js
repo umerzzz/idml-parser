@@ -1728,7 +1728,7 @@ export default function Viewer() {
                                 justifyContent = "flex-end";
                                 break;
                               case "JustifyAlign":
-                                justifyContent = "stretch";
+                                justifyContent = "space-between";
                                 break;
                               case "TopAlign":
                               default:
@@ -1802,11 +1802,23 @@ export default function Viewer() {
                                   } else {
                                     // For regular elements, use the normal formatted text rendering
                                     // FIXED: Wrap in span to ensure horizontal flow of text segments
+                                    const columnCount =
+                                      element.textFramePreferences
+                                        ?.textColumnCount || 1;
+                                    const columnGap =
+                                      element.textFramePreferences
+                                        ?.textColumnGutter || 0;
+
                                     return (
-                                      <span
+                                      <div
                                         style={{
-                                          display: "inline",
-                                          whiteSpace: "pre-wrap",
+                                          width: "100%",
+                                          height: "100%",
+                                          columnCount: columnCount,
+                                          columnGap: `${columnGap}px`,
+                                          columnFill: "auto",
+                                          lineHeight: "inherit",
+                                          overflow: "hidden",
                                         }}
                                       >
                                         {renderFormattedText(
@@ -1827,7 +1839,7 @@ export default function Viewer() {
                                             backgroundConfig
                                           )
                                         )}
-                                      </span>
+                                      </div>
                                     );
                                   }
                                 })()}
