@@ -1,0 +1,195 @@
+.highlighter {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.elementFrame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.hovered {
+  z-index: 100;
+}
+
+.selected {
+  z-index: 999;
+}
+
+/* Element type label */
+.elementLabel {
+  position: absolute;
+  top: -25px;
+  left: 0;
+  background: #007bff;
+  color: white;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1000;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.elementLabel::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 8px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #007bff;
+}
+
+/* Selection information */
+.selectionInfo {
+  position: absolute;
+  top: -50px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 10px;
+  font-family: "Courier New", monospace;
+  padding: 4px 8px;
+  border-radius: 3px;
+  pointer-events: none;
+  z-index: 1000;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.dimensions {
+  font-weight: bold;
+}
+
+.position {
+  opacity: 0.8;
+  margin-top: 2px;
+}
+
+/* Corner indicators */
+.cornerIndicators {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.corner {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #007bff;
+  border: 1px solid white;
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.corner[data-corner="tl"] {
+  top: -3px;
+  left: -3px;
+}
+
+.corner[data-corner="tr"] {
+  top: -3px;
+  right: -3px;
+}
+
+.corner[data-corner="bl"] {
+  bottom: -3px;
+  left: -3px;
+}
+
+.corner[data-corner="br"] {
+  bottom: -3px;
+  right: -3px;
+}
+
+/* Hover overlay */
+.hoverOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 123, 255, 0.05);
+  pointer-events: none;
+  border-radius: 2px;
+}
+
+/* Animation effects */
+@keyframes pulseFrame {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+  }
+}
+
+.selected .elementFrame {
+  animation: pulseFrame 2s infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .elementLabel {
+    font-size: 10px;
+    padding: 1px 4px;
+  }
+
+  .selectionInfo {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+
+  .corner {
+    width: 8px;
+    height: 8px;
+  }
+
+  .corner[data-corner="tl"] {
+    top: -4px;
+    left: -4px;
+  }
+
+  .corner[data-corner="tr"] {
+    top: -4px;
+    right: -4px;
+  }
+
+  .corner[data-corner="bl"] {
+    bottom: -4px;
+    left: -4px;
+  }
+
+  .corner[data-corner="br"] {
+    bottom: -4px;
+    right: -4px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .selectionInfo {
+    background: rgba(255, 255, 255, 0.9);
+    color: black;
+  }
+
+  .corner {
+    border: 1px solid #333;
+  }
+}

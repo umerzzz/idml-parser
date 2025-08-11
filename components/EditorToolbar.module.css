@@ -1,0 +1,130 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toolbarGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  border-right: 1px solid #dee2e6;
+}
+
+.toolbarGroup:last-child {
+  border-right: none;
+}
+
+.formatBtn {
+  padding: 6px 12px;
+  border: 1px solid #ced4da;
+  background: white;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.formatBtn:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.formatBtn:active {
+  background: #dee2e6;
+  transform: translateY(1px);
+}
+
+.fontSelect,
+.sizeSelect {
+  padding: 4px 8px;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+  height: 32px;
+}
+
+.fontSelect {
+  min-width: 120px;
+}
+
+.sizeSelect {
+  min-width: 60px;
+}
+
+.colorLabel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.colorLabel:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.colorPicker {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.colorLabel span {
+  pointer-events: none;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .toolbar {
+    padding: 6px 8px;
+  }
+
+  .toolbarGroup {
+    padding: 0 4px;
+  }
+
+  .formatBtn {
+    padding: 4px 8px;
+    min-width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .fontSelect,
+  .sizeSelect {
+    font-size: 12px;
+    height: 28px;
+  }
+
+  .colorLabel {
+    width: 28px;
+    height: 28px;
+  }
+}

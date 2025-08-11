@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import React from "react"; // Added missing import for React.Fragment
 import { ColorUtils, InDesignTextMetrics } from "../../lib/index.js";
+import styles from "../../styles/editor.module.css";
 
 // Import extracted modules
 import {
@@ -222,6 +223,11 @@ export default function Viewer() {
   // Use custom hook for document loading
   const loadDocument = useDocumentLoader(uploadId, setDocumentData, setLoading);
 
+  // Simple editor state - use unique key instead of just element ID
+  const [selectedElementKey, setSelectedElementKey] = useState(null);
+  const [editingElementKey, setEditingElementKey] = useState(null);
+  const [editorMode, setEditorMode] = useState(false);
+
   // Background color override controls
   const backgroundModes = [
     { value: "auto", label: "Auto Detect" },
@@ -417,6 +423,37 @@ export default function Viewer() {
           height: "100%",
         }}
       >
+        {/* Simple Editor Toolbar */}
+        {selectedElementKey && (
+          <div
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "#f8f9fa",
+              borderBottom: "1px solid #dee2e6",
+              display: "flex",
+              alignItems: "center",
+              gap: "16px",
+              fontSize: "14px",
+            }}
+          >
+            <span style={{ fontWeight: "500" }}>
+              Selected: Element ({selectedElementKey})
+            </span>
+            <button
+              onClick={() => setSelectedElementKey(null)}
+              style={{
+                fontSize: "12px",
+                padding: "4px 8px",
+                border: "1px solid #ccc",
+                backgroundColor: "white",
+                borderRadius: "3px",
+                cursor: "pointer",
+              }}
+            >
+              Deselect
+            </button>
+          </div>
+        )}
         {/* Enhanced Canvas with Single Page Display */}
         <div
           style={{
@@ -450,13 +487,21 @@ export default function Viewer() {
               documentData
             );
 
+            // Sort elements by size (largest first, smallest last) so smaller elements render on top
+            const sortedElements = [...pageElementsForRendering].sort(
+              (a, b) => {
+                if (!a.pixelPosition || !b.pixelPosition) return 0;
+                const areaA = a.pixelPosition.width * a.pixelPosition.height;
+                const areaB = b.pixelPosition.width * b.pixelPosition.height;
+                return areaB - areaA; // Larger elements first (will be underneath)
+              }
+            );
+
             // DEBUG: Check if page elements have linked images
-            if (
-              pageElementsForRendering &&
-              pageElementsForRendering.length > 0
-            ) {
-              const pageElementsWithLinkedImages =
-                pageElementsForRendering.filter((el) => el.linkedImage);
+            if (sortedElements && sortedElements.length > 0) {
+              const pageElementsWithLinkedImages = sortedElements.filter(
+                (el) => el.linkedImage
+              );
               // Page elements with linked images analysis completed
             }
 
@@ -523,6 +568,11 @@ export default function Viewer() {
                     position: "relative",
                     isolation: "isolate",
                   }}
+                  onClick={(e) => {
+                    if (e.target === e.currentTarget) {
+                      setSelectedElementKey(null);
+                    }
+                  }}
                 >
                   {/* PRESERVED: Margins Visualization */}
                   {showMargins &&
@@ -562,7 +612,7 @@ export default function Viewer() {
                     })()}
 
                   {/* PRESERVED: Element Rendering for Current Page */}
-                  {pageElementsForRendering.map((element, index) => {
+                  {sortedElements.map((element, index) => {
                     // DEBUG: Only log elements with linked images to reduce noise
                     if (element.linkedImage && element.linkedImage.url) {
                       // Processing element with image
@@ -635,9 +685,22 @@ export default function Viewer() {
                       element.isContentFrame || element.hasPlacedContent;
                     const hasPlacedContent = element.placedContent;
 
+                    // Create unique key for this element instance
+                    const elementKey = `${element.id}-${index}`;
+                    const isSelected = selectedElementKey === elementKey;
+                    const isTextElement =
+                      element.type === "TextFrame" ||
+                      element.name === "Bulleted List" ||
+                      element.name === "Numbered List";
+
                     return (
                       <div
                         key={`render-${element.id}-${index}`}
+                        className={`${styles.idmlElement} ${
+                          isSelected ? styles.selected : ""
+                        }`}
+                        data-element-key={elementKey}
+                        data-is-selected={isSelected}
                         style={{
                           position: "absolute",
                           left: elementPosition.x + "px",
@@ -654,7 +717,7 @@ export default function Viewer() {
                               : element.fill
                               ? utils.convertColor(element.fill)
                               : "transparent",
-                          border: "none",
+                          border: "1px solid transparent",
                           overflow: "hidden",
                           transform: elementPosition.rotation
                             ? `rotate(${elementPosition.rotation}deg)`
@@ -669,8 +732,25 @@ export default function Viewer() {
                               : 1,
                           maxWidth: "100%",
                           maxHeight: "100%",
+                          cursor: isTextElement ? "text" : "pointer",
+                          transition: "border 0.2s ease, outline 0.2s ease",
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedElementKey(elementKey);
+                          if (
+                            isTextElement &&
+                            selectedElementKey === elementKey
+                          ) {
+                            setEditingElementKey(elementKey);
+                          }
                         }}
                       >
+                        {/* Element type label for hover */}
+                        <div className={styles.elementLabel}>
+                          {element.name || element.type || "Element"}
+                        </div>
+
                         {/* PRESERVED: Enhanced Image Rendering */}
                         {element.linkedImage &&
                           (element.linkedImage.url ? (

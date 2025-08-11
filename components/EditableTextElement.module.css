@@ -1,0 +1,125 @@
+.editableContainer {
+  position: relative;
+}
+
+.editableElement {
+  position: relative;
+  transition: border-color 0.2s ease;
+}
+
+.editableElement:hover {
+  border-color: #007bff !important;
+}
+
+.selected {
+  border-color: #007bff !important;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.editing {
+  border-color: #28a745 !important;
+  box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25);
+}
+
+.toolbar {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 8px;
+  min-width: 400px;
+}
+
+/* Selection handles */
+.selectionHandles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.handle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #007bff;
+  border: 2px solid white;
+  border-radius: 50%;
+  pointer-events: all;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.handle[data-handle="nw"] {
+  top: -4px;
+  left: -4px;
+  cursor: nw-resize;
+}
+
+.handle[data-handle="ne"] {
+  top: -4px;
+  right: -4px;
+  cursor: ne-resize;
+}
+
+.handle[data-handle="sw"] {
+  bottom: -4px;
+  left: -4px;
+  cursor: sw-resize;
+}
+
+.handle[data-handle="se"] {
+  bottom: -4px;
+  right: -4px;
+  cursor: se-resize;
+}
+
+.handle:hover {
+  background: #0056b3;
+  transform: scale(1.2);
+}
+
+/* Text editing styles */
+.editableElement [contenteditable="true"] {
+  outline: none;
+  caret-color: #007bff;
+}
+
+.editableElement [contenteditable="true"]:focus {
+  background: rgba(0, 123, 255, 0.05);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .toolbar {
+    min-width: 300px;
+    padding: 6px;
+  }
+
+  .handle {
+    width: 12px;
+    height: 12px;
+  }
+
+  .handle[data-handle="nw"] {
+    top: -6px;
+    left: -6px;
+  }
+
+  .handle[data-handle="ne"] {
+    top: -6px;
+    right: -6px;
+  }
+
+  .handle[data-handle="sw"] {
+    bottom: -6px;
+    left: -6px;
+  }
+
+  .handle[data-handle="se"] {
+    bottom: -6px;
+    right: -6px;
+  }
+}
