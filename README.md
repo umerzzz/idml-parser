@@ -170,7 +170,7 @@ IDML/
 ├── pages/                       # Next.js pages and API routes
 │   ├── api/                     # Backend API endpoints
 │   ├── view/                    # Document viewer pages
-│   └── debug/                   # Debugging interfaces
+
 ├── uploads/                     # Uploaded file storage
 └── public/                      # Static assets
 ```
@@ -238,7 +238,6 @@ Unlike other IDML viewers that rely on third-party services or libraries, this p
 
 - `DataModularizer`: Splits large documents into manageable JSON modules
 - `IDMLUtils`: Common utility functions for IDML processing
-- `DebugAnalyzer`: Development and debugging tools
 
 #### 5. **Frontend Layer**
 
@@ -364,13 +363,6 @@ The project evolved through several development phases:
 - Thumbnail previews
 - Error handling
 - Responsive design
-
-### Debugging Tools
-
-- **Debug Analyzer**: Comprehensive logging and analysis
-- **Page Debugger**: Page-specific debugging utilities
-- **Console Logging**: Detailed processing logs
-- **Error Tracking**: Graceful error handling and reporting
 
 ## Code Snippets
 

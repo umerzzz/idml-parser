@@ -12,7 +12,6 @@ import {
   ElementParser,
   DocumentParser,
   ImageProcessor,
-  DebugAnalyzer,
   IDMLUtils,
 } from "../../lib/index.js";
 
@@ -175,9 +174,6 @@ function createComprehensiveProcessedData(rawData, moduleData = {}) {
     // ===== RESOURCES AND ASSETS =====
     resources: moduleData.resources || rawData.resources || {},
 
-    // ===== DEBUG AND PROCESSING INFO =====
-    debug22: rawData.debug22 || {},
-
     // ===== PACKAGE INFORMATION =====
     packageInfo: {
       // Preserve existing package info
@@ -211,7 +207,7 @@ function createComprehensiveProcessedData(rawData, moduleData = {}) {
           "pageInfo",
           "elements",
           "stories",
-          "debug22",
+
           "packageInfo",
         ].includes(key)
       ) {
@@ -726,11 +722,7 @@ export default async function handler(req, res) {
     const processor = new IDMLProcessor({
       uploadDir,
       uploadId,
-      debugMode: true,
     });
-
-    // Initialize debug analyzer
-    const debugAnalyzer = new DebugAnalyzer();
 
     // Process the IDML file
     const processedData = await processor.processIDML(idmlFile.path);
@@ -839,28 +831,7 @@ export default async function handler(req, res) {
         }
         return acc;
       }, {}),
-
-      debug22: {
-        measurementUnits:
-          processor.documentParser?.getDocumentInfo()?.preferences
-            ?.viewPreferences?.horizontalMeasurementUnits,
-        coordinateOffset: processor.documentParser?.calculateCoordinateOffset(),
-        contentFramesCount: elements.filter((el) => el.isContentFrame).length,
-        imagesLinkedCount: elements.filter(
-          (el) => el.linkedImage && !el.linkedImage.isEmbedded
-        ).length,
-        embeddedImagesCount: elements.filter(
-          (el) => el.linkedImage && el.linkedImage.isEmbedded
-        ).length,
-      },
     };
-
-    // Step 5: Add comprehensive text formatting debug
-    await debugAnalyzer.addComprehensiveTextFormattingDebug({
-      getStyles: () => processor.styleParser?.getStyles() || {},
-      getStories: () => processor.storyParser?.getStories() || {},
-      getElements: () => processor.elements || [],
-    });
 
     // Step 6: Process linked images and update elements
     // Step 6a: Extract embedded images for ALL uploads (both single IDML and package)
@@ -966,77 +937,6 @@ export default async function handler(req, res) {
     const fontMapper = new NextFontMapper();
     documentData.nextFonts = processNextFonts(documentData, fontMapper);
 
-    // Create ENHANCED debug JSON file
-    const debugData = {
-      timestamp: new Date().toISOString(),
-      uploadId: uploadId,
-
-      // Basic file info
-      idmlFile: {
-        name: idmlFile.filename,
-        size: idmlFile.size,
-        path: idmlFile.path,
-      },
-
-      // ENHANCED: Unit conversion validation
-      unitConversion: {
-        documentUnits: documentData.pageInfo?.dimensions?.units || "Unknown",
-        pageDimensionsConverted:
-          !!documentData.pageInfo?.dimensions?.pixelDimensions,
-        fontSizesConverted: true, // Will be validated below
-        validationResults: null, // Will be populated below
-      },
-
-      // ENHANCED: Detailed IDML contents analysis
-      idmlContents: {
-        basic: {
-          totalFiles: 0, // Will be updated by processor
-          allFiles: [], // Will be updated by processor
-          folders: [], // Will be updated by processor
-          imageFiles: [], // Will be updated by processor
-          hasLinksFolder: false, // Will be updated by processor
-          linksFolderContents: [], // Will be updated by processor
-        },
-        detailed: {}, // Will be updated by processor
-        spreadAnalysis: {}, // Will be updated by processor
-        suspiciousFileSamples: [], // Will be updated by processor
-      },
-
-      // Rest of existing debug data...
-      packageUpload: {
-        totalUploadedFiles: req.files.length,
-        uploadedFiles: req.files.map((f) => ({
-          name: f.filename,
-          size: f.size,
-          mimetype: f.mimetype,
-        })),
-        isPackageUpload: req.files.length > 1,
-      },
-
-      processingResults: {
-        elementsFound: documentData.elements?.length || 0,
-        storiesFound: Object.keys(documentData.stories || {}).length,
-        contentFrames:
-          documentData.elements?.filter((el) => el.isContentFrame) || [],
-        embeddedImages:
-          documentData.elements?.filter((el) => el.linkedImage?.isEmbedded) ||
-          [],
-        placeholders:
-          documentData.elements?.filter(
-            (el) => el.linkedImage?.isPlaceholder
-          ) || [],
-      },
-
-      // Add extraction results to debug data
-      imageExtraction: {
-        totalFound: extractedImages.length,
-        totalExtracted: extractedImages.length,
-        extractedImages: extractedImages,
-        extractionSuccess: extractedImages.length > 0,
-        method: extractedImages.length > 0 ? "spread_xml_base64" : "none",
-      },
-    };
-
     // Create comprehensive processed data with ALL module data included
     const moduleData = {
       styles: processor.styleParser?.getStyles() || {},
@@ -1078,7 +978,7 @@ export default async function handler(req, res) {
       data: comprehensiveProcessedData,
       modularized: true,
       modularizationIndex: modularizationIndex,
-      debugAvailable: true,
+
       uploadType: isPackageUpload ? "package" : "single",
       filesProcessed: req.files.length,
       processingVersion: "2.0-comprehensive-modularized",

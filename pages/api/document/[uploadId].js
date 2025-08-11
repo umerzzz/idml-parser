@@ -92,7 +92,7 @@ async function processIdmlFile(uploadDir, uploadId) {
   const processor = new IDMLProcessor({
     convertToPixels: true,
     dpi: 72,
-    debug: true, // Enable debugging
+
     preserveOriginalUnits: true,
     enableNextFonts: true, // NEW: Enable Next.js font processing
     fontMapping: true, // NEW: Enable font mapping
@@ -107,33 +107,6 @@ async function processIdmlFile(uploadDir, uploadId) {
     JSON.stringify(documentData, null, 2),
     "utf8"
   );
-
-  // Log page debug information to a separate file
-  const pageDebugPath = path.join(
-    process.cwd(),
-    `page-debug-api-${uploadId}.json`
-  );
-
-  const debugInfo = {
-    timestamp: new Date().toISOString(),
-    uploadId,
-    pageCount: documentData.document?.pageCount || 0,
-    pageIds: documentData.pages?.map((page) => page.self) || [],
-    elementsByPageCount: Object.keys(documentData.elementsByPage || {}).map(
-      (pageId) => ({
-        pageId,
-        elementCount: documentData.elementsByPage[pageId]?.length || 0,
-      })
-    ),
-    totalElements: documentData.elements?.length || 0,
-    spreadsCount: Object.keys(documentData.spreads || {}).length,
-    storiesCount: Object.keys(documentData.stories || {}).length,
-    // NEW: Add font information
-    fontsCount: documentData.nextFonts?.totalFonts || 0,
-    fontNames: documentData.nextFonts?.usedFontNames || [],
-  };
-
-  fs.writeFileSync(pageDebugPath, JSON.stringify(debugInfo, null, 2), "utf8");
 
   // Also save raw data for backward compatibility (optional)
   const rawDataFile = path.join(uploadDir, "raw_data.json");
