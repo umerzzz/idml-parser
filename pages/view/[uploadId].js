@@ -1668,6 +1668,21 @@ export default function Viewer() {
                               )
                             );
 
+                            // Compute vertical offset using flex alignment by sizing child container
+                            const vJust =
+                              element.textFramePreferences
+                                ?.verticalJustification || "TopAlign";
+                            const columnsMeasuredHeight = Math.min(
+                              frameMetrics.contentArea.height,
+                              Math.max(0, textMeasurement.textHeight)
+                            );
+                            const useFullHeight =
+                              vJust === "JustifyAlign" ||
+                              textMeasurement.willOverflow;
+                            const childHeightCss = useFullHeight
+                              ? "100%"
+                              : `${Math.floor(columnsMeasuredHeight)}px`;
+
                             let wasAdjusted = false;
                             let adjustmentDetails = null;
 
@@ -1809,36 +1824,60 @@ export default function Viewer() {
                                       element.textFramePreferences
                                         ?.textColumnGutter || 0;
 
+                                    const isMultiColumn =
+                                      (columnCount || 1) > 1;
                                     return (
                                       <div
                                         style={{
                                           width: "100%",
-                                          height: "100%",
-                                          columnCount: columnCount,
-                                          columnGap: `${columnGap}px`,
-                                          columnFill: "auto",
+                                          height: isMultiColumn
+                                            ? "100%"
+                                            : "auto",
+                                          columnCount: isMultiColumn
+                                            ? columnCount
+                                            : undefined,
+                                          columnGap: isMultiColumn
+                                            ? `${columnGap}px`
+                                            : undefined,
+                                          columnFill: isMultiColumn
+                                            ? "auto"
+                                            : undefined,
                                           lineHeight: "inherit",
-                                          overflow: "hidden",
+                                          overflow: isMultiColumn
+                                            ? "hidden"
+                                            : "visible",
                                         }}
                                       >
-                                        {renderFormattedText(
-                                          story,
-                                          element.position.height,
-                                          adjustedFontSize,
-                                          utils,
-                                          importedGetPageBackgroundColor(
-                                            currentPage,
-                                            documentData,
-                                            utils.convertColor,
-                                            (docData) =>
-                                              importedGetDocumentBackgroundColor(
-                                                docData,
-                                                backgroundConfig,
-                                                utils.convertColor
-                                              ),
-                                            backgroundConfig
-                                          )
-                                        )}
+                                        <div
+                                          style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            columnCount: columnCount,
+                                            columnGap: `${columnGap}px`,
+                                            columnFill: "auto",
+                                            lineHeight: "inherit",
+                                            overflow: "hidden",
+                                          }}
+                                        >
+                                          {renderFormattedText(
+                                            story,
+                                            element.position.height,
+                                            adjustedFontSize,
+                                            utils,
+                                            importedGetPageBackgroundColor(
+                                              currentPage,
+                                              documentData,
+                                              utils.convertColor,
+                                              (docData) =>
+                                                importedGetDocumentBackgroundColor(
+                                                  docData,
+                                                  backgroundConfig,
+                                                  utils.convertColor
+                                                ),
+                                              backgroundConfig
+                                            )
+                                          )}
+                                        </div>
                                       </div>
                                     );
                                   }
