@@ -1,8 +1,16 @@
-import { useState, useEffect, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+  useTransition,
+} from "react";
 import { useRouter } from "next/router";
 import React from "react"; // Added missing import for React.Fragment
 import { ColorUtils, InDesignTextMetrics } from "../../lib/index.js";
 import styles from "../../styles/editor.module.css";
+import SideEditorPanel from "../../components/SideEditorPanel";
 
 // Import extracted modules
 import {
@@ -29,6 +37,7 @@ import {
   // Rendering
   getPagesArray,
   renderPageTabs,
+  renderPagePreview,
 
   // Hooks
   useViewerState,
@@ -227,6 +236,67 @@ export default function Viewer() {
   const [selectedElementKey, setSelectedElementKey] = useState(null);
   const [editingElementKey, setEditingElementKey] = useState(null);
   const [editorMode, setEditorMode] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  // Debounce live updates to avoid flicker during typing
+  const debounceRef = useRef(null);
+
+  // Fit-to-viewport zoom (always fit)
+  const scrollContainerRef = useRef(null);
+  const pageWrapperRef = useRef(null);
+  const [fitNonce, setFitNonce] = useState(0);
+  const [showSidebar, setShowSidebar] = useState(true);
+
+  const handleGlobalClick = useCallback(
+    (e) => {
+      // Ignore clicks inside the side editor portal
+      const target = e.target;
+      if (
+        target &&
+        target.closest &&
+        target.closest('[data-editor-panel="true"]')
+      ) {
+        return;
+      }
+      if (
+        pageWrapperRef.current &&
+        !pageWrapperRef.current.contains(e.target)
+      ) {
+        setSelectedElementKey(null);
+        setEditingElementKey(null);
+      }
+    },
+    [pageWrapperRef]
+  );
+
+  useEffect(() => {
+    if (!scrollContainerRef.current) return;
+    const ro = new ResizeObserver(() => setFitNonce((n) => n + 1));
+    ro.observe(scrollContainerRef.current);
+
+    const resizer = () => setFitNonce((n) => n + 1);
+    window.addEventListener("resize", resizer);
+    document.addEventListener("click", handleGlobalClick, true);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", resizer);
+      document.removeEventListener("click", handleGlobalClick, true);
+    };
+  }, [handleGlobalClick]);
+
+  // Editor handlers
+  const handleSaveEdit = useCallback((newContent) => {
+    // Here you would save the content back to the document data
+    // For now, just exit edit mode
+    console.log("Saving content:", newContent);
+    setEditingElementKey(null);
+    setSelectedElementKey(null);
+  }, []);
+
+  const handleCancelEdit = useCallback(() => {
+    setEditingElementKey(null);
+  }, []);
 
   // Background color override controls
   const backgroundModes = [
@@ -423,50 +493,112 @@ export default function Viewer() {
           height: "100%",
         }}
       >
-        {/* Simple Editor Toolbar */}
-        {selectedElementKey && (
-          <div
-            style={{
-              padding: "10px 20px",
-              backgroundColor: "#f8f9fa",
-              borderBottom: "1px solid #dee2e6",
-              display: "flex",
-              alignItems: "center",
-              gap: "16px",
-              fontSize: "14px",
-            }}
-          >
-            <span style={{ fontWeight: "500" }}>
-              Selected: Element ({selectedElementKey})
-            </span>
-            <button
-              onClick={() => setSelectedElementKey(null)}
-              style={{
-                fontSize: "12px",
-                padding: "4px 8px",
-                border: "1px solid #ccc",
-                backgroundColor: "white",
-                borderRadius: "3px",
-                cursor: "pointer",
-              }}
-            >
-              Deselect
-            </button>
-          </div>
-        )}
-        {/* Enhanced Canvas with Single Page Display */}
+        {/* Controls Bar */}
         <div
           style={{
             display: "flex",
-            flex: 1,
-            flexDirection: "column",
+            gap: 8,
             alignItems: "center",
-            padding: "20px",
+            padding: "8px 12px",
+            borderBottom: "1px solid #e5e7eb",
+            background: "#f9fafb",
+          }}
+        >
+          <button
+            onClick={() => setShowSidebar((s) => !s)}
+            title={showSidebar ? "Hide thumbnails" : "Show thumbnails"}
+            style={{
+              width: 28,
+              height: 28,
+              border: "1px solid #d1d5db",
+              background: "white",
+              borderRadius: 6,
+              cursor: "pointer",
+              fontSize: 14,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {/* Icon: two rectangles like pages */}
+            <span style={{ lineHeight: 1 }}>☰</span>
+          </button>
+        </div>
+        {/* Enhanced Canvas with Single Page Display */}
+        <div
+          ref={scrollContainerRef}
+          style={{
+            display: "flex",
+            flex: 1,
+            flexDirection: "row",
+            alignItems: "flex-start",
+            padding: "20px 20px 20px 20px",
+            gap: 16,
             overflow: "auto",
             backgroundColor: "#e9ecef",
           }}
         >
-          {/* NEW: Render only the current page */}
+          {/* Left sidebar: vertical page thumbnails */}
+          {showSidebar && (
+            <div
+              style={{
+                width: 160,
+                flex: "0 0 160px",
+                display: "flex",
+                flexDirection: "column",
+                gap: 12,
+                alignItems: "center",
+                position: "sticky",
+                top: 20,
+                maxHeight: "calc(100vh - 40px)",
+                overflowY: "auto",
+              }}
+            >
+              {getPagesArray(documentData).map((page, idx) => (
+                <div
+                  key={`thumb-${page.self}`}
+                  onClick={() => setCurrentPageIndex(idx)}
+                  style={{
+                    width: 140,
+                    padding: 8,
+                    border:
+                      idx === currentPageIndex
+                        ? "2px solid #007bff"
+                        : "1px solid #ddd",
+                    borderRadius: 6,
+                    background: "#fff",
+                    cursor: "pointer",
+                    boxShadow:
+                      idx === currentPageIndex
+                        ? "0 4px 10px rgba(0,0,0,0.15)"
+                        : "none",
+                  }}
+                >
+                  {renderPagePreview(
+                    page,
+                    documentData,
+                    getElementsForPage,
+                    utils,
+                    backgroundConfig,
+                    importedGetPageBackgroundColor,
+                    importedGetDocumentBackgroundColor
+                  )}
+                  <div
+                    style={{
+                      marginTop: 6,
+                      fontSize: 12,
+                      textAlign: "center",
+                      color: "#444",
+                    }}
+                  >
+                    Page {idx + 1}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Main page container */}
           {(() => {
             const pagesArray = getPagesArray(documentData);
             const currentPage = pagesArray[currentPageIndex];
@@ -505,51 +637,47 @@ export default function Viewer() {
               // Page elements with linked images analysis completed
             }
 
+            const pageWidthPx = currentPage.geometricBounds
+              ? currentPage.geometricBounds.width
+              : documentData.pageInfo?.dimensions?.pixelDimensions?.width ||
+                documentData.pageInfo?.dimensions?.width ||
+                612;
+            const pageHeightPx = currentPage.geometricBounds
+              ? currentPage.geometricBounds.height
+              : documentData.pageInfo?.dimensions?.pixelDimensions?.height ||
+                documentData.pageInfo?.dimensions?.height ||
+                792;
+
+            // Compute scale (always fit to viewport)
+            let scale = 1;
+            const container = scrollContainerRef.current;
+            if (container) {
+              const availableW = container.clientWidth - 40;
+              const availableH = container.clientHeight - 40;
+              const sX = availableW / pageWidthPx;
+              const sY = availableH / pageHeightPx;
+              scale = Math.min(sX, sY);
+            }
+
             return (
               <div
                 key={currentPage.self}
                 id={`page-${currentPageIndex + 1}`}
+                ref={pageWrapperRef}
                 style={{
                   position: "relative",
-                  width: currentPage.geometricBounds
-                    ? `${currentPage.geometricBounds.width}px`
-                    : (documentData.pageInfo?.dimensions?.pixelDimensions
-                        ?.width ||
-                        documentData.pageInfo?.dimensions?.width ||
-                        612) + "px",
+                  width: `${pageWidthPx}px`,
+                  transform: `scale(${scale})`,
+                  transformOrigin: "top left",
                   boxShadow: "0 0 0 2px #007bff, 0 5px 15px rgba(0,0,0,0.2)",
                 }}
               >
-                {/* Page number indicator */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "-25px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    backgroundColor: "#007bff",
-                    color: "white",
-                    padding: "2px 10px",
-                    borderRadius: "12px",
-                    fontSize: "12px",
-                    fontWeight: "bold",
-                    zIndex: 10,
-                  }}
-                >
-                  Page {currentPageIndex + 1} of {pagesArray.length}
-                </div>
-
                 {/* Page Canvas */}
                 <div
                   style={{
                     position: "relative",
                     width: "100%",
-                    height: currentPage.geometricBounds
-                      ? `${currentPage.geometricBounds.height}px`
-                      : (documentData.pageInfo?.dimensions?.pixelDimensions
-                          ?.height ||
-                          documentData.pageInfo?.dimensions?.height ||
-                          792) + "px",
+                    height: `${pageHeightPx}px`,
                     backgroundColor: importedGetPageBackgroundColor(
                       currentPage,
                       documentData,
@@ -688,6 +816,7 @@ export default function Viewer() {
                     // Create unique key for this element instance
                     const elementKey = `${element.id}-${index}`;
                     const isSelected = selectedElementKey === elementKey;
+                    const isEditing = editingElementKey === elementKey;
                     const isTextElement =
                       element.type === "TextFrame" ||
                       element.name === "Bulleted List" ||
@@ -738,10 +867,10 @@ export default function Viewer() {
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelectedElementKey(elementKey);
-                          if (
-                            isTextElement &&
-                            selectedElementKey === elementKey
-                          ) {
+                        }}
+                        onDoubleClick={(e) => {
+                          e.stopPropagation();
+                          if (isTextElement) {
                             setEditingElementKey(elementKey);
                           }
                         }}
@@ -1166,6 +1295,219 @@ export default function Viewer() {
                       </div>
                     );
                   })}
+
+                  {/* Side Panel Editor */}
+                  <SideEditorPanel
+                    isOpen={Boolean(selectedElementKey)}
+                    element={(() => {
+                      if (!selectedElementKey) return null;
+                      const [id, idx] = selectedElementKey.split("-");
+                      const target = sortedElements.find(
+                        (el, i) => el.id === id && String(i) === String(idx)
+                      );
+                      return target || null;
+                    })()}
+                    story={(() => {
+                      if (!selectedElementKey) return null;
+                      const [id, idx] = selectedElementKey.split("-");
+                      const target = sortedElements.find(
+                        (el, i) => el.id === id && String(i) === String(idx)
+                      );
+                      if (!target || !target.parentStory) return null;
+                      return documentData.stories?.[target.parentStory] || null;
+                    })()}
+                    onChangeDraft={(draft) => {
+                      const [id, idx] = (selectedElementKey || "-").split("-");
+                      const target = sortedElements.find(
+                        (el, i) => el.id === id && String(i) === String(idx)
+                      );
+                      if (
+                        !target ||
+                        !target.parentStory ||
+                        !documentData.stories?.[target.parentStory]
+                      )
+                        return;
+
+                      const mapAlign = (a) => {
+                        switch (a) {
+                          case "center":
+                            return "CenterAlign";
+                          case "right":
+                            return "RightAlign";
+                          case "justify":
+                            return "JustifyAlign";
+                          default:
+                            return "LeftAlign";
+                        }
+                      };
+                      const fontStyle =
+                        [
+                          draft.bold ? "Bold" : null,
+                          draft.italic ? "Italic" : null,
+                        ]
+                          .filter(Boolean)
+                          .join(" ") || "Regular";
+                      const hexToRgbCss = (hex) => {
+                        if (
+                          !hex ||
+                          typeof hex !== "string" ||
+                          !hex.startsWith("#")
+                        )
+                          return hex;
+                        const v = hex.replace("#", "");
+                        const n =
+                          v.length === 3
+                            ? v
+                                .split("")
+                                .map((c) => c + c)
+                                .join("")
+                            : v;
+                        const r = parseInt(n.slice(0, 2), 16),
+                          g = parseInt(n.slice(2, 4), 16),
+                          b = parseInt(n.slice(4, 6), 16);
+                        return `rgb(${r}, ${g}, ${b})`;
+                      };
+
+                      const newDoc = {
+                        ...documentData,
+                        stories: { ...documentData.stories },
+                      };
+                      const prevStory =
+                        newDoc.stories[target.parentStory] || {};
+                      const prevStyling = prevStory.styling || {};
+                      const updatedStyling = {
+                        ...prevStyling,
+                        fontFamily: draft.fontFamily,
+                        fontSize: draft.fontSize,
+                        fontStyle,
+                        underline: draft.underline,
+                        alignment: mapAlign(draft.align),
+                        fillColor: hexToRgbCss(draft.color),
+                        effectiveLineHeight: draft.lineHeight,
+                      };
+                      const updatedFormattedContent = [
+                        {
+                          text: draft.content,
+                          formatting: {
+                            fontFamily: draft.fontFamily,
+                            fontSize: draft.fontSize,
+                            fontStyle,
+                            alignment: mapAlign(draft.align),
+                            fillColor: hexToRgbCss(draft.color),
+                            leading: draft.lineHeight,
+                            underline: draft.underline,
+                          },
+                        },
+                      ];
+                      newDoc.stories[target.parentStory] = {
+                        ...prevStory,
+                        text: draft.content,
+                        styling: updatedStyling,
+                        formattedContent: updatedFormattedContent,
+                      };
+                      setDocumentData(newDoc);
+                    }}
+                    onApply={(draft) => {
+                      const [id, idx] = selectedElementKey.split("-");
+                      const target = sortedElements.find(
+                        (el, i) => el.id === id && String(i) === String(idx)
+                      );
+                      if (
+                        target &&
+                        target.parentStory &&
+                        documentData.stories?.[target.parentStory]
+                      ) {
+                        // Map UI draft to story.styling
+                        const mapAlign = (a) => {
+                          switch (a) {
+                            case "center":
+                              return "CenterAlign";
+                            case "right":
+                              return "RightAlign";
+                            case "justify":
+                              return "JustifyAlign";
+                            default:
+                              return "LeftAlign";
+                          }
+                        };
+                        const fontStyle =
+                          [
+                            draft.bold ? "Bold" : null,
+                            draft.italic ? "Italic" : null,
+                          ]
+                            .filter(Boolean)
+                            .join(" ") || "Regular";
+
+                        const hexToRgbCss = (hex) => {
+                          if (
+                            !hex ||
+                            typeof hex !== "string" ||
+                            !hex.startsWith("#")
+                          )
+                            return hex;
+                          const v = hex.replace("#", "");
+                          const n =
+                            v.length === 3
+                              ? v
+                                  .split("")
+                                  .map((c) => c + c)
+                                  .join("")
+                              : v;
+                          const r = parseInt(n.slice(0, 2), 16),
+                            g = parseInt(n.slice(2, 4), 16),
+                            b = parseInt(n.slice(4, 6), 16);
+                          return `rgb(${r}, ${g}, ${b})`;
+                        };
+
+                        const newDoc = {
+                          ...documentData,
+                          stories: { ...documentData.stories },
+                        };
+                        const prevStory =
+                          newDoc.stories[target.parentStory] || {};
+                        const prevStyling = prevStory.styling || {};
+
+                        const updatedStyling = {
+                          ...prevStyling,
+                          fontFamily: draft.fontFamily,
+                          fontSize: draft.fontSize,
+                          fontStyle,
+                          underline: draft.underline,
+                          alignment: mapAlign(draft.align),
+                          fillColor: hexToRgbCss(draft.color),
+                          effectiveLineHeight: draft.lineHeight,
+                        };
+
+                        const updatedFormattedContent = [
+                          {
+                            text: draft.content,
+                            formatting: {
+                              fontFamily: draft.fontFamily,
+                              fontSize: draft.fontSize,
+                              fontStyle,
+                              alignment: mapAlign(draft.align),
+                              fillColor: hexToRgbCss(draft.color),
+                              leading: draft.lineHeight,
+                              underline: draft.underline,
+                            },
+                          },
+                        ];
+
+                        newDoc.stories[target.parentStory] = {
+                          ...prevStory,
+                          text: draft.content,
+                          styling: updatedStyling,
+                          formattedContent: updatedFormattedContent,
+                        };
+                        setDocumentData(newDoc);
+                      }
+                      setEditingElementKey(null);
+                    }}
+                    onClose={() => {
+                      setSelectedElementKey(null);
+                      setEditingElementKey(null);
+                    }}
+                  />
                 </div>
               </div>
             );
