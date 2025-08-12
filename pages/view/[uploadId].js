@@ -233,8 +233,8 @@ export default function Viewer() {
   const loadDocument = useDocumentLoader(uploadId, setDocumentData, setLoading);
 
   // Simple editor state - use unique key instead of just element ID
-  const [selectedElementKey, setSelectedElementKey] = useState(null);
-  const [editingElementKey, setEditingElementKey] = useState(null);
+  const [selectedElementId, setSelectedElementId] = useState(null);
+  const [editingElementId, setEditingElementId] = useState(null);
   const [editorMode, setEditorMode] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -262,8 +262,9 @@ export default function Viewer() {
         pageWrapperRef.current &&
         !pageWrapperRef.current.contains(e.target)
       ) {
-        setSelectedElementKey(null);
-        setEditingElementKey(null);
+        // Do not auto-close the editor on outside clicks; keep selection
+        // setSelectedElementId(null);
+        // setEditingElementId(null);
       }
     },
     [pageWrapperRef]
@@ -276,12 +277,12 @@ export default function Viewer() {
 
     const resizer = () => setFitNonce((n) => n + 1);
     window.addEventListener("resize", resizer);
-    document.addEventListener("click", handleGlobalClick, true);
+    document.addEventListener("mousedown", handleGlobalClick, true);
 
     return () => {
       ro.disconnect();
       window.removeEventListener("resize", resizer);
-      document.removeEventListener("click", handleGlobalClick, true);
+      document.removeEventListener("mousedown", handleGlobalClick, true);
     };
   }, [handleGlobalClick]);
 
@@ -290,12 +291,12 @@ export default function Viewer() {
     // Here you would save the content back to the document data
     // For now, just exit edit mode
     console.log("Saving content:", newContent);
-    setEditingElementKey(null);
-    setSelectedElementKey(null);
+    setEditingElementId(null);
+    setSelectedElementId(null);
   }, []);
 
   const handleCancelEdit = useCallback(() => {
-    setEditingElementKey(null);
+    setEditingElementId(null);
   }, []);
 
   // Background color override controls
@@ -629,6 +630,11 @@ export default function Viewer() {
               }
             );
 
+            // Build a stable id->element map for this render
+            const pageElementById = Object.fromEntries(
+              sortedElements.map((el) => [el.id || el.self, el])
+            );
+
             // DEBUG: Check if page elements have linked images
             if (sortedElements && sortedElements.length > 0) {
               const pageElementsWithLinkedImages = sortedElements.filter(
@@ -698,7 +704,7 @@ export default function Viewer() {
                   }}
                   onClick={(e) => {
                     if (e.target === e.currentTarget) {
-                      setSelectedElementKey(null);
+                      setSelectedElementId(null);
                     }
                   }}
                 >
@@ -814,9 +820,8 @@ export default function Viewer() {
                     const hasPlacedContent = element.placedContent;
 
                     // Create unique key for this element instance
-                    const elementKey = `${element.id}-${index}`;
-                    const isSelected = selectedElementKey === elementKey;
-                    const isEditing = editingElementKey === elementKey;
+                    const isSelected = selectedElementId === element.id;
+                    const isEditing = editingElementId === element.id;
                     const isTextElement =
                       element.type === "TextFrame" ||
                       element.name === "Bulleted List" ||
@@ -828,7 +833,7 @@ export default function Viewer() {
                         className={`${styles.idmlElement} ${
                           isSelected ? styles.selected : ""
                         }`}
-                        data-element-key={elementKey}
+                        data-element-key={element.id}
                         data-is-selected={isSelected}
                         style={{
                           position: "absolute",
@@ -866,12 +871,12 @@ export default function Viewer() {
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          setSelectedElementKey(elementKey);
+                          setSelectedElementId(element.id);
                         }}
                         onDoubleClick={(e) => {
                           e.stopPropagation();
                           if (isTextElement) {
-                            setEditingElementKey(elementKey);
+                            setEditingElementId(element.id);
                           }
                         }}
                       >
@@ -1298,35 +1303,26 @@ export default function Viewer() {
 
                   {/* Side Panel Editor */}
                   <SideEditorPanel
-                    isOpen={Boolean(selectedElementKey)}
+                    isOpen={Boolean(selectedElementId)}
                     element={(() => {
-                      if (!selectedElementKey) return null;
-                      const [id, idx] = selectedElementKey.split("-");
-                      const target = sortedElements.find(
-                        (el, i) => el.id === id && String(i) === String(idx)
-                      );
+                      if (!selectedElementId) return null;
+                      const target = pageElementById[selectedElementId] || null;
                       return target || null;
                     })()}
                     story={(() => {
-                      if (!selectedElementKey) return null;
-                      const [id, idx] = selectedElementKey.split("-");
-                      const target = sortedElements.find(
-                        (el, i) => el.id === id && String(i) === String(idx)
-                      );
+                      if (!selectedElementId) return null;
+                      const target = pageElementById[selectedElementId] || null;
                       if (!target || !target.parentStory) return null;
                       return documentData.stories?.[target.parentStory] || null;
                     })()}
                     onChangeDraft={(draft) => {
-                      const [id, idx] = (selectedElementKey || "-").split("-");
-                      const target = sortedElements.find(
-                        (el, i) => el.id === id && String(i) === String(idx)
-                      );
-                      if (
-                        !target ||
-                        !target.parentStory ||
-                        !documentData.stories?.[target.parentStory]
-                      )
-                        return;
+                      const target = selectedElementId
+                        ? pageElementById[selectedElementId] || null
+                        : null;
+                      if (!target) return;
+
+                      const payload =
+                        draft && draft.__all ? draft.__all : draft;
 
                       const mapAlign = (a) => {
                         switch (a) {
@@ -1335,15 +1331,17 @@ export default function Viewer() {
                           case "right":
                             return "RightAlign";
                           case "justify":
-                            return "JustifyAlign";
-                          default:
+                            return "FullyJustified";
+                          case "left":
                             return "LeftAlign";
+                          default:
+                            return a || "LeftAlign";
                         }
                       };
                       const fontStyle =
                         [
-                          draft.bold ? "Bold" : null,
-                          draft.italic ? "Italic" : null,
+                          payload.bold ? "Bold" : null,
+                          payload.italic ? "Italic" : null,
                         ]
                           .filter(Boolean)
                           .join(" ") || "Regular";
@@ -1371,53 +1369,267 @@ export default function Viewer() {
                       const newDoc = {
                         ...documentData,
                         stories: { ...documentData.stories },
-                      };
-                      const prevStory =
-                        newDoc.stories[target.parentStory] || {};
-                      const prevStyling = prevStory.styling || {};
-                      const updatedStyling = {
-                        ...prevStyling,
-                        fontFamily: draft.fontFamily,
-                        fontSize: draft.fontSize,
-                        fontStyle,
-                        underline: draft.underline,
-                        alignment: mapAlign(draft.align),
-                        fillColor: hexToRgbCss(draft.color),
-                        effectiveLineHeight: draft.lineHeight,
-                      };
-                      const updatedFormattedContent = [
-                        {
-                          text: draft.content,
-                          formatting: {
-                            fontFamily: draft.fontFamily,
-                            fontSize: draft.fontSize,
-                            fontStyle,
-                            alignment: mapAlign(draft.align),
-                            fillColor: hexToRgbCss(draft.color),
-                            leading: draft.lineHeight,
-                            underline: draft.underline,
-                          },
+                        elements: [...(documentData.elements || [])],
+                        elementsByPage: {
+                          ...(documentData.elementsByPage || {}),
                         },
-                      ];
-                      newDoc.stories[target.parentStory] = {
-                        ...prevStory,
-                        text: draft.content,
-                        styling: updatedStyling,
-                        formattedContent: updatedFormattedContent,
+                        elementMap: { ...(documentData.elementMap || {}) },
                       };
+                      // Update story only if available AND text fields actually changed
+                      if (
+                        target.parentStory &&
+                        newDoc.stories[target.parentStory]
+                      ) {
+                        const prevStory =
+                          newDoc.stories[target.parentStory] || {};
+                        const prevStyling = prevStory.styling || {};
+
+                        // Build a delta of only the style fields present in payload
+                        const stylingDelta = {};
+                        if (
+                          Object.prototype.hasOwnProperty.call(
+                            payload,
+                            "fontFamily"
+                          )
+                        ) {
+                          stylingDelta.fontFamily = payload.fontFamily;
+                        }
+                        if (
+                          Object.prototype.hasOwnProperty.call(
+                            payload,
+                            "fontSize"
+                          )
+                        ) {
+                          stylingDelta.fontSize = payload.fontSize;
+                        }
+                        if (
+                          Object.prototype.hasOwnProperty.call(
+                            payload,
+                            "bold"
+                          ) ||
+                          Object.prototype.hasOwnProperty.call(
+                            payload,
+                            "italic"
+                          )
+                        ) {
+                          stylingDelta.fontStyle = fontStyle;
+                        }
+                        if (
+                          Object.prototype.hasOwnProperty.call(
+                            payload,
+                            "underline"
+                          )
+                        ) {
+                          stylingDelta.underline = payload.underline;
+                        }
+                        if (
+                          Object.prototype.hasOwnProperty.call(payload, "align")
+                        ) {
+                          stylingDelta.alignment = mapAlign(payload.align);
+                        }
+                        if (
+                          Object.prototype.hasOwnProperty.call(payload, "color")
+                        ) {
+                          stylingDelta.fillColor = hexToRgbCss(payload.color);
+                        }
+                        if (
+                          Object.prototype.hasOwnProperty.call(
+                            payload,
+                            "lineHeight"
+                          )
+                        ) {
+                          stylingDelta.effectiveLineHeight = payload.lineHeight;
+                        }
+
+                        const didTextContentChange =
+                          Object.prototype.hasOwnProperty.call(
+                            payload,
+                            "content"
+                          ) &&
+                          (payload.content ?? "") !== (prevStory.text ?? "");
+                        const didStyleChange =
+                          Object.keys(stylingDelta).length > 0;
+
+                        if (didTextContentChange || didStyleChange) {
+                          // Merge story.styling minimally
+                          const nextStyling = {
+                            ...prevStyling,
+                            ...stylingDelta,
+                          };
+
+                          // Build updated formattedContent without resetting unrelated formatting
+                          let updatedFormattedContent =
+                            prevStory.formattedContent;
+                          const baseFmt =
+                            (Array.isArray(prevStory.formattedContent) &&
+                              prevStory.formattedContent[0]?.formatting) ||
+                            prevStyling ||
+                            {};
+
+                          const applyFmtDelta = (fmt) => ({
+                            ...fmt,
+                            ...(Object.prototype.hasOwnProperty.call(
+                              stylingDelta,
+                              "fontFamily"
+                            ) && {
+                              fontFamily: stylingDelta.fontFamily,
+                            }),
+                            ...(Object.prototype.hasOwnProperty.call(
+                              stylingDelta,
+                              "fontSize"
+                            ) && {
+                              fontSize: stylingDelta.fontSize,
+                            }),
+                            ...(Object.prototype.hasOwnProperty.call(
+                              stylingDelta,
+                              "fontStyle"
+                            ) && {
+                              fontStyle: stylingDelta.fontStyle,
+                            }),
+                            ...(Object.prototype.hasOwnProperty.call(
+                              stylingDelta,
+                              "alignment"
+                            ) && {
+                              alignment: stylingDelta.alignment,
+                            }),
+                            ...(Object.prototype.hasOwnProperty.call(
+                              stylingDelta,
+                              "fillColor"
+                            ) && {
+                              fillColor: stylingDelta.fillColor,
+                            }),
+                            ...(Object.prototype.hasOwnProperty.call(
+                              stylingDelta,
+                              "effectiveLineHeight"
+                            ) && {
+                              leading: stylingDelta.effectiveLineHeight,
+                            }),
+                            ...(Object.prototype.hasOwnProperty.call(
+                              stylingDelta,
+                              "underline"
+                            ) && {
+                              underline: stylingDelta.underline,
+                            }),
+                          });
+
+                          if (
+                            didTextContentChange ||
+                            !Array.isArray(prevStory.formattedContent)
+                          ) {
+                            updatedFormattedContent = [
+                              {
+                                text: payload.content ?? prevStory.text ?? "",
+                                formatting: applyFmtDelta(baseFmt),
+                              },
+                            ];
+                          } else if (didStyleChange) {
+                            updatedFormattedContent =
+                              prevStory.formattedContent.map((seg, i) => {
+                                if (i !== 0 || !seg || typeof seg !== "object")
+                                  return seg;
+                                return {
+                                  ...seg,
+                                  formatting: applyFmtDelta(
+                                    seg.formatting || {}
+                                  ),
+                                };
+                              });
+                          }
+
+                          newDoc.stories[target.parentStory] = {
+                            ...prevStory,
+                            text: didTextContentChange
+                              ? payload.content ?? prevStory.text
+                              : prevStory.text,
+                            styling: nextStyling,
+                            formattedContent: updatedFormattedContent,
+                          };
+                        }
+                      }
+
+                      // Apply frame (pixelPosition) changes as user edits
+                      const nextPixelPosition = {
+                        x: Number.isFinite(payload.x)
+                          ? payload.x
+                          : target.pixelPosition?.x ?? 0,
+                        y: Number.isFinite(payload.y)
+                          ? payload.y
+                          : target.pixelPosition?.y ?? 0,
+                        width: Number.isFinite(payload.width)
+                          ? Math.max(1, payload.width)
+                          : Math.max(1, target.pixelPosition?.width ?? 1),
+                        height: Number.isFinite(payload.height)
+                          ? Math.max(1, payload.height)
+                          : Math.max(1, target.pixelPosition?.height ?? 1),
+                        rotation: Number.isFinite(payload.rotation)
+                          ? payload.rotation
+                          : target.pixelPosition?.rotation ?? 0,
+                      };
+
+                      // Update in elements array
+                      if (Array.isArray(newDoc.elements)) {
+                        newDoc.elements = newDoc.elements.map((el) =>
+                          el && (el.id === target.id || el.self === target.id)
+                            ? {
+                                ...el,
+                                pixelPosition: {
+                                  ...(el.pixelPosition || {}),
+                                  ...nextPixelPosition,
+                                },
+                              }
+                            : el
+                        );
+                      }
+
+                      // Update in elementMap
+                      if (
+                        newDoc.elementMap &&
+                        target.id &&
+                        newDoc.elementMap[target.id]
+                      ) {
+                        const el = newDoc.elementMap[target.id];
+                        newDoc.elementMap[target.id] = {
+                          ...el,
+                          pixelPosition: {
+                            ...(el.pixelPosition || {}),
+                            ...nextPixelPosition,
+                          },
+                        };
+                      }
+
+                      // Update in elementsByPage for current page if present
+                      if (
+                        newDoc.elementsByPage &&
+                        currentPage &&
+                        newDoc.elementsByPage[currentPage.self]
+                      ) {
+                        newDoc.elementsByPage[currentPage.self] =
+                          newDoc.elementsByPage[currentPage.self].map((el) => {
+                            const isMatch =
+                              el &&
+                              (el.id === target.id ||
+                                el.self === target.id ||
+                                el.name === target.name);
+                            return isMatch
+                              ? {
+                                  ...el,
+                                  pixelPosition: {
+                                    ...(el.pixelPosition || {}),
+                                    ...nextPixelPosition,
+                                  },
+                                }
+                              : el;
+                          });
+                      }
+
                       setDocumentData(newDoc);
                     }}
                     onApply={(draft) => {
-                      const [id, idx] = selectedElementKey.split("-");
-                      const target = sortedElements.find(
-                        (el, i) => el.id === id && String(i) === String(idx)
-                      );
-                      if (
-                        target &&
-                        target.parentStory &&
-                        documentData.stories?.[target.parentStory]
-                      ) {
-                        // Map UI draft to story.styling
+                      const target = selectedElementId
+                        ? pageElementById[selectedElementId] || null
+                        : null;
+                      if (target) {
+                        // Map UI draft to story.styling (when story exists)
                         const mapAlign = (a) => {
                           switch (a) {
                             case "center":
@@ -1425,9 +1637,11 @@ export default function Viewer() {
                             case "right":
                               return "RightAlign";
                             case "justify":
-                              return "JustifyAlign";
-                            default:
+                              return "FullyJustified";
+                            case "left":
                               return "LeftAlign";
+                            default:
+                              return a || "LeftAlign";
                           }
                         };
                         const fontStyle =
@@ -1462,50 +1676,273 @@ export default function Viewer() {
                         const newDoc = {
                           ...documentData,
                           stories: { ...documentData.stories },
-                        };
-                        const prevStory =
-                          newDoc.stories[target.parentStory] || {};
-                        const prevStyling = prevStory.styling || {};
-
-                        const updatedStyling = {
-                          ...prevStyling,
-                          fontFamily: draft.fontFamily,
-                          fontSize: draft.fontSize,
-                          fontStyle,
-                          underline: draft.underline,
-                          alignment: mapAlign(draft.align),
-                          fillColor: hexToRgbCss(draft.color),
-                          effectiveLineHeight: draft.lineHeight,
-                        };
-
-                        const updatedFormattedContent = [
-                          {
-                            text: draft.content,
-                            formatting: {
-                              fontFamily: draft.fontFamily,
-                              fontSize: draft.fontSize,
-                              fontStyle,
-                              alignment: mapAlign(draft.align),
-                              fillColor: hexToRgbCss(draft.color),
-                              leading: draft.lineHeight,
-                              underline: draft.underline,
-                            },
+                          elements: [...(documentData.elements || [])],
+                          elementsByPage: {
+                            ...(documentData.elementsByPage || {}),
                           },
-                        ];
-
-                        newDoc.stories[target.parentStory] = {
-                          ...prevStory,
-                          text: draft.content,
-                          styling: updatedStyling,
-                          formattedContent: updatedFormattedContent,
+                          elementMap: { ...(documentData.elementMap || {}) },
                         };
+                        if (
+                          target.parentStory &&
+                          newDoc.stories[target.parentStory]
+                        ) {
+                          const prevStory =
+                            newDoc.stories[target.parentStory] || {};
+                          const prevStyling = prevStory.styling || {};
+
+                          const stylingDelta = {};
+                          if (
+                            Object.prototype.hasOwnProperty.call(
+                              payload,
+                              "fontFamily"
+                            )
+                          ) {
+                            stylingDelta.fontFamily = payload.fontFamily;
+                          }
+                          if (
+                            Object.prototype.hasOwnProperty.call(
+                              payload,
+                              "fontSize"
+                            )
+                          ) {
+                            stylingDelta.fontSize = payload.fontSize;
+                          }
+                          if (
+                            Object.prototype.hasOwnProperty.call(
+                              payload,
+                              "bold"
+                            ) ||
+                            Object.prototype.hasOwnProperty.call(
+                              payload,
+                              "italic"
+                            )
+                          ) {
+                            stylingDelta.fontStyle = fontStyle;
+                          }
+                          if (
+                            Object.prototype.hasOwnProperty.call(
+                              payload,
+                              "underline"
+                            )
+                          ) {
+                            stylingDelta.underline = payload.underline;
+                          }
+                          if (
+                            Object.prototype.hasOwnProperty.call(
+                              payload,
+                              "align"
+                            )
+                          ) {
+                            stylingDelta.alignment = mapAlign(payload.align);
+                          }
+                          if (
+                            Object.prototype.hasOwnProperty.call(
+                              payload,
+                              "color"
+                            )
+                          ) {
+                            stylingDelta.fillColor = hexToRgbCss(payload.color);
+                          }
+                          if (
+                            Object.prototype.hasOwnProperty.call(
+                              payload,
+                              "lineHeight"
+                            )
+                          ) {
+                            stylingDelta.effectiveLineHeight =
+                              payload.lineHeight;
+                          }
+
+                          const didTextContentChange =
+                            Object.prototype.hasOwnProperty.call(
+                              payload,
+                              "content"
+                            ) &&
+                            (payload.content ?? "") !== (prevStory.text ?? "");
+                          const didStyleChange =
+                            Object.keys(stylingDelta).length > 0;
+
+                          if (didTextContentChange || didStyleChange) {
+                            const nextStyling = {
+                              ...prevStyling,
+                              ...stylingDelta,
+                            };
+
+                            let updatedFormattedContent =
+                              prevStory.formattedContent;
+                            const baseFmt =
+                              (Array.isArray(prevStory.formattedContent) &&
+                                prevStory.formattedContent[0]?.formatting) ||
+                              prevStyling ||
+                              {};
+
+                            const applyFmtDelta = (fmt) => ({
+                              ...fmt,
+                              ...(Object.prototype.hasOwnProperty.call(
+                                stylingDelta,
+                                "fontFamily"
+                              ) && {
+                                fontFamily: stylingDelta.fontFamily,
+                              }),
+                              ...(Object.prototype.hasOwnProperty.call(
+                                stylingDelta,
+                                "fontSize"
+                              ) && {
+                                fontSize: stylingDelta.fontSize,
+                              }),
+                              ...(Object.prototype.hasOwnProperty.call(
+                                stylingDelta,
+                                "fontStyle"
+                              ) && {
+                                fontStyle: stylingDelta.fontStyle,
+                              }),
+                              ...(Object.prototype.hasOwnProperty.call(
+                                stylingDelta,
+                                "alignment"
+                              ) && {
+                                alignment: stylingDelta.alignment,
+                              }),
+                              ...(Object.prototype.hasOwnProperty.call(
+                                stylingDelta,
+                                "fillColor"
+                              ) && {
+                                fillColor: stylingDelta.fillColor,
+                              }),
+                              ...(Object.prototype.hasOwnProperty.call(
+                                stylingDelta,
+                                "effectiveLineHeight"
+                              ) && {
+                                leading: stylingDelta.effectiveLineHeight,
+                              }),
+                              ...(Object.prototype.hasOwnProperty.call(
+                                stylingDelta,
+                                "underline"
+                              ) && {
+                                underline: stylingDelta.underline,
+                              }),
+                            });
+
+                            if (
+                              didTextContentChange ||
+                              !Array.isArray(prevStory.formattedContent)
+                            ) {
+                              updatedFormattedContent = [
+                                {
+                                  text: payload.content ?? prevStory.text ?? "",
+                                  formatting: applyFmtDelta(baseFmt),
+                                },
+                              ];
+                            } else if (didStyleChange) {
+                              updatedFormattedContent =
+                                prevStory.formattedContent.map((seg, i) => {
+                                  if (
+                                    i !== 0 ||
+                                    !seg ||
+                                    typeof seg !== "object"
+                                  )
+                                    return seg;
+                                  return {
+                                    ...seg,
+                                    formatting: applyFmtDelta(
+                                      seg.formatting || {}
+                                    ),
+                                  };
+                                });
+                            }
+
+                            newDoc.stories[target.parentStory] = {
+                              ...prevStory,
+                              text: didTextContentChange
+                                ? payload.content ?? prevStory.text
+                                : prevStory.text,
+                              styling: nextStyling,
+                              formattedContent: updatedFormattedContent,
+                            };
+                          }
+                        }
+
+                        // Apply frame (pixelPosition) changes on Apply as well
+                        const nextPixelPosition = {
+                          x: Number.isFinite(payload.x)
+                            ? payload.x
+                            : target.pixelPosition?.x ?? 0,
+                          y: Number.isFinite(payload.y)
+                            ? payload.y
+                            : target.pixelPosition?.y ?? 0,
+                          width: Number.isFinite(payload.width)
+                            ? Math.max(1, payload.width)
+                            : Math.max(1, target.pixelPosition?.width ?? 1),
+                          height: Number.isFinite(payload.height)
+                            ? Math.max(1, payload.height)
+                            : Math.max(1, target.pixelPosition?.height ?? 1),
+                          rotation: Number.isFinite(payload.rotation)
+                            ? payload.rotation
+                            : target.pixelPosition?.rotation ?? 0,
+                        };
+
+                        if (Array.isArray(newDoc.elements)) {
+                          newDoc.elements = newDoc.elements.map((el) =>
+                            el && (el.id === target.id || el.self === target.id)
+                              ? {
+                                  ...el,
+                                  pixelPosition: {
+                                    ...(el.pixelPosition || {}),
+                                    ...nextPixelPosition,
+                                  },
+                                }
+                              : el
+                          );
+                        }
+
+                        if (
+                          newDoc.elementMap &&
+                          target.id &&
+                          newDoc.elementMap[target.id]
+                        ) {
+                          const el = newDoc.elementMap[target.id];
+                          newDoc.elementMap[target.id] = {
+                            ...el,
+                            pixelPosition: {
+                              ...(el.pixelPosition || {}),
+                              ...nextPixelPosition,
+                            },
+                          };
+                        }
+
+                        if (
+                          newDoc.elementsByPage &&
+                          currentPage &&
+                          newDoc.elementsByPage[currentPage.self]
+                        ) {
+                          newDoc.elementsByPage[currentPage.self] =
+                            newDoc.elementsByPage[currentPage.self].map(
+                              (el) => {
+                                const isMatch =
+                                  el &&
+                                  (el.id === target.id ||
+                                    el.self === target.id ||
+                                    el.name === target.name);
+                                return isMatch
+                                  ? {
+                                      ...el,
+                                      pixelPosition: {
+                                        ...(el.pixelPosition || {}),
+                                        ...nextPixelPosition,
+                                      },
+                                    }
+                                  : el;
+                              }
+                            );
+                        }
+
                         setDocumentData(newDoc);
                       }
-                      setEditingElementKey(null);
+                      // Keep editing active and panel open after apply
+                      // setEditingElementId(null);
                     }}
                     onClose={() => {
-                      setSelectedElementKey(null);
-                      setEditingElementKey(null);
+                      setSelectedElementId(null);
+                      setEditingElementId(null);
                     }}
                   />
                 </div>

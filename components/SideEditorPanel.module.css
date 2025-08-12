@@ -44,6 +44,30 @@
   cursor: pointer;
 }
 
+/* NEW: Tabs */
+.tabs {
+  display: flex;
+  gap: 6px;
+  padding: 8px 8px 0 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tab {
+  padding: 8px 10px;
+  border-radius: 8px 8px 0 0;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #cbd5e1;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.tabActive {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
 .section {
   padding: 14px 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -81,6 +105,13 @@
   gap: 12px;
 }
 
+/* NEW: Compact label for numeric inputs */
+.smallLabel {
+  min-width: 44px;
+  color: #9ca3af;
+  font-size: 11px;
+}
+
 .label {
   min-width: 64px;
   color: #9ca3af;
@@ -98,6 +129,16 @@
 
 .input {
   flex: 1;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e5e7eb;
+}
+
+/* NEW: Narrow input variant for small numeric fields */
+.inputNarrow {
+  width: 100%;
   padding: 8px 10px;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.1);
