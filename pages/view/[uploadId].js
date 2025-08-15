@@ -366,7 +366,7 @@ export default function Viewer() {
 
       dragRef.current.mode = "move";
       dragRef.current.handle = null;
-      dragRef.current.elementId = element.id || element.self;
+      dragRef.current.elementId = element.self || element.id;
       dragRef.current.startMouseX = e.clientX;
       dragRef.current.startMouseY = e.clientY;
       dragRef.current.startPos = {
@@ -428,7 +428,7 @@ export default function Viewer() {
 
       dragRef.current.mode = "resize";
       dragRef.current.handle = handle;
-      dragRef.current.elementId = element.id || element.self;
+      dragRef.current.elementId = element.self || element.id;
       dragRef.current.startMouseX = e.clientX;
       dragRef.current.startMouseY = e.clientY;
       dragRef.current.startPos = {
@@ -2516,7 +2516,8 @@ export default function Viewer() {
                       if (Array.isArray(newDoc.elements)) {
                         newDoc.elements = newDoc.elements.map((el) =>
                           el &&
-                          ((el.self && el.self === target.self) ||
+                          ((el.self &&
+                            el.self === (target.self || target.id)) ||
                             (!el.self && el.id === target.id))
                             ? {
                                 ...el,
@@ -2554,7 +2555,8 @@ export default function Viewer() {
                           newDoc.elementsByPage[currentPage.self].map((el) => {
                             const isMatch =
                               el &&
-                              ((el.self && el.self === target.self) ||
+                              ((el.self &&
+                                el.self === (target.self || target.id)) ||
                                 (!el.self && el.id === target.id));
                             return isMatch
                               ? {
@@ -2810,7 +2812,8 @@ export default function Viewer() {
                         if (Array.isArray(newDoc.elements)) {
                           newDoc.elements = newDoc.elements.map((el) =>
                             el &&
-                            ((el.self && el.self === target.self) ||
+                            ((el.self &&
+                              el.self === (target.self || target.id)) ||
                               (!el.self && el.id === target.id))
                               ? {
                                   ...el,
@@ -2847,7 +2850,8 @@ export default function Viewer() {
                               (el) => {
                                 const isMatch =
                                   el &&
-                                  ((el.self && el.self === target.self) ||
+                                  ((el.self &&
+                                    el.self === (target.self || target.id)) ||
                                     (!el.self && el.id === target.id));
                                 return isMatch
                                   ? {

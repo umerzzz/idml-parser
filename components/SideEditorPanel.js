@@ -201,7 +201,7 @@ export default function SideEditorPanel({
         <div>
           <div className={styles.title}>Editor</div>
           <div className={styles.subtitle}>
-            {element.type} • {element.id}
+            {element.type} • {element.self || element.id}
           </div>
         </div>
         <button className={styles.closeBtn} onClick={onClose}>
