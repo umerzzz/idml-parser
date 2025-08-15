@@ -244,8 +244,379 @@ export default function Viewer() {
   // Fit-to-viewport zoom (always fit)
   const scrollContainerRef = useRef(null);
   const pageWrapperRef = useRef(null);
+  const pageCanvasRef = useRef(null);
   const [fitNonce, setFitNonce] = useState(0);
   const [showSidebar, setShowSidebar] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Drag/resize state and helpers
+  const dragRef = useRef({
+    mode: null, // 'move' | 'resize'
+    handle: null,
+    elementId: null,
+    startMouseX: 0,
+    startMouseY: 0,
+    startPos: { x: 0, y: 0, width: 0, height: 0 },
+    pageWidth: 0,
+    pageHeight: 0,
+    scale: 1,
+  });
+
+  const applyPixelPositionUpdate = useCallback(
+    (elementKey, partial) => {
+      if (!elementKey || !documentData) return;
+
+      // Locate target element robustly
+      const elementMap = documentData.elementMap || {};
+      let target = elementMap[elementKey] || null;
+      if (!target && Array.isArray(documentData.elements)) {
+        target = documentData.elements.find(
+          (el) =>
+            el && ((el.self && el.self === elementKey) || el.id === elementKey)
+        );
+      }
+      if (!target) return;
+
+      const prevPos = target.pixelPosition || {
+        x: 0,
+        y: 0,
+        width: 1,
+        height: 1,
+        rotation: 0,
+      };
+      const nextPixelPosition = {
+        x: Number.isFinite(partial.x) ? partial.x : prevPos.x,
+        y: Number.isFinite(partial.y) ? partial.y : prevPos.y,
+        width: Number.isFinite(partial.width)
+          ? Math.max(1, partial.width)
+          : Math.max(1, prevPos.width),
+        height: Number.isFinite(partial.height)
+          ? Math.max(1, partial.height)
+          : Math.max(1, prevPos.height),
+        rotation: Number.isFinite(partial.rotation)
+          ? partial.rotation
+          : prevPos.rotation || 0,
+      };
+
+      const newDoc = {
+        ...documentData,
+        elements: Array.isArray(documentData.elements)
+          ? documentData.elements.map((el) =>
+              el &&
+              ((el.self && el.self === elementKey) || el.id === elementKey)
+                ? {
+                    ...el,
+                    pixelPosition: {
+                      ...(el.pixelPosition || {}),
+                      ...nextPixelPosition,
+                    },
+                  }
+                : el
+            )
+          : documentData.elements,
+        elementMap: documentData.elementMap
+          ? {
+              ...documentData.elementMap,
+              [elementKey]: {
+                ...(documentData.elementMap[elementKey] || target),
+                pixelPosition: {
+                  ...((documentData.elementMap[elementKey] || target)
+                    ?.pixelPosition || {}),
+                  ...nextPixelPosition,
+                },
+              },
+            }
+          : documentData.elementMap,
+        elementsByPage: documentData.elementsByPage
+          ? Object.fromEntries(
+              Object.entries(documentData.elementsByPage).map(
+                ([pageKey, arr]) => [
+                  pageKey,
+                  Array.isArray(arr)
+                    ? arr.map((el) =>
+                        el &&
+                        ((el.self && el.self === elementKey) ||
+                          el.id === elementKey)
+                          ? {
+                              ...el,
+                              pixelPosition: {
+                                ...(el.pixelPosition || {}),
+                                ...nextPixelPosition,
+                              },
+                            }
+                          : el
+                      )
+                    : arr,
+                ]
+              )
+            )
+          : documentData.elementsByPage,
+      };
+
+      setDocumentData(newDoc);
+    },
+    [documentData, setDocumentData]
+  );
+
+  const startMove = useCallback(
+    (e, element, elementPosition, pageWidth, pageHeight, scale) => {
+      if (!element || !elementPosition) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      dragRef.current.mode = "move";
+      dragRef.current.handle = null;
+      dragRef.current.elementId = element.id || element.self;
+      dragRef.current.startMouseX = e.clientX;
+      dragRef.current.startMouseY = e.clientY;
+      dragRef.current.startPos = {
+        x: elementPosition.x,
+        y: elementPosition.y,
+        width: elementPosition.width,
+        height: elementPosition.height,
+      };
+      dragRef.current.pageWidth = pageWidth;
+      dragRef.current.pageHeight = pageHeight;
+      dragRef.current.scale = scale || 1;
+
+      const onMove = (ev) => {
+        const dx =
+          (ev.clientX - dragRef.current.startMouseX) / dragRef.current.scale;
+        const dy =
+          (ev.clientY - dragRef.current.startMouseY) / dragRef.current.scale;
+        let newX = dragRef.current.startPos.x + dx;
+        let newY = dragRef.current.startPos.y + dy;
+
+        newX = Math.max(
+          0,
+          Math.min(
+            newX,
+            dragRef.current.pageWidth - dragRef.current.startPos.width
+          )
+        );
+        newY = Math.max(
+          0,
+          Math.min(
+            newY,
+            dragRef.current.pageHeight - dragRef.current.startPos.height
+          )
+        );
+
+        applyPixelPositionUpdate(dragRef.current.elementId, {
+          x: newX,
+          y: newY,
+        });
+      };
+
+      const end = () => {
+        window.removeEventListener("mousemove", onMove, true);
+        window.removeEventListener("mouseup", end, true);
+        dragRef.current.mode = null;
+      };
+
+      window.addEventListener("mousemove", onMove, true);
+      window.addEventListener("mouseup", end, true);
+    },
+    [applyPixelPositionUpdate]
+  );
+
+  const startResize = useCallback(
+    (e, element, handle, elementPosition, pageWidth, pageHeight, scale) => {
+      if (!element || !elementPosition) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      dragRef.current.mode = "resize";
+      dragRef.current.handle = handle;
+      dragRef.current.elementId = element.id || element.self;
+      dragRef.current.startMouseX = e.clientX;
+      dragRef.current.startMouseY = e.clientY;
+      dragRef.current.startPos = {
+        x: elementPosition.x,
+        y: elementPosition.y,
+        width: elementPosition.width,
+        height: elementPosition.height,
+      };
+      dragRef.current.pageWidth = pageWidth;
+      dragRef.current.pageHeight = pageHeight;
+      dragRef.current.scale = scale || 1;
+
+      const onMove = (ev) => {
+        const dx =
+          (ev.clientX - dragRef.current.startMouseX) / dragRef.current.scale;
+        const dy =
+          (ev.clientY - dragRef.current.startMouseY) / dragRef.current.scale;
+
+        const start = dragRef.current.startPos;
+        let { x, y, width, height } = start;
+        const pageW = dragRef.current.pageWidth;
+        const pageH = dragRef.current.pageHeight;
+        const ratio = start.height > 0 ? start.width / start.height : 1;
+        const useShift = Boolean(ev.shiftKey);
+        const useAlt = Boolean(ev.altKey);
+
+        const centerX = start.x + start.width / 2;
+        const centerY = start.y + start.height / 2;
+
+        const handle = dragRef.current.handle;
+        if (handle === "br") {
+          let newWidth = start.width + dx;
+          let newHeight = start.height + dy;
+          if (useShift) {
+            if (Math.abs(dx) >= Math.abs(dy)) newHeight = newWidth / ratio;
+            else newWidth = newHeight * ratio;
+          }
+          width = Math.max(1, newWidth);
+          height = Math.max(1, newHeight);
+          if (useAlt) {
+            x = centerX - width / 2;
+            y = centerY - height / 2;
+          } else {
+            x = start.x;
+            y = start.y;
+          }
+        } else if (handle === "tr") {
+          let newWidth = start.width + dx;
+          let newHeight = start.height - dy;
+          if (useShift) {
+            if (Math.abs(dx) >= Math.abs(dy)) newHeight = newWidth / ratio;
+            else newWidth = newHeight * ratio;
+          }
+          width = Math.max(1, newWidth);
+          height = Math.max(1, newHeight);
+          if (useAlt) {
+            x = centerX - width / 2;
+            y = centerY - height / 2;
+          } else {
+            x = start.x;
+            y = start.y + (start.height - height);
+          }
+        } else if (handle === "bl") {
+          let newWidth = start.width - dx;
+          let newHeight = start.height + dy;
+          if (useShift) {
+            if (Math.abs(dx) >= Math.abs(dy)) newHeight = newWidth / ratio;
+            else newWidth = newHeight * ratio;
+          }
+          width = Math.max(1, newWidth);
+          height = Math.max(1, newHeight);
+          if (useAlt) {
+            x = centerX - width / 2;
+            y = centerY - height / 2;
+          } else {
+            x = start.x + (start.width - width);
+            y = start.y;
+          }
+        } else if (handle === "tl") {
+          let newWidth = start.width - dx;
+          let newHeight = start.height - dy;
+          if (useShift) {
+            if (Math.abs(dx) >= Math.abs(dy)) newHeight = newWidth / ratio;
+            else newWidth = newHeight * ratio;
+          }
+          width = Math.max(1, newWidth);
+          height = Math.max(1, newHeight);
+          if (useAlt) {
+            x = centerX - width / 2;
+            y = centerY - height / 2;
+          } else {
+            x = start.x + (start.width - width);
+            y = start.y + (start.height - height);
+          }
+        } else if (handle === "r") {
+          let newWidth = start.width + dx;
+          let newHeight = start.height;
+          if (useShift) {
+            newHeight = newWidth / ratio;
+          }
+          width = Math.max(1, newWidth);
+          height = Math.max(1, newHeight);
+          if (useAlt) {
+            x = centerX - width / 2;
+            y = centerY - height / 2;
+          } else {
+            x = start.x;
+            y = useShift ? start.y + (start.height - height) / 2 : start.y;
+          }
+        } else if (handle === "l") {
+          let newWidth = start.width - dx;
+          let newHeight = start.height;
+          if (useShift) {
+            newHeight = newWidth / ratio;
+          }
+          width = Math.max(1, newWidth);
+          height = Math.max(1, newHeight);
+          if (useAlt) {
+            x = centerX - width / 2;
+            y = centerY - height / 2;
+          } else {
+            x = start.x + (start.width - width);
+            y = useShift ? start.y + (start.height - height) / 2 : start.y;
+          }
+        } else if (handle === "b") {
+          let newHeight = start.height + dy;
+          let newWidth = start.width;
+          if (useShift) {
+            newWidth = newHeight * ratio;
+          }
+          width = Math.max(1, newWidth);
+          height = Math.max(1, newHeight);
+          if (useAlt) {
+            x = centerX - width / 2;
+            y = centerY - height / 2;
+          } else {
+            x = useShift ? start.x + (start.width - width) / 2 : start.x;
+            y = start.y;
+          }
+        } else if (handle === "t") {
+          let newHeight = start.height - dy;
+          let newWidth = start.width;
+          if (useShift) {
+            newWidth = newHeight * ratio;
+          }
+          width = Math.max(1, newWidth);
+          height = Math.max(1, newHeight);
+          if (useAlt) {
+            x = centerX - width / 2;
+            y = centerY - height / 2;
+          } else {
+            x = useShift ? start.x + (start.width - width) / 2 : start.x;
+            y = start.y + (start.height - height);
+          }
+        }
+
+        // Constrain within canvas bounds fully
+        if (width > pageW) {
+          width = pageW;
+          if (useAlt) x = centerX - width / 2;
+        }
+        if (height > pageH) {
+          height = pageH;
+          if (useAlt) y = centerY - height / 2;
+        }
+
+        x = Math.max(0, Math.min(x, pageW - width));
+        y = Math.max(0, Math.min(y, pageH - height));
+
+        applyPixelPositionUpdate(dragRef.current.elementId, {
+          x,
+          y,
+          width,
+          height,
+        });
+      };
+
+      const end = () => {
+        window.removeEventListener("mousemove", onMove, true);
+        window.removeEventListener("mouseup", end, true);
+        dragRef.current.mode = null;
+      };
+
+      window.addEventListener("mousemove", onMove, true);
+      window.addEventListener("mouseup", end, true);
+    },
+    [applyPixelPositionUpdate]
+  );
 
   const handleGlobalClick = useCallback(
     (e) => {
@@ -286,6 +657,18 @@ export default function Viewer() {
     };
   }, [handleGlobalClick]);
 
+  // Responsive: auto-hide thumbnails on smaller screens and render as overlay
+  useEffect(() => {
+    const update = () => {
+      const mobile = window.innerWidth <= 1024;
+      setIsMobile(mobile);
+      if (mobile) setShowSidebar(false);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
   // Editor handlers
   const handleSaveEdit = useCallback((newContent) => {
     // Here you would save the content back to the document data
@@ -298,6 +681,161 @@ export default function Viewer() {
   const handleCancelEdit = useCallback(() => {
     setEditingElementId(null);
   }, []);
+
+  // Helper: inline all <img> sources as data URLs inside a DOM element
+  const inlineImagesInElement = useCallback(async (root) => {
+    const images = Array.from(root.querySelectorAll("img"));
+    await Promise.all(
+      images.map(async (img) => {
+        try {
+          const src = img.getAttribute("src");
+          if (!src || src.startsWith("data:")) return;
+          const res = await fetch(src);
+          if (!res.ok) return;
+          const blob = await res.blob();
+          const reader = new FileReader();
+          const dataUrl = await new Promise((resolve, reject) => {
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          });
+          img.setAttribute("src", dataUrl);
+        } catch (e) {
+          // Ignore failures; keep original src
+        }
+      })
+    );
+  }, []);
+
+  // Helper: prepare a cloned page element for export and return its HTML fragment (not full document)
+  const serializePageFragment = useCallback(
+    async (pageEl) => {
+      const clone = pageEl.cloneNode(true);
+      clone.removeAttribute("id");
+      clone.style.transform = "";
+      clone.style.transformOrigin = "";
+
+      // Remove UI-only elements
+      const toRemove = clone.querySelectorAll(
+        '[data-export-ignore="true"], [data-editor-panel="true"]'
+      );
+      toRemove.forEach((el) => el.parentNode && el.parentNode.removeChild(el));
+
+      // Inline images
+      await inlineImagesInElement(clone);
+
+      return clone.outerHTML;
+    },
+    [inlineImagesInElement]
+  );
+
+  // Build a full standalone HTML document around a page fragment
+  const wrapAsStandaloneHtml = useCallback((fragmentHtml, title) => {
+    return `<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8" />\n<meta name="viewport" content="width=device-width, initial-scale=1" />\n<title>${title}</title>\n<style>\n  html, body { margin:0; padding:0; }\n  body { background:#ffffff; display:flex; align-items:flex-start; justify-content:center; padding:20px; }\n</style>\n</head>\n<body>\n${fragmentHtml}\n</body>\n</html>`;
+  }, []);
+
+  // Export the currently visible page as a standalone HTML file (white background, inline images)
+  const exportCurrentPageAsHTML = useCallback(async () => {
+    try {
+      const pageEl = document.getElementById(`page-${currentPageIndex + 1}`);
+      if (!pageEl) return;
+      const fragment = await serializePageFragment(pageEl);
+      const html = wrapAsStandaloneHtml(
+        fragment,
+        `Exported Page ${currentPageIndex + 1}`
+      );
+
+      const blob = new Blob([html], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `export-page-${currentPageIndex + 1}.html`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error("Failed to export HTML:", e);
+    }
+  }, [currentPageIndex, serializePageFragment, wrapAsStandaloneHtml]);
+
+  // Export all pages as a single HTML (stacked vertically), white background, inline images
+  const exportAllPagesAsSingleHtml = useCallback(async () => {
+    if (!documentData?.pages) return;
+    const originalIndex = currentPageIndex;
+    const fragments = [];
+    for (let i = 0; i < documentData.pages.length; i++) {
+      setCurrentPageIndex(i);
+      // Wait a frame for React to render
+      // eslint-disable-next-line no-await-in-loop
+      await new Promise((r) => requestAnimationFrame(() => setTimeout(r, 20)));
+      const pageEl = document.getElementById(`page-${i + 1}`);
+      if (!pageEl) continue;
+      // eslint-disable-next-line no-await-in-loop
+      const fragment = await serializePageFragment(pageEl);
+      fragments.push(fragment);
+    }
+    // restore index
+    setCurrentPageIndex(originalIndex);
+
+    const combined = `<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8" />\n<meta name="viewport" content="width=device-width, initial-scale=1" />\n<title>Exported Document</title>\n<style>\n  html, body { margin:0; padding:0; background:#ffffff; }\n  .page-wrap { display:flex; justify-content:center; padding:20px; }\n</style>\n</head>\n<body>\n${fragments
+      .map((f) => `<div class="page-wrap">${f}</div>`)
+      .join("\n")}\n</body>\n</html>`;
+
+    const blob = new Blob([combined], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `export-document.html`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }, [currentPageIndex, documentData, serializePageFragment]);
+
+  // Export all pages as a ZIP of per-page HTML (server-side zipping via adm-zip)
+  const exportAllPagesAsZip = useCallback(async () => {
+    if (!documentData?.pages) return;
+    const originalIndex = currentPageIndex;
+    const files = [];
+    for (let i = 0; i < documentData.pages.length; i++) {
+      setCurrentPageIndex(i);
+      // eslint-disable-next-line no-await-in-loop
+      await new Promise((r) => requestAnimationFrame(() => setTimeout(r, 20)));
+      const pageEl = document.getElementById(`page-${i + 1}`);
+      if (!pageEl) continue;
+      // eslint-disable-next-line no-await-in-loop
+      const fragment = await serializePageFragment(pageEl);
+      const html = wrapAsStandaloneHtml(fragment, `Exported Page ${i + 1}`);
+      files.push({ name: `page-${i + 1}.html`, content: html });
+    }
+    setCurrentPageIndex(originalIndex);
+
+    try {
+      const res = await fetch("/api/export-zip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ files }),
+      });
+      if (!res.ok) throw new Error("ZIP export failed");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "exported-pages.zip";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error("ZIP export error:", e);
+    }
+  }, [
+    currentPageIndex,
+    documentData,
+    serializePageFragment,
+    wrapAsStandaloneHtml,
+  ]);
 
   // Background color override controls
   const backgroundModes = [
@@ -524,6 +1062,60 @@ export default function Viewer() {
             {/* Icon: two rectangles like pages */}
             <span style={{ lineHeight: 1 }}>☰</span>
           </button>
+          <button
+            onClick={exportCurrentPageAsHTML}
+            title="Export current page as HTML"
+            style={{
+              height: 28,
+              padding: "0 10px",
+              border: "1px solid #d1d5db",
+              background: "white",
+              borderRadius: 6,
+              cursor: "pointer",
+              fontSize: 13,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            Export HTML
+          </button>
+          <button
+            onClick={exportAllPagesAsSingleHtml}
+            title="Export all pages as a single HTML"
+            style={{
+              height: 28,
+              padding: "0 10px",
+              border: "1px solid #d1d5db",
+              background: "white",
+              borderRadius: 6,
+              cursor: "pointer",
+              fontSize: 13,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            Export All → One HTML
+          </button>
+          <button
+            onClick={exportAllPagesAsZip}
+            title="Export all pages as a ZIP of HTML files"
+            style={{
+              height: 28,
+              padding: "0 10px",
+              border: "1px solid #d1d5db",
+              background: "white",
+              borderRadius: 6,
+              cursor: "pointer",
+              fontSize: 13,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            Export All → ZIP
+          </button>
         </div>
         {/* Enhanced Canvas with Single Page Display */}
         <div
@@ -540,71 +1132,148 @@ export default function Viewer() {
           }}
         >
           {/* Left sidebar: vertical page thumbnails */}
-          {showSidebar && (
-            <div
-              style={{
-                width: 160,
-                flex: "0 0 160px",
-                display: "flex",
-                flexDirection: "column",
-                gap: 12,
-                alignItems: "center",
-                position: "sticky",
-                top: 20,
-                maxHeight: "calc(100vh - 40px)",
-                overflowY: "auto",
-              }}
-            >
-              {getPagesArray(documentData).map((page, idx) => (
+          {showSidebar &&
+            (isMobile ? (
+              <>
                 <div
-                  key={`thumb-${page.self}`}
-                  onClick={() => setCurrentPageIndex(idx)}
+                  onClick={() => setShowSidebar(false)}
                   style={{
-                    width: 140,
-                    padding: 8,
-                    border:
-                      idx === currentPageIndex
-                        ? "2px solid #007bff"
-                        : "1px solid #ddd",
-                    borderRadius: 6,
+                    position: "fixed",
+                    inset: 0,
+                    background: "rgba(0,0,0,0.3)",
+                    zIndex: 1100,
+                  }}
+                />
+                <div
+                  style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    width: 220,
+                    flex: "0 0 220px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 12,
+                    alignItems: "center",
+                    padding: "12px 10px",
                     background: "#fff",
-                    cursor: "pointer",
-                    boxShadow:
-                      idx === currentPageIndex
-                        ? "0 4px 10px rgba(0,0,0,0.15)"
-                        : "none",
+                    boxShadow: "2px 0 12px rgba(0,0,0,0.2)",
+                    overflowY: "auto",
+                    zIndex: 1101,
                   }}
                 >
-                  {renderPagePreview(
-                    page,
-                    documentData,
-                    getElementsForPage,
-                    utils,
-                    backgroundConfig,
-                    importedGetPageBackgroundColor,
-                    importedGetDocumentBackgroundColor
-                  )}
+                  {getPagesArray(documentData).map((page, idx) => (
+                    <div
+                      key={`thumb-${page.self}`}
+                      onClick={() => {
+                        setCurrentPageIndex(idx);
+                        setShowSidebar(false);
+                      }}
+                      style={{
+                        width: 180,
+                        padding: 8,
+                        border:
+                          idx === currentPageIndex
+                            ? "2px solid #007bff"
+                            : "1px solid #ddd",
+                        borderRadius: 6,
+                        background: "#fff",
+                        cursor: "pointer",
+                        boxShadow:
+                          idx === currentPageIndex
+                            ? "0 4px 10px rgba(0,0,0,0.15)"
+                            : "none",
+                      }}
+                    >
+                      {renderPagePreview(
+                        page,
+                        documentData,
+                        getElementsForPage,
+                        utils,
+                        backgroundConfig,
+                        importedGetPageBackgroundColor,
+                        importedGetDocumentBackgroundColor
+                      )}
+                      <div
+                        style={{
+                          marginTop: 6,
+                          fontSize: 12,
+                          textAlign: "center",
+                          color: "#444",
+                        }}
+                      >
+                        Page {idx + 1}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div
+                style={{
+                  width: 160,
+                  flex: "0 0 160px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 12,
+                  alignItems: "center",
+                  position: "sticky",
+                  top: 20,
+                  maxHeight: "calc(100vh - 40px)",
+                  overflowY: "auto",
+                }}
+              >
+                {getPagesArray(documentData).map((page, idx) => (
                   <div
+                    key={`thumb-${page.self}`}
+                    onClick={() => setCurrentPageIndex(idx)}
                     style={{
-                      marginTop: 6,
-                      fontSize: 12,
-                      textAlign: "center",
-                      color: "#444",
+                      width: 140,
+                      padding: 8,
+                      border:
+                        idx === currentPageIndex
+                          ? "2px solid #007bff"
+                          : "1px solid #ddd",
+                      borderRadius: 6,
+                      background: "#fff",
+                      cursor: "pointer",
+                      boxShadow:
+                        idx === currentPageIndex
+                          ? "0 4px 10px rgba(0,0,0,0.15)"
+                          : "none",
                     }}
                   >
-                    Page {idx + 1}
+                    {renderPagePreview(
+                      page,
+                      documentData,
+                      getElementsForPage,
+                      utils,
+                      backgroundConfig,
+                      importedGetPageBackgroundColor,
+                      importedGetDocumentBackgroundColor
+                    )}
+                    <div
+                      style={{
+                        marginTop: 6,
+                        fontSize: 12,
+                        textAlign: "center",
+                        color: "#444",
+                      }}
+                    >
+                      Page {idx + 1}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            ))}
 
           {/* Main page container */}
           {(() => {
             const pagesArray = getPagesArray(documentData);
             const currentPage = pagesArray[currentPageIndex];
             const pageElements = getElementsForPage(
-              currentPage.id,
+              currentPage.self,
               documentData
             );
 
@@ -632,7 +1301,7 @@ export default function Viewer() {
 
             // Build a stable id->element map for this render
             const pageElementById = Object.fromEntries(
-              sortedElements.map((el) => [el.id || el.self, el])
+              sortedElements.map((el) => [el.self || el.id, el])
             );
 
             // DEBUG: Check if page elements have linked images
@@ -663,7 +1332,43 @@ export default function Viewer() {
               const sX = availableW / pageWidthPx;
               const sY = availableH / pageHeightPx;
               scale = Math.min(sX, sY);
+              if (!Number.isFinite(scale) || scale <= 0) scale = 1;
+              // Avoid collapsing too small due to transient layout
+              scale = Math.max(scale, 0.2);
             }
+
+            const getTopmostElementKeyAtClientPoint = (clientX, clientY) => {
+              const rect = pageCanvasRef.current?.getBoundingClientRect();
+              if (!rect) return null;
+              const localX = (clientX - rect.left) / scale;
+              const localY = (clientY - rect.top) / scale;
+              const hits = [];
+              const pageArea = pageWidthPx * pageHeightPx;
+              for (let i = 0; i < sortedElements.length; i++) {
+                const el = sortedElements[i];
+                const pos = el && el.pixelPosition;
+                if (!pos) continue;
+                if (
+                  localX >= pos.x &&
+                  localX <= pos.x + pos.width &&
+                  localY >= pos.y &&
+                  localY <= pos.y + pos.height
+                ) {
+                  const area = Math.max(
+                    1,
+                    (pos.width || 1) * (pos.height || 1)
+                  );
+                  hits.push({ index: i, key: el.id || el.self, area });
+                }
+              }
+              if (hits.length === 0) return null;
+              // Prefer highest z-order (largest index), but drop near-full-page elements if a smaller hit exists
+              const filtered = hits.some((h) => h.area / pageArea < 0.9)
+                ? hits.filter((h) => h.area / pageArea < 0.9)
+                : hits;
+              filtered.sort((a, b) => a.index - b.index);
+              return filtered[filtered.length - 1].key;
+            };
 
             return (
               <div
@@ -680,6 +1385,7 @@ export default function Viewer() {
               >
                 {/* Page Canvas */}
                 <div
+                  ref={pageCanvasRef}
                   style={{
                     position: "relative",
                     width: "100%",
@@ -820,8 +1526,9 @@ export default function Viewer() {
                     const hasPlacedContent = element.placedContent;
 
                     // Create unique key for this element instance
-                    const isSelected = selectedElementId === element.id;
-                    const isEditing = editingElementId === element.id;
+                    const elementKey = element.self || element.id;
+                    const isSelected = selectedElementId === elementKey;
+                    const isEditing = editingElementId === elementKey;
                     const isTextElement =
                       element.type === "TextFrame" ||
                       element.name === "Bulleted List" ||
@@ -829,11 +1536,11 @@ export default function Viewer() {
 
                     return (
                       <div
-                        key={`render-${element.id}-${index}`}
+                        key={`render-${elementKey}-${index}`}
                         className={`${styles.idmlElement} ${
                           isSelected ? styles.selected : ""
                         }`}
-                        data-element-key={element.id}
+                        data-element-key={elementKey}
                         data-is-selected={isSelected}
                         style={{
                           position: "absolute",
@@ -858,32 +1565,274 @@ export default function Viewer() {
                             : "none",
                           transformOrigin: "top left",
                           boxSizing: "border-box",
-                          zIndex:
-                            element.type === "TextFrame" ||
-                            element.name === "Bulleted List" ||
-                            element.name === "Numbered List"
-                              ? 10
-                              : 1,
+                          zIndex: isSelected || isEditing ? 10000 : index + 1,
                           maxWidth: "100%",
                           maxHeight: "100%",
-                          cursor: isTextElement ? "text" : "pointer",
+                          cursor: isTextElement
+                            ? isEditing
+                              ? "text"
+                              : "text"
+                            : "move",
                           transition: "border 0.2s ease, outline 0.2s ease",
+                        }}
+                        onMouseDown={(e) => {
+                          if (isTextElement && isEditing) return; // Don't drag while editing text
+                          // Ignore when starting on a resize handle
+                          if (
+                            e.target &&
+                            e.target.getAttribute &&
+                            e.target.getAttribute("data-resize-handle")
+                          )
+                            return;
+                          // Select on mousedown to ensure selection even if click is prevented by drag
+                          setSelectedElementId(elementKey);
+                          startMove(
+                            e,
+                            element,
+                            elementPosition,
+                            pageWidthPx,
+                            pageHeightPx,
+                            scale
+                          );
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          setSelectedElementId(element.id);
+                          setSelectedElementId(elementKey);
                         }}
                         onDoubleClick={(e) => {
                           e.stopPropagation();
+                          setSelectedElementId(elementKey);
                           if (isTextElement) {
-                            setEditingElementId(element.id);
+                            setEditingElementId(elementKey);
                           }
                         }}
                       >
                         {/* Element type label for hover */}
-                        <div className={styles.elementLabel}>
+                        <div
+                          className={styles.elementLabel}
+                          data-export-ignore="true"
+                        >
                           {element.name || element.type || "Element"}
                         </div>
+
+                        {/* Resize handles (visible when selected) */}
+                        {isSelected && (
+                          <>
+                            <div
+                              data-resize-handle="tl"
+                              onMouseDown={(e) =>
+                                startResize(
+                                  e,
+                                  element,
+                                  "tl",
+                                  elementPosition,
+                                  pageWidthPx,
+                                  pageHeightPx,
+                                  scale
+                                )
+                              }
+                              style={{
+                                position: "absolute",
+                                width: "10px",
+                                height: "10px",
+                                left: "-5px",
+                                top: "-5px",
+                                background: "#007bff",
+                                border: "2px solid #fff",
+                                borderRadius: "2px",
+                                cursor: "nwse-resize",
+                                zIndex: 10001,
+                              }}
+                            />
+                            <div
+                              data-resize-handle="tr"
+                              onMouseDown={(e) =>
+                                startResize(
+                                  e,
+                                  element,
+                                  "tr",
+                                  elementPosition,
+                                  pageWidthPx,
+                                  pageHeightPx,
+                                  scale
+                                )
+                              }
+                              style={{
+                                position: "absolute",
+                                width: "10px",
+                                height: "10px",
+                                right: "-5px",
+                                top: "-5px",
+                                background: "#007bff",
+                                border: "2px solid #fff",
+                                borderRadius: "2px",
+                                cursor: "nesw-resize",
+                                zIndex: 10001,
+                              }}
+                            />
+                            <div
+                              data-resize-handle="bl"
+                              onMouseDown={(e) =>
+                                startResize(
+                                  e,
+                                  element,
+                                  "bl",
+                                  elementPosition,
+                                  pageWidthPx,
+                                  pageHeightPx,
+                                  scale
+                                )
+                              }
+                              style={{
+                                position: "absolute",
+                                width: "10px",
+                                height: "10px",
+                                left: "-5px",
+                                bottom: "-5px",
+                                background: "#007bff",
+                                border: "2px solid #fff",
+                                borderRadius: "2px",
+                                cursor: "nesw-resize",
+                                zIndex: 10001,
+                              }}
+                            />
+                            <div
+                              data-resize-handle="br"
+                              onMouseDown={(e) =>
+                                startResize(
+                                  e,
+                                  element,
+                                  "br",
+                                  elementPosition,
+                                  pageWidthPx,
+                                  pageHeightPx,
+                                  scale
+                                )
+                              }
+                              style={{
+                                position: "absolute",
+                                width: "10px",
+                                height: "10px",
+                                right: "-5px",
+                                bottom: "-5px",
+                                background: "#007bff",
+                                border: "2px solid #fff",
+                                borderRadius: "2px",
+                                cursor: "nwse-resize",
+                                zIndex: 10001,
+                              }}
+                            />
+                            {/* Side handles */}
+                            <div
+                              data-resize-handle="t"
+                              onMouseDown={(e) =>
+                                startResize(
+                                  e,
+                                  element,
+                                  "t",
+                                  elementPosition,
+                                  pageWidthPx,
+                                  pageHeightPx,
+                                  scale
+                                )
+                              }
+                              style={{
+                                position: "absolute",
+                                left: "50%",
+                                top: "-5px",
+                                transform: "translateX(-50%)",
+                                width: "10px",
+                                height: "10px",
+                                background: "#007bff",
+                                border: "2px solid #fff",
+                                borderRadius: "2px",
+                                cursor: "ns-resize",
+                                zIndex: 10001,
+                              }}
+                            />
+                            <div
+                              data-resize-handle="b"
+                              onMouseDown={(e) =>
+                                startResize(
+                                  e,
+                                  element,
+                                  "b",
+                                  elementPosition,
+                                  pageWidthPx,
+                                  pageHeightPx,
+                                  scale
+                                )
+                              }
+                              style={{
+                                position: "absolute",
+                                left: "50%",
+                                bottom: "-5px",
+                                transform: "translateX(-50%)",
+                                width: "10px",
+                                height: "10px",
+                                background: "#007bff",
+                                border: "2px solid #fff",
+                                borderRadius: "2px",
+                                cursor: "ns-resize",
+                                zIndex: 10001,
+                              }}
+                            />
+                            <div
+                              data-resize-handle="l"
+                              onMouseDown={(e) =>
+                                startResize(
+                                  e,
+                                  element,
+                                  "l",
+                                  elementPosition,
+                                  pageWidthPx,
+                                  pageHeightPx,
+                                  scale
+                                )
+                              }
+                              style={{
+                                position: "absolute",
+                                top: "50%",
+                                left: "-5px",
+                                transform: "translateY(-50%)",
+                                width: "10px",
+                                height: "10px",
+                                background: "#007bff",
+                                border: "2px solid #fff",
+                                borderRadius: "2px",
+                                cursor: "ew-resize",
+                                zIndex: 10001,
+                              }}
+                            />
+                            <div
+                              data-resize-handle="r"
+                              onMouseDown={(e) =>
+                                startResize(
+                                  e,
+                                  element,
+                                  "r",
+                                  elementPosition,
+                                  pageWidthPx,
+                                  pageHeightPx,
+                                  scale
+                                )
+                              }
+                              style={{
+                                position: "absolute",
+                                top: "50%",
+                                right: "-5px",
+                                transform: "translateY(-50%)",
+                                width: "10px",
+                                height: "10px",
+                                background: "#007bff",
+                                border: "2px solid #fff",
+                                borderRadius: "2px",
+                                cursor: "ew-resize",
+                                zIndex: 10001,
+                              }}
+                            />
+                          </>
+                        )}
 
                         {/* PRESERVED: Enhanced Image Rendering */}
                         {element.linkedImage &&
@@ -1321,8 +2270,15 @@ export default function Viewer() {
                         : null;
                       if (!target) return;
 
-                      const payload =
-                        draft && draft.__all ? draft.__all : draft;
+                      // Separate partial delta from full snapshot
+                      const all = draft && draft.__all ? draft.__all : draft;
+                      const delta =
+                        draft && draft.__all
+                          ? Object.keys(draft).reduce((acc, key) => {
+                              if (key !== "__all") acc[key] = draft[key];
+                              return acc;
+                            }, {})
+                          : draft;
 
                       const mapAlign = (a) => {
                         switch (a) {
@@ -1339,10 +2295,7 @@ export default function Viewer() {
                         }
                       };
                       const fontStyle =
-                        [
-                          payload.bold ? "Bold" : null,
-                          payload.italic ? "Italic" : null,
-                        ]
+                        [all.bold ? "Bold" : null, all.italic ? "Italic" : null]
                           .filter(Boolean)
                           .join(" ") || "Regular";
                       const hexToRgbCss = (hex) => {
@@ -1384,69 +2337,62 @@ export default function Viewer() {
                           newDoc.stories[target.parentStory] || {};
                         const prevStyling = prevStory.styling || {};
 
-                        // Build a delta of only the style fields present in payload
+                        // Build a delta of only the style fields present in the partial delta
                         const stylingDelta = {};
                         if (
                           Object.prototype.hasOwnProperty.call(
-                            payload,
+                            delta,
                             "fontFamily"
                           )
                         ) {
-                          stylingDelta.fontFamily = payload.fontFamily;
+                          stylingDelta.fontFamily = all.fontFamily;
                         }
                         if (
                           Object.prototype.hasOwnProperty.call(
-                            payload,
+                            delta,
                             "fontSize"
                           )
                         ) {
-                          stylingDelta.fontSize = payload.fontSize;
+                          stylingDelta.fontSize = all.fontSize;
                         }
                         if (
-                          Object.prototype.hasOwnProperty.call(
-                            payload,
-                            "bold"
-                          ) ||
-                          Object.prototype.hasOwnProperty.call(
-                            payload,
-                            "italic"
-                          )
+                          Object.prototype.hasOwnProperty.call(delta, "bold") ||
+                          Object.prototype.hasOwnProperty.call(delta, "italic")
                         ) {
                           stylingDelta.fontStyle = fontStyle;
                         }
                         if (
                           Object.prototype.hasOwnProperty.call(
-                            payload,
+                            delta,
                             "underline"
                           )
                         ) {
-                          stylingDelta.underline = payload.underline;
+                          stylingDelta.underline = all.underline;
                         }
                         if (
-                          Object.prototype.hasOwnProperty.call(payload, "align")
+                          Object.prototype.hasOwnProperty.call(delta, "align")
                         ) {
-                          stylingDelta.alignment = mapAlign(payload.align);
+                          stylingDelta.alignment = mapAlign(all.align);
                         }
                         if (
-                          Object.prototype.hasOwnProperty.call(payload, "color")
+                          Object.prototype.hasOwnProperty.call(delta, "color")
                         ) {
-                          stylingDelta.fillColor = hexToRgbCss(payload.color);
+                          stylingDelta.fillColor = hexToRgbCss(all.color);
                         }
                         if (
                           Object.prototype.hasOwnProperty.call(
-                            payload,
+                            delta,
                             "lineHeight"
                           )
                         ) {
-                          stylingDelta.effectiveLineHeight = payload.lineHeight;
+                          stylingDelta.effectiveLineHeight = all.lineHeight;
                         }
 
                         const didTextContentChange =
                           Object.prototype.hasOwnProperty.call(
-                            payload,
+                            delta,
                             "content"
-                          ) &&
-                          (payload.content ?? "") !== (prevStory.text ?? "");
+                          ) && (all.content ?? "") !== (prevStory.text ?? "");
                         const didStyleChange =
                           Object.keys(stylingDelta).length > 0;
 
@@ -1518,7 +2464,7 @@ export default function Viewer() {
                           ) {
                             updatedFormattedContent = [
                               {
-                                text: payload.content ?? prevStory.text ?? "",
+                                text: all.content ?? prevStory.text ?? "",
                                 formatting: applyFmtDelta(baseFmt),
                               },
                             ];
@@ -1539,7 +2485,7 @@ export default function Viewer() {
                           newDoc.stories[target.parentStory] = {
                             ...prevStory,
                             text: didTextContentChange
-                              ? payload.content ?? prevStory.text
+                              ? all.content ?? prevStory.text
                               : prevStory.text,
                             styling: nextStyling,
                             formattedContent: updatedFormattedContent,
@@ -1549,27 +2495,29 @@ export default function Viewer() {
 
                       // Apply frame (pixelPosition) changes as user edits
                       const nextPixelPosition = {
-                        x: Number.isFinite(payload.x)
-                          ? payload.x
+                        x: Number.isFinite(all.x)
+                          ? all.x
                           : target.pixelPosition?.x ?? 0,
-                        y: Number.isFinite(payload.y)
-                          ? payload.y
+                        y: Number.isFinite(all.y)
+                          ? all.y
                           : target.pixelPosition?.y ?? 0,
-                        width: Number.isFinite(payload.width)
-                          ? Math.max(1, payload.width)
+                        width: Number.isFinite(all.width)
+                          ? Math.max(1, all.width)
                           : Math.max(1, target.pixelPosition?.width ?? 1),
-                        height: Number.isFinite(payload.height)
-                          ? Math.max(1, payload.height)
+                        height: Number.isFinite(all.height)
+                          ? Math.max(1, all.height)
                           : Math.max(1, target.pixelPosition?.height ?? 1),
-                        rotation: Number.isFinite(payload.rotation)
-                          ? payload.rotation
+                        rotation: Number.isFinite(all.rotation)
+                          ? all.rotation
                           : target.pixelPosition?.rotation ?? 0,
                       };
 
                       // Update in elements array
                       if (Array.isArray(newDoc.elements)) {
                         newDoc.elements = newDoc.elements.map((el) =>
-                          el && (el.id === target.id || el.self === target.id)
+                          el &&
+                          ((el.self && el.self === target.self) ||
+                            (!el.self && el.id === target.id))
                             ? {
                                 ...el,
                                 pixelPosition: {
@@ -1582,19 +2530,18 @@ export default function Viewer() {
                       }
 
                       // Update in elementMap
-                      if (
-                        newDoc.elementMap &&
-                        target.id &&
-                        newDoc.elementMap[target.id]
-                      ) {
-                        const el = newDoc.elementMap[target.id];
-                        newDoc.elementMap[target.id] = {
-                          ...el,
-                          pixelPosition: {
-                            ...(el.pixelPosition || {}),
-                            ...nextPixelPosition,
-                          },
-                        };
+                      if (newDoc.elementMap) {
+                        const key = target.self || target.id;
+                        if (key && newDoc.elementMap[key]) {
+                          const el = newDoc.elementMap[key];
+                          newDoc.elementMap[key] = {
+                            ...el,
+                            pixelPosition: {
+                              ...(el.pixelPosition || {}),
+                              ...nextPixelPosition,
+                            },
+                          };
+                        }
                       }
 
                       // Update in elementsByPage for current page if present
@@ -1607,9 +2554,8 @@ export default function Viewer() {
                           newDoc.elementsByPage[currentPage.self].map((el) => {
                             const isMatch =
                               el &&
-                              (el.id === target.id ||
-                                el.self === target.id ||
-                                el.name === target.name);
+                              ((el.self && el.self === target.self) ||
+                                (!el.self && el.id === target.id));
                             return isMatch
                               ? {
                                   ...el,
@@ -1691,74 +2637,55 @@ export default function Viewer() {
                           const prevStyling = prevStory.styling || {};
 
                           const stylingDelta = {};
+                          // Compute diffs so we don't overwrite styling unless changed
                           if (
-                            Object.prototype.hasOwnProperty.call(
-                              payload,
-                              "fontFamily"
-                            )
+                            draft.fontFamily !== undefined &&
+                            draft.fontFamily !== prevStyling.fontFamily
                           ) {
-                            stylingDelta.fontFamily = payload.fontFamily;
+                            stylingDelta.fontFamily = draft.fontFamily;
                           }
                           if (
-                            Object.prototype.hasOwnProperty.call(
-                              payload,
-                              "fontSize"
-                            )
+                            draft.fontSize !== undefined &&
+                            draft.fontSize !== prevStyling.fontSize
                           ) {
-                            stylingDelta.fontSize = payload.fontSize;
+                            stylingDelta.fontSize = draft.fontSize;
                           }
+                          // Bold/Italic are combined into fontStyle
                           if (
-                            Object.prototype.hasOwnProperty.call(
-                              payload,
-                              "bold"
-                            ) ||
-                            Object.prototype.hasOwnProperty.call(
-                              payload,
-                              "italic"
-                            )
+                            (draft.bold !== undefined ||
+                              draft.italic !== undefined) &&
+                            fontStyle !== prevStyling.fontStyle
                           ) {
                             stylingDelta.fontStyle = fontStyle;
                           }
                           if (
-                            Object.prototype.hasOwnProperty.call(
-                              payload,
-                              "underline"
-                            )
+                            draft.underline !== undefined &&
+                            draft.underline !== prevStyling.underline
                           ) {
-                            stylingDelta.underline = payload.underline;
+                            stylingDelta.underline = draft.underline;
+                          }
+                          if (draft.align !== undefined) {
+                            const mapped = mapAlign(draft.align);
+                            if (mapped !== prevStyling.alignment) {
+                              stylingDelta.alignment = mapped;
+                            }
+                          }
+                          if (draft.color !== undefined) {
+                            const mappedColor = hexToRgbCss(draft.color);
+                            if (mappedColor !== prevStyling.fillColor) {
+                              stylingDelta.fillColor = mappedColor;
+                            }
                           }
                           if (
-                            Object.prototype.hasOwnProperty.call(
-                              payload,
-                              "align"
-                            )
+                            draft.lineHeight !== undefined &&
+                            draft.lineHeight !== prevStyling.effectiveLineHeight
                           ) {
-                            stylingDelta.alignment = mapAlign(payload.align);
-                          }
-                          if (
-                            Object.prototype.hasOwnProperty.call(
-                              payload,
-                              "color"
-                            )
-                          ) {
-                            stylingDelta.fillColor = hexToRgbCss(payload.color);
-                          }
-                          if (
-                            Object.prototype.hasOwnProperty.call(
-                              payload,
-                              "lineHeight"
-                            )
-                          ) {
-                            stylingDelta.effectiveLineHeight =
-                              payload.lineHeight;
+                            stylingDelta.effectiveLineHeight = draft.lineHeight;
                           }
 
                           const didTextContentChange =
-                            Object.prototype.hasOwnProperty.call(
-                              payload,
-                              "content"
-                            ) &&
-                            (payload.content ?? "") !== (prevStory.text ?? "");
+                            draft.content !== undefined &&
+                            (draft.content ?? "") !== (prevStory.text ?? "");
                           const didStyleChange =
                             Object.keys(stylingDelta).length > 0;
 
@@ -1828,7 +2755,7 @@ export default function Viewer() {
                             ) {
                               updatedFormattedContent = [
                                 {
-                                  text: payload.content ?? prevStory.text ?? "",
+                                  text: draft.content ?? prevStory.text ?? "",
                                   formatting: applyFmtDelta(baseFmt),
                                 },
                               ];
@@ -1853,7 +2780,7 @@ export default function Viewer() {
                             newDoc.stories[target.parentStory] = {
                               ...prevStory,
                               text: didTextContentChange
-                                ? payload.content ?? prevStory.text
+                                ? draft.content ?? prevStory.text
                                 : prevStory.text,
                               styling: nextStyling,
                               formattedContent: updatedFormattedContent,
@@ -1863,26 +2790,28 @@ export default function Viewer() {
 
                         // Apply frame (pixelPosition) changes on Apply as well
                         const nextPixelPosition = {
-                          x: Number.isFinite(payload.x)
-                            ? payload.x
+                          x: Number.isFinite(draft.x)
+                            ? draft.x
                             : target.pixelPosition?.x ?? 0,
-                          y: Number.isFinite(payload.y)
-                            ? payload.y
+                          y: Number.isFinite(draft.y)
+                            ? draft.y
                             : target.pixelPosition?.y ?? 0,
-                          width: Number.isFinite(payload.width)
-                            ? Math.max(1, payload.width)
+                          width: Number.isFinite(draft.width)
+                            ? Math.max(1, draft.width)
                             : Math.max(1, target.pixelPosition?.width ?? 1),
-                          height: Number.isFinite(payload.height)
-                            ? Math.max(1, payload.height)
+                          height: Number.isFinite(draft.height)
+                            ? Math.max(1, draft.height)
                             : Math.max(1, target.pixelPosition?.height ?? 1),
-                          rotation: Number.isFinite(payload.rotation)
-                            ? payload.rotation
+                          rotation: Number.isFinite(draft.rotation)
+                            ? draft.rotation
                             : target.pixelPosition?.rotation ?? 0,
                         };
 
                         if (Array.isArray(newDoc.elements)) {
                           newDoc.elements = newDoc.elements.map((el) =>
-                            el && (el.id === target.id || el.self === target.id)
+                            el &&
+                            ((el.self && el.self === target.self) ||
+                              (!el.self && el.id === target.id))
                               ? {
                                   ...el,
                                   pixelPosition: {
@@ -1894,19 +2823,18 @@ export default function Viewer() {
                           );
                         }
 
-                        if (
-                          newDoc.elementMap &&
-                          target.id &&
-                          newDoc.elementMap[target.id]
-                        ) {
-                          const el = newDoc.elementMap[target.id];
-                          newDoc.elementMap[target.id] = {
-                            ...el,
-                            pixelPosition: {
-                              ...(el.pixelPosition || {}),
-                              ...nextPixelPosition,
-                            },
-                          };
+                        if (newDoc.elementMap) {
+                          const key = target.self || target.id;
+                          if (key && newDoc.elementMap[key]) {
+                            const el = newDoc.elementMap[key];
+                            newDoc.elementMap[key] = {
+                              ...el,
+                              pixelPosition: {
+                                ...(el.pixelPosition || {}),
+                                ...nextPixelPosition,
+                              },
+                            };
+                          }
                         }
 
                         if (
@@ -1919,9 +2847,8 @@ export default function Viewer() {
                               (el) => {
                                 const isMatch =
                                   el &&
-                                  (el.id === target.id ||
-                                    el.self === target.id ||
-                                    el.name === target.name);
+                                  ((el.self && el.self === target.self) ||
+                                    (!el.self && el.id === target.id));
                                 return isMatch
                                   ? {
                                       ...el,
@@ -1951,16 +2878,7 @@ export default function Viewer() {
           })()}
 
           {/* NEW: Page Tabs - Moved below the document */}
-          {renderPageTabs(
-            documentData,
-            currentPageIndex,
-            setCurrentPageIndex,
-            getElementsForPage,
-            utils,
-            backgroundConfig,
-            importedGetPageBackgroundColor,
-            importedGetDocumentBackgroundColor
-          )}
+          {/* Removed on-canvas page tabs to avoid duplicate pagination; left sidebar remains as the only pagination UI. */}
 
           {/* NEW: Jump to current page button */}
           {documentData.pages && documentData.pages.length > 1 && (
